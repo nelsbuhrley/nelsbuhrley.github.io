@@ -1,0 +1,156 @@
+name: Build & Validate Website
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate HTML & SEO
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install HTML validator
+        run: npm install -g html-validate
+
+      - name: Validate HTML syntax
+        run: html-validate index.html
+        continue-on-error: false
+
+      - name: Check for required SEO elements
+        run: |
+          echo "Checking for SEO metadata..."
+          
+          # Check for title tag with name
+          if grep -q '<title>.*Nels Buhrley' index.html; then
+            echo "✓ Title tag contains name"
+          else
+            echo "✗ Title tag missing name"
+            exit 1
+          fi
+          
+          # Check for meta description
+          if grep -q '<meta name="description"' index.html; then
+            echo "✓ Meta description present"
+          else
+            echo "✗ Meta description missing"
+            exit 1
+          fi
+          
+          # Check for meta keywords
+          if grep -q '<meta name="keywords"' index.html; then
+            echo "✓ Meta keywords present"
+          else
+            echo "✗ Meta keywords missing"
+            exit 1
+          fi
+          
+          # Check for canonical link
+          if grep -q '<link rel="canonical"' index.html; then
+            echo "✓ Canonical link present"
+          else
+            echo "✗ Canonical link missing"
+            exit 1
+          fi
+
+      - name: Verify redirect URL
+        run: |
+          REDIRECT_URL=$(grep -oP 'url=https://[^"\s]+' index.html | head -1 | cut -d= -f2)
+          echo "Redirect URL: $REDIRECT_URL"
+          if [[ -z "$REDIRECT_URL" ]]; then
+            echo "✗ No redirect URL found"
+            exit 1
+          fi
+          echo "✓ Redirect URL configured: $REDIRECT_URL"
+
+      - name: Check file size
+        run: |
+          SIZE=$(wc -c < index.html)
+          echo "✓ index.html size: $SIZE bytes"
+          if [ $SIZE -lt 100 ]; then
+            echo "✗ File seems too small"
+            exit 1
+          fi
+
+  pages-build:
+    runs-on: ubuntu-latest
+    name: Test GitHub Pages Build
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+  status:
+    runs-on: ubuntu-latest
+    name: Build Status
+    needs: [validate, pages-build]
+    if: always()
+
+    steps:
+      - name: Check build status
+        run: |
+          if [ "${{ needs.validate.result }}" == "success" ] && [ "${{ needs.pages-build.result }}" == "success" ]; then
+            echo "✓ All checks passed!"
+            echo "• HTML validation: PASS"
+            echo "• SEO checks: PASS"
+            echo "• GitHub Pages build: PASS"
+            exit 0
+          else
+            echo "✗ Build failed"
+            [ "${{ needs.validate.result }}" == "success" ] && echo "• HTML validation: PASS" || echo "• HTML validation: FAIL"
+            [ "${{ needs.pages-build.result }}" == "success" ] && echo "• GitHub Pages build: PASS" || echo "• GitHub Pages build: FAIL"
+            exit 1
+          fi
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to GitHub Pages
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [validate, pages-build]
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: github-pages
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+
+      - name: Deployment Summary
+        run: |
+          echo "✓ Successfully deployed to GitHub Pages"
+          echo "📄 Site: https://nelsbuhrley.github.io"
