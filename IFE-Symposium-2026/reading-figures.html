@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to read these figures &mdash; IFE Symposium 2026</title>
+    <meta name="author" content="Nels Buhrley">
+    <meta name="description" content="A panel-by-panel guide to the HP-ARBCDI diagnostic sheets: what every axis, colour and dashed line means in the tungsten reconstruction figures.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/ui/css/menu.css">
+    <script src="/ui/js/site-menu.js"></script>
+  </head>
+  <body>
+    <header class="page-header">
+      <p class="page-header__eyebrow">IFE Symposium 2026 &middot; Supporting material</p>
+      <h1 class="project-name">How to read these figures</h1>
+      <p class="project-tagline">A panel-by-panel guide to the diagnostic sheets</p>
+      <nav class="page-header__links">
+        <a class="btn-pill" href="index.html">&larr; Poster &amp; gallery</a>
+        <a class="btn-pill" href="bcdi.html">How BCDI works</a>
+        <a class="btn-pill" href="convergence.html">Convergence &amp; failure</a>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <p class="breadcrumb"><a href="index.html">IFE Symposium 2026</a> &rsaquo; How to read these figures</p>
+
+      <p class="lede">
+        Each reconstruction in the gallery comes with a single sheet that shows the entire run from
+        measurement to final atoms. It is dense on purpose &mdash; it is a working diagnostic, not a
+        presentation slide &mdash; so this page walks through it panel by panel.
+      </p>
+
+      <div class="callout callout--good">
+        <span class="callout__title">If you only have ten seconds</span>
+        <p>
+          Look at <strong>fit vs iteration</strong>, in the middle of the third row. There is a solid
+          blue curve (this run's R-factor) and a dashed green line (the noise floor). If the blue
+          curve reaches the green line, the reconstruction worked. If it flattens out well above it,
+          the run failed. Nothing else on the sheet overrules that panel, and it needs no knowledge
+          of the right answer to read.
+        </p>
+      </div>
+
+      <h2><span class="section-number">1.</span>The sheet as a whole</h2>
+      <figure class="fig">
+        <a class="fig__mat" href="assets/runs/10k-s13/process_08_summary.webp">
+          <img src="assets/runs/10k-s13/process_08_summary.webp"
+               alt="The full twelve-panel diagnostic sheet for run 10k_s13, used as the reference example throughout this page."
+               loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">Reference</span>
+          Run <code>10k_s13</code>, a converged reconstruction of a 9,334-atom tungsten grain. Click
+          to enlarge &mdash; the text panels are legible at full size. Keep this open in another tab
+          while you read the sections below.
+        </figcaption>
+      </figure>
+      <p>
+        The sheet is laid out in pipeline order, and the numbered badges tell you where you are:
+      </p>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>The six numbered stages, in the order the pipeline executes them.</caption>
+          <thead>
+            <tr><th>Badge</th><th>Stage</th><th>What it is</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>1 MEASURED</code></td><td>Input</td><td>The three Bragg intensity volumes. Everything downstream derives from these.</td></tr>
+            <tr><td><code>2 PHASED |rho|</code></td><td>Phase retrieval</td><td>The low-resolution complex density recovered by error reduction.</td></tr>
+            <tr><td><code>3 SUPPORT</code></td><td>Support</td><td>The region the grain occupies, extracted from that density.</td></tr>
+            <tr><td><code>4 SEED</code></td><td>Seed</td><td>An ideal BCC lattice cut to the support &mdash; the starting model.</td></tr>
+            <tr><td><code>5 LOOP</code></td><td>Refinement</td><td>The iterative fit, relax, add and remove cycle.</td></tr>
+            <tr><td><code>6 FINAL</code></td><td>Result</td><td>The atoms the run ended with.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2><span class="section-number">2.</span>Top row &mdash; the measurement</h2>
+      <p>
+        <strong>The three dark panels</strong> are the input data: the measured intensity around each
+        of the three <span class="nw">{110}</span> Bragg peaks, labelled with their
+        Miller indices &mdash; (1,1,0), (1,0,1), (0,1,1). Each is a 3D volume shown as a
+        <em>maximum-intensity projection</em>, meaning you are looking through the volume and seeing
+        the brightest value along each line of sight. Bright centre, faint speckle and streaks
+        around it. The streaks are real signal, not artefacts; they carry the shape information.
+      </p>
+      <p>
+        These panels use a deliberately fixed dark-to-bright colour map that does not change with the
+        page theme, so a Bragg peak always reads the way it would on a detector.
+      </p>
+      <p>
+        <strong>The text panel</strong> beside them records what the measurement was, and two entries
+        there are worth knowing:
+      </p>
+      <ul>
+        <li>
+          <code>peakset |det|</code> &mdash; how independent the three chosen peaks are.
+          1.0 is mutually orthogonal, 0.0 is coplanar. Three
+          <span class="nw">{110}</span> peaks give 0.7071. A coplanar set would
+          leave one component of every atomic displacement permanently unmeasured.
+          <a href="bcdi.html">Why &rarr;</a>
+        </li>
+        <li>
+          <code>alias period</code> &mdash; the real-space period implied by the detector sampling.
+          It must exceed twice the object diameter, or the reconstruction wraps around on itself.
+          The pipeline checks this before it starts.
+        </li>
+      </ul>
+      <p>
+        <strong>The radial profile</strong> at the far right plots mean counts against distance from
+        the Bragg peak centre, one curve per peak, with a dashed red line at one photon. It answers
+        &ldquo;how far out does this measurement still contain signal?&rdquo; &mdash; and therefore
+        what resolution is available at all. Where a curve sinks toward the one-photon line, there is
+        nothing left to reconstruct from.
+      </p>
+
+      <h2><span class="section-number">3.</span>Second row &mdash; from density to atoms</h2>
+      <p>
+        <strong><code>|rho| central slice</code></strong> and
+        <strong><code>phased support on |rho|</code></strong> show what conventional phase retrieval
+        alone produced: a slice through the recovered density, and the same slice with the extracted
+        support boundary drawn over it in cyan. This is the poster's Fig.&nbsp;3 &mdash; the
+        low-resolution reconstruction. It is where a conventional BCDI analysis would stop.
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__title">These two panels look identical on good and bad runs</span>
+        <p>
+          Compare the density and support panels of <code>10k_s13</code> against
+          <code>10k_s14</code> in the gallery. One converged and one failed by a factor of a
+          thousand in fit quality, and you cannot tell which is which from these panels. Failure
+          does not happen during phase retrieval, and it does not show up in the low-resolution
+          image. That is precisely why the rest of the sheet exists.
+        </p>
+      </div>
+      <p>
+        <strong><code>add/remove churn</code></strong> plots how many atoms were added (green) and
+        removed (red) at each iteration, with the net change dashed in black. This is the single most
+        diagnostic panel after the fit curve:
+      </p>
+      <ul>
+        <li><strong>Activity, then a flat line at zero</strong> &mdash; the solver ran out of improvements to make. This is what finishing looks like.</li>
+        <li><strong>Activity that never stops</strong> &mdash; the run is churning: adding and removing atoms indefinitely without improving the fit. It will keep going until it hits the iteration cap.</li>
+      </ul>
+      <p>
+        <strong><code>seed vs truth</code></strong> and <strong><code>final vs truth</code></strong>
+        show a 6&nbsp;&Aring;-thick slab through the grain, with the true atoms as blue dots and the
+        model's atoms overlaid as crosses. The seed panel shows the starting lattice; the final panel
+        shows the answer. On a converged run the two clouds sit exactly on top of one another and the
+        counts in the legend match. Both panels are twin-resolved before drawing, so a correct but
+        inverted reconstruction is flipped rather than shown as two disjoint clouds.
+        <a href="bcdi.html">What the twin is &rarr;</a>
+      </p>
+      <p>
+        <strong><code>recall vs tolerance</code></strong> is the honesty panel. It sweeps the
+        matching tolerance and plots what fraction of true atoms count as recovered, for the seed
+        (orange) and the final model (red). A converged run is flat at 1.0 all the way down to a
+        tight tolerance. A failed run rises steeply somewhere in the middle &mdash; which tells you
+        its apparent recall depends entirely on how generous you were. The dashed vertical marker is
+        the loose default tolerance; see &sect;6.
+      </p>
+
+      <h2><span class="section-number">4.</span>Third row &mdash; convergence</h2>
+      <p>
+        The three panels that decide whether the run worked. All three are reproduced at full size in
+        each run's <code>process_07_convergence</code> figure.
+      </p>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>The three convergence panels, and what each looks like in success and in failure.</caption>
+          <thead>
+            <tr><th>Panel</th><th>Converged</th><th>Failed</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>count vs iteration</strong><br><span class="footnote">orange = model, dashed blue = truth</span></td>
+              <td>Overshoots, corrects, then locks onto the dashed line and stops moving.</td>
+              <td>Never reaches the line, or drifts past it and keeps drifting.</td>
+            </tr>
+            <tr>
+              <td><strong>fit vs iteration</strong><br><span class="footnote">blue = R-factor (log scale), dashed green = noise floor</span></td>
+              <td>Descends and meets the dashed floor.</td>
+              <td>Descends briefly, then flattens far above the floor and stays flat.</td>
+            </tr>
+            <tr>
+              <td><strong>position error vs iteration</strong><br><span class="footnote">orange = RMS displacement (left axis), teal = recall at 0.5&nbsp;&Aring; (right axis)</span></td>
+              <td>Orange collapses toward zero, teal jumps to 1.0 and holds.</td>
+              <td>Teal stays pinned at zero. The orange trace may cover a tiny range or stop early, because it is averaged over the atoms that matched &mdash; and there are none.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <span class="callout__title">Only two of these three are available on real data</span>
+        <p>
+          Count and fit can be plotted from the measurement alone. The position-error panel needs the
+          true structure, so it exists here only because these are simulations. That asymmetry is the
+          whole reason <code>&chi;&sup2;/floor</code> is the headline metric rather than position
+          error: it is the one that survives the transition to a real beamline.
+        </p>
+      </div>
+
+      <h2><span class="section-number">5.</span>Bottom row &mdash; the three text panels</h2>
+      <p>
+        <strong><code>RUN</code></strong> records the configuration: box size, true atom count, how
+        many atoms the seed started with and what percentage of truth that was, final count, count
+        error, iterations, and seconds per iteration. It also carries a
+        <code>UNITS TRAP</code> warning &mdash; see &sect;6.
+      </p>
+      <p>
+        <strong><code>QUALITY</code></strong> is the scorecard: R-factor against the noise floor,
+        reduced &chi;&sup2; against its floor, the ratio of the two, mean position error, and then
+        recall measured at <em>two</em> tolerances so you can see how much the loose one flatters the
+        result. The last line, <code>twin sign used</code>, tells you whether the reconstruction had
+        to be inverted before scoring.
+      </p>
+      <p>
+        <strong><code>VERDICT</code></strong> gives a one-line judgement &mdash;
+        <code>CONVERGED to the noise floor</code> or <code>FAILED (chi2 far above the floor)</code>
+        &mdash; and is explicitly labelled <em>truth-free</em>, because it is derived only from
+        &chi;&sup2;/floor. It then lists what the sheet does <em>not</em> show, which is unusual for a
+        figure and deliberate: the phase of the density is not persisted, per-iteration candidate
+        proposals are not recorded, and intensity cannot distinguish an object from its inverse.
+      </p>
+
+      <h2 id="units"><span class="section-number">6.</span>The units trap, spelled out</h2>
+      <div class="callout callout--warn">
+        <span class="callout__title">Why every sheet warns you about aluminium</span>
+        <p>
+          The default matching tolerance in the analysis code is half a lattice parameter, read from
+          the run's own metadata. In this campaign that metadata field carried aluminium's lattice
+          parameter, 4.046&nbsp;&Aring;, giving a default tolerance of <strong>2.023&nbsp;&Aring;</strong>.
+        </p>
+        <p>
+          Tungsten's first-neighbour bond is <strong>2.7411&nbsp;&Aring;</strong>. So the default
+          tolerance is only 74&nbsp;% of a bond &mdash; wide enough that an atom sitting on a
+          <em>neighbouring lattice site</em> is still scored as correctly found.
+        </p>
+        <p>
+          Rather than silently switch tolerance and quietly restate the numbers, the figures print
+          both: the loose 2.023&nbsp;&Aring; value that the archived <code>analysis.toml</code> files
+          contain, and the honest 0.5&nbsp;&Aring; value re-measured for the figure. Where those two
+          disagree, the tight one is the real answer.
+          <a href="convergence.html#ruler">How far apart they get &rarr;</a>
+        </p>
+      </div>
+
+      <h2><span class="section-number">7.</span>The other figures</h2>
+
+      <h3 class="sub">Residual field</h3>
+      <p>
+        A spatial map of how much position error is left, and <em>where</em>. This distinguishes two
+        very different situations that produce the same average error: a localised mistake (the solver
+        got one defect wrong and everything else right) and a global one (every atom is slightly off).
+        A converged run is uniform and near zero. A failed run is usually uniform and large, which is
+        itself the clue &mdash; it points to a whole-lattice offset rather than a local error.
+      </p>
+      <div class="fig-pair">
+        <figure class="fig">
+          <a class="fig__mat" href="assets/runs/10k-s13/process_09_residual_field.webp">
+            <img src="assets/runs/10k-s13/process_09_residual_field.webp" alt="Residual position-error map for a converged run, uniformly near zero." loading="lazy">
+          </a>
+          <figcaption><span class="fig__label">converged</span> <code>10k_s13</code> &mdash; nothing left anywhere.</figcaption>
+        </figure>
+        <figure class="fig">
+          <a class="fig__mat" href="assets/runs/10k-s14/process_09_residual_field.webp">
+            <img src="assets/runs/10k-s14/process_09_residual_field.webp" alt="Residual position-error map for a failed run, large everywhere." loading="lazy">
+          </a>
+          <figcaption><span class="fig__label">failed</span> <code>10k_s14</code> &mdash; error spread evenly over the whole grain.</figcaption>
+        </figure>
+      </div>
+
+      <h3 class="sub">Atom slabs</h3>
+      <p>
+        This is the poster's Fig.&nbsp;5&ndash;6 layout: thin slabs cut through the truth and the
+        reconstruction side by side, plus a per-atom position-error map. Atoms are coloured by their
+        local structure, computed with adaptive common-neighbour analysis:
+      </p>
+      <ul>
+        <li><strong>Light blue</strong> &mdash; interior atoms whose local coordination is BCC, i.e. ordinary bulk lattice.</li>
+        <li><strong>Red</strong> &mdash; interior atoms whose coordination is something else: a defect core, a void wall, a fault.</li>
+        <li><strong>Grey</strong> &mdash; the surface shell, within 3.5&nbsp;&Aring; of the grain boundary. Surface atoms have unusual coordination for trivial reasons, so they are faded out rather than counted as damage.</li>
+      </ul>
+      <p class="footnote">
+        The classifier used here was validated against OVITO's common-neighbour analysis, with zero
+        disagreements over 88,833 atoms.
+      </p>
+      <figure class="fig">
+        <a class="fig__mat" href="assets/runs/he-25k-g04-flu30/defect_slices.webp">
+          <img src="assets/runs/he-25k-g04-flu30/defect_slices.webp" alt="Atomic slab figure: truth beside reconstruction with defect atoms highlighted, plus a position-error map." loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">Example</span>
+          The 26,067-atom converged run. Truth on the left, reconstruction in the middle, per-atom
+          error on the right. The red cluster is the helium-bubble damage &mdash; present in the
+          truth, and found by the solver.
+        </figcaption>
+      </figure>
+
+      <h3 class="sub">The animations</h3>
+      <p>
+        The videos show the model redrawn at every saved iteration, with a rotating camera and a live
+        readout of atom count, error against truth, R-factor and reduced &chi;&sup2;. Blue is the
+        lattice, amber marks interior atoms whose coordination is not BCC, and open rings are true
+        sites. Surface atoms are drawn in the lattice colour rather than greyed out, so the whole
+        grain stays visible.
+      </p>
+      <p>
+        Watch the readout rather than the cloud. The visual difference between a converged and a
+        failed run is far smaller than the difference in the numbers &mdash; which is the most
+        important intuition on this whole site.
+      </p>
+
+      <h2>Where to go next</h2>
+      <div class="subpage-grid">
+        <a class="subpage-card" href="convergence.html">
+          <span class="subpage-card__title">Convergence &amp; failure &rarr;</span>
+          <p class="subpage-card__desc">
+            The two distinct failure modes, why a stuck run cannot stop itself, and how to pick the
+            good reconstruction without knowing the answer.
+          </p>
+        </a>
+        <a class="subpage-card" href="index.html">
+          <span class="subpage-card__title">Back to the gallery &rarr;</span>
+          <p class="subpage-card__desc">
+            Now that the panels make sense, the eight case studies are much faster to read.
+          </p>
+        </a>
+        <a class="subpage-card" href="bcdi.html">
+          <span class="subpage-card__title">How BCDI works &rarr;</span>
+          <p class="subpage-card__desc">
+            The phase problem, why three Bragg peaks, and what molecular dynamics adds to the loop.
+          </p>
+        </a>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Nels Buhrley &middot; <a href="https://nelsbuhrley.github.io">nelsbuhrley.github.io</a></p>
+      <p class="site-footer__ai">This website was built with the assistance of Claude, an AI assistant by Anthropic.</p>
+    </footer>
+    <script src="lightbox.js"></script>
+  </body>
+</html>

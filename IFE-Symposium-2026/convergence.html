@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convergence &amp; failure &mdash; IFE Symposium 2026</title>
+    <meta name="author" content="Nels Buhrley">
+    <meta name="description" content="What convergence looks like in atomic-resolution BCDI, the two distinct ways these reconstructions fail, and the statistics over 513 scored tungsten runs.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/ui/css/menu.css">
+    <script src="/ui/js/site-menu.js"></script>
+  </head>
+  <body>
+    <header class="page-header">
+      <p class="page-header__eyebrow">IFE Symposium 2026 &middot; Supporting material</p>
+      <h1 class="project-name">Convergence &amp; failure</h1>
+      <p class="project-tagline">What worked, what did not, and how to tell without knowing the answer</p>
+      <nav class="page-header__links">
+        <a class="btn-pill" href="index.html">&larr; Poster &amp; gallery</a>
+        <a class="btn-pill" href="bcdi.html">How BCDI works</a>
+        <a class="btn-pill" href="reading-figures.html">Reading the figures</a>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <p class="breadcrumb"><a href="index.html">IFE Symposium 2026</a> &rsaquo; Convergence &amp; failure</p>
+
+      <p class="lede">
+        A reconstruction that fails does not announce itself. It produces a full grain of atoms, a
+        clean-looking density, and a respectable-looking recall score. This page is about how to
+        catch it anyway &mdash; and what the 513 scored runs in this archive say about how often it
+        happens and why.
+      </p>
+
+      <h2><span class="section-number">1.</span>What convergence looks like</h2>
+      <p>
+        Three things happen at once when a reconstruction succeeds, and the simultaneity is the point:
+      </p>
+      <ol class="step-list">
+        <li>
+          <strong>The R-factor reaches the noise floor.</strong> The model's disagreement with the
+          measurement drops until it equals the disagreement the <em>true</em> structure would have,
+          which is set by photon shot noise. There is nothing structural left to explain.
+        </li>
+        <li>
+          <strong>The atom count locks.</strong> The count stops changing &mdash; not because it hit a
+          limit, but because adding or removing any atom makes the fit worse.
+        </li>
+        <li>
+          <strong>The add/remove churn goes to zero.</strong> The solver runs out of moves it wants
+          to make, and the run ends itself early rather than exhausting its iteration budget.
+        </li>
+      </ol>
+      <p>
+        A failed run has none of these. Its R-factor flattens above the floor, its count drifts or
+        stalls short, and it churns until it hits the cap. The best single number is the ratio of
+        the two fits &mdash; <code>&chi;&sup2;/floor</code> &mdash; and it separates the archive
+        cleanly, spanning 1.08 for the best run to 10,370 for the worst.
+      </p>
+      <figure class="fig">
+        <a class="fig__mat" href="assets/cross/holes_04_good_vs_bad.webp">
+          <img src="assets/cross/holes_04_good_vs_bad.webp"
+               alt="The archive's best and worst runs on identical panels: measured peak, density, atom overlay, count curve, R-factor curve, and a numeric scorecard for each."
+               loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">Fig&nbsp;1</span>
+          The two extremes of the archive on identical axes. Top: the best-fitting run,
+          &chi;&sup2;/floor 1.08, all 6,136 atoms found. Bottom: <code>25kD_s42</code>,
+          &chi;&sup2;/floor 10,370, which produced 34,125 atoms for a 24,800-atom truth. Read left to
+          right and notice how late the difference becomes obvious &mdash; the measured peak and the
+          density look comparable; it is the atom overlay and then the R-factor curve that give it
+          away.
+        </figcaption>
+      </figure>
+
+      <h2><span class="section-number">2.</span>The archive</h2>
+      <p>
+        513 reconstructions with a complete figure suite and a full score. Converged means
+        <code>&chi;&sup2;/floor &lt; 5</code>; failed means <code>&gt; 50</code>; the band between
+        is real and populated, not a rounding artefact.
+      </p>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>All 513 scored reconstructions, by grain size.</caption>
+          <thead>
+            <tr>
+              <th>Grain size</th><th class="num">Runs</th><th class="num">Converged</th>
+              <th class="num">Partial</th><th class="num">Failed</th><th class="num">Converged</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>~5,000 atoms</td><td class="num">207</td><td class="num">146</td><td class="num">30</td><td class="num">31</td><td class="num"><strong>70.5&nbsp;%</strong></td></tr>
+            <tr><td>~9,300 atoms</td><td class="num">12</td><td class="num">3</td><td class="num">0</td><td class="num">9</td><td class="num">25.0&nbsp;%</td></tr>
+            <tr><td>~22,000&ndash;26,000 atoms</td><td class="num">212</td><td class="num">14</td><td class="num">53</td><td class="num">145</td><td class="num">6.6&nbsp;%</td></tr>
+            <tr><td>~50,000 atoms</td><td class="num">82</td><td class="num">0</td><td class="num">79</td><td class="num">3</td><td class="num">0.0&nbsp;%</td></tr>
+            <tr><td><strong>All</strong></td><td class="num"><strong>513</strong></td><td class="num"><strong>163</strong></td><td class="num"><strong>162</strong></td><td class="num"><strong>188</strong></td><td class="num"><strong>31.8&nbsp;%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Success falls off with grain size, and that is expected: the number of unknowns grows as
+        three coordinates per atom while the number of usefully-measured intensity voxels grows much
+        more slowly. Every run here used three Bragg peaks, which is the <em>minimum</em> that can
+        constrain a 3D displacement field at all. Larger grains want more peaks, not more iterations.
+      </p>
+      <div class="callout">
+        <span class="callout__title">The 50,000-atom row is work in progress, not a ceiling</span>
+        <p>
+          79 of those 82 runs sit in the intermediate band &mdash; fitting better than a failure and
+          worse than the floor. They have not stalled at a wrong answer; they have not finished. The
+          three genuine failures there are a much smaller fraction than at 25,000 atoms.
+        </p>
+      </div>
+
+      <h3 class="sub">
+        There is almost no partial credit
+      </h3>
+      <p>
+        One property of the archive is worth stating on its own, because it shapes everything that
+        follows. Reconstruction accuracy is not spread smoothly from good to bad &mdash; it is
+        <strong>bimodal</strong>. Bin all 513 runs by their final mean position error and the middle
+        is nearly empty:
+      </p>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>Final mean position error over all 513 scored runs. A tungsten bond is 2.7411&nbsp;&Aring;.</caption>
+          <thead>
+            <tr><th>Position error</th><th class="num">Runs</th><th class="num">Share</th><th>Interpretation</th></tr>
+          </thead>
+          <tbody>
+            <tr class="row-good"><td>below 0.05&nbsp;&Aring;</td><td class="num">214</td><td class="num">41.7&nbsp;%</td><td>atomic resolution &mdash; the lattice is resolved</td></tr>
+            <tr><td>0.05 &ndash; 0.5&nbsp;&Aring;</td><td class="num">26</td><td class="num"><strong>5.1&nbsp;%</strong></td><td>the empty middle</td></tr>
+            <tr class="row-bad"><td>0.5&nbsp;&Aring; and above</td><td class="num">273</td><td class="num">53.2&nbsp;%</td><td>off by a substantial fraction of a bond</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        In the tightly controlled 144-run 5,000-atom library the gap is starker still: 129 runs land
+        below 0.05&nbsp;&Aring;, 14 land at or above 0.5&nbsp;&Aring;, and <strong>exactly one</strong>
+        falls in between.
+      </p>
+      <div class="callout">
+        <span class="callout__title">Why an empty middle is a clue, not a curiosity</span>
+        <p>
+          Continuous error sources &mdash; photon noise, an imperfect potential, insufficient
+          iterations &mdash; produce continuous degradation. A gap means the outcome is being decided
+          by something <em>discrete</em>: the model either latches onto the correct lattice registry
+          or latches onto a wrong one, and there is no stable state part-way between two lattice
+          sites. This is the single strongest piece of evidence for the mechanism in &sect;4, and it
+          is also good news, because a discrete failure is a failure you can detect and retry rather
+          than an accuracy limit you have to live with.
+        </p>
+      </div>
+      <figure class="fig">
+        <a class="fig__mat" href="assets/cross/chart_convergence.webp">
+          <img src="assets/cross/chart_convergence.webp"
+               alt="Three panels: 144 R-factor trajectories against iteration coloured by cascade dose, the same runs' reduced chi-squared, and final count error plotted against final position error showing two separated clusters."
+               loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">Fig&nbsp;2</span>
+          All 144 library runs at once. Left and middle: every trajectory, coloured by cascade energy.
+          Two bundles are visible &mdash; one that descends to the floor and one that flattens high
+          and stays there &mdash; along with a handful that break out late, past iteration 150. Right:
+          final count error against final position error, with tungsten's bond length marked. The two
+          clusters and the gap between them are the bimodality above, drawn.
+        </figcaption>
+      </figure>
+
+      <h2><span class="section-number">3.</span>It is not the radiation damage</h2>
+      <p>
+        The obvious hypothesis is that damaged grains are harder to reconstruct, since defects are
+        exactly what the ideal starting lattice does not contain. The 144-run 5,000-atom library was
+        built to test that, with a pristine control and four cascade energies on sixteen different
+        grains. The result runs the other way.
+      </p>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>
+            The 5,000-atom library by damage level. <code>L0</code> is the pristine control &mdash; a
+            relaxed but undamaged grain. Energies are the primary knock-on atom energy of the
+            molecular-dynamics cascade.
+          </caption>
+          <thead>
+            <tr><th>Damage</th><th class="num">Runs</th><th class="num">Converged</th><th class="num">Partial</th><th class="num">Failed</th><th class="num">Converged</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>L0</code> &mdash; pristine, no cascade</td><td class="num">16</td><td class="num">10</td><td class="num">2</td><td class="num">4</td><td class="num">62.5&nbsp;%</td></tr>
+            <tr><td><code>L1</code> &mdash; 150&nbsp;eV</td><td class="num">32</td><td class="num">21</td><td class="num">4</td><td class="num">7</td><td class="num">65.6&nbsp;%</td></tr>
+            <tr><td><code>L2</code> &mdash; 400&nbsp;eV</td><td class="num">32</td><td class="num">25</td><td class="num">4</td><td class="num">3</td><td class="num">78.1&nbsp;%</td></tr>
+            <tr class="row-good"><td><code>L3</code> &mdash; 1,000&nbsp;eV</td><td class="num">32</td><td class="num">28</td><td class="num">3</td><td class="num">1</td><td class="num"><strong>87.5&nbsp;%</strong></td></tr>
+            <tr><td><code>L3deep</code> &mdash; 1,000&nbsp;eV, deep</td><td class="num">32</td><td class="num">23</td><td class="num">9</td><td class="num">0</td><td class="num">71.9&nbsp;%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        The pristine control is the <em>worst</em> row in the table, and the most violent cascade is
+        the best. Not one of the 32 deep-cascade runs failed outright. This is a monotone trend over
+        four of the five levels and it reverses the naive expectation completely.
+      </p>
+      <div class="callout callout--good">
+        <span class="callout__title">Why damage helps</span>
+        <p>
+          Because the failure mode is a <em>registry</em> problem, and defects break the symmetry
+          that causes it. A perfect crystal looks the same after sliding it by one lattice site, so
+          nothing in the data prefers one alignment over another and the solver can settle into the
+          wrong one. Put a recognisable cascade in the middle of the grain and that degeneracy is
+          gone &mdash; there is now exactly one alignment that explains the measurement.
+        </p>
+        <p>
+          The gallery's <code>lib_5k_g03_L0</code> is this argument in a single run: an undamaged
+          4,828-atom grain, the easiest target in the archive, stalled at 1.48&nbsp;&Aring; with
+          &chi;&sup2;/floor 1,478.
+        </p>
+      </div>
+      <p>
+        Grain shape matters far more than dose. Among the 22,000&ndash;26,000-atom runs, sorted by
+        which grain they were reconstructing: grain g09 converged in 5 of 9 attempts (55.6&nbsp;%),
+        g04 in 5 of 19 (26.3&nbsp;%), g01 in 4 of 48 (8.3&nbsp;%), and g02 in <strong>0 of
+        25</strong>. Same code, same damage recipes, same peak set.
+      </p>
+
+      <h2><span class="section-number">4.</span>Two distinct failure modes</h2>
+      <p>
+        Failures are not all alike. Fit one rigid-body transform &mdash; a single translation and
+        rotation applied to the whole reconstruction &mdash; and ask whether that fixes it. The
+        answer splits the failures cleanly in two.
+      </p>
+      <figure class="fig">
+        <a class="fig__mat" href="assets/cross/holes_05_failure_modes.webp">
+          <img src="assets/cross/holes_05_failure_modes.webp"
+               alt="Two scatter plots: recall before versus after a single rigid transform, and the size of the best rigid translation against chi-squared over floor, with converged, registry-failure and warp groups distinguished."
+               loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">Fig&nbsp;3</span>
+          Every failure in the measured cache, classified by whether one rigid transform repairs it.
+          The horizontal dashed line in the right panel is tungsten's Wigner&ndash;Seitz radius,
+          1.371&nbsp;&Aring; &mdash; the natural scale of one lattice site.
+        </figcaption>
+      </figure>
+
+      <h3 class="sub">
+        Registry failure &mdash; the crystal is right, its position is wrong
+      </h3>
+      <p>
+        In this group the reconstruction is internally correct. Every bond length, every defect, the
+        whole lattice &mdash; right. It is simply sitting in the wrong place, shifted bodily by
+        roughly one lattice site. Apply one translation and it snaps into agreement.
+      </p>
+      <p>
+        Measured over this group: median recall at 0.5&nbsp;&Aring; goes from <strong>0.0000 to
+        0.9551</strong> under a single rigid transform. The median translation needed is
+        <strong>1.419&nbsp;&Aring;</strong> &mdash; essentially tungsten's Wigner&ndash;Seitz radius
+        of 1.371&nbsp;&Aring; &mdash; and the median rotation is <strong>0.0176&deg;</strong>, i.e.
+        none. It is a pure shift, not a misorientation.
+      </p>
+      <figure class="fig">
+        <a class="fig__mat" href="assets/cross/holes_08_registry_lockin.webp">
+          <img src="assets/cross/holes_08_registry_lockin.webp"
+               alt="Four panels: stuck-registry rate falling with cascade dose, a bimodal position-error distribution, the rotation of the repairing shift plotted against its magnitude showing it is a pure translation, and a text verdict."
+               loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">Fig&nbsp;4</span>
+          Registry lock-in across the 144-run library. Left: the fraction of runs stuck above
+          1&nbsp;&Aring; falls with cascade energy &mdash; 25.0&nbsp;% pristine, 18.8&nbsp;% at
+          150&nbsp;eV, 9.4&nbsp;% at 400&nbsp;eV, 1.6&nbsp;% at 1&nbsp;keV
+          (Spearman &minus;0.287, p&nbsp;=&nbsp;0.0005). Middle: position error is bimodal, clustering
+          at ~0.02&nbsp;&Aring; or ~1.5&nbsp;&Aring; with almost nothing between. Right: the repairing
+          transform carries essentially no rotation, so the reconstruction is a
+          <em>single misplaced domain</em> &mdash; a mosaic or multi-domain explanation was tested
+          and rejected.
+        </figcaption>
+      </figure>
+      <div class="callout">
+        <span class="callout__title">Where the shift comes from</span>
+        <p>
+          The seed lattice is built by laying an ideal BCC grid over the support and keeping the sites
+          that fall inside it, with the grid's origin taken from the support's centroid. Nothing in
+          that construction ties the lattice's <em>phase</em> to the actual atoms &mdash; the support
+          knows the grain's outline, not where its lattice planes sit. So the seed can start up to
+          one Wigner&ndash;Seitz radius out of registry, and the refinement loop then has to walk the
+          entire crystal into place using single-atom moves. Sometimes it does. Sometimes it cannot,
+          because moving one atom at a time out of a globally-shifted lattice makes the fit worse
+          before it makes it better.
+        </p>
+      </div>
+
+      <h3 class="sub">
+        Non-rigid warp &mdash; a distorted field
+      </h3>
+      <p>
+        The other group is not fixable by any rigid transform. Its best single translation lifts
+        median recall at 0.5&nbsp;&Aring; only from 0.0335 to <strong>0.1939</strong>. The error is a
+        smoothly varying field across the grain rather than a uniform offset: different regions have
+        drifted different ways. <code>25kD_s42</code> in the gallery is an extreme member &mdash; and
+        it is also the one that overpopulated the grain by 9,325 atoms, which is what a warped model
+        needs in order to keep explaining the measurement.
+      </p>
+      <p class="footnote">
+        In the classification drawn on Fig.&nbsp;2 the split is 18 registry failures against 30 warps;
+        the medians quoted above were recomputed independently from the measurement cache and
+        reproduce the figure's values (1.419 against 1.43&nbsp;&Aring; translation, 0.0176 against
+        0.020&deg; rotation). The exact group sizes shift by a couple of runs depending on where the
+        &ldquo;repaired&rdquo; threshold is drawn; the two-mode structure does not.
+      </p>
+
+      <h2><span class="section-number">5.</span>Why a stuck run cannot stop itself</h2>
+      <p>
+        A converged run ends early: it stops proposing changes, and the loop notices and exits. The
+        rule is deliberately strict &mdash; a long unbroken run of iterations with no atom added and
+        none removed. A run in a limit cycle never gets there. It keeps making changes, each one
+        undone a few iterations later, and burns its entire iteration budget without moving.
+      </p>
+      <figure class="fig">
+        <a class="fig__mat" href="assets/cross/holes_09_limit_cycle.webp">
+          <img src="assets/cross/holes_09_limit_cycle.webp"
+               alt="Panels showing the distribution of consecutive zero-change iteration streaks, the rate at which runs hit the iteration cap by damage level, and a site-occupancy raster revealing a repeating add-remove cycle."
+               loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">Fig&nbsp;5</span>
+          The early-stop rule and what defeats it. The occupancy raster on this figure tracks
+          individual lattice sites across iterations and shows a genuine limit cycle: a small
+          population of sites being filled and emptied over and over. The cap-hit rate falls with
+          damage level, mirroring the table in &sect;3.
+        </figcaption>
+      </figure>
+      <p>
+        This is why the poster says a failed run &ldquo;churns indefinitely&rdquo;. It is not a
+        figure of speech and it is not slow convergence &mdash; it is a cycle, and waiting longer
+        does not help. The archive contains runs given 3,600 iterations that ended no better than
+        siblings given 200.
+      </p>
+
+      <h2 id="ruler"><span class="section-number">6.</span>The metric that hides all of this</h2>
+      <p>
+        The scoring code's default matching tolerance is half a lattice parameter, read from each
+        run's own metadata. In this campaign that metadata field carried <strong>aluminium's</strong>
+        lattice parameter of 4.046&nbsp;&Aring;, giving a default tolerance of
+        <strong>2.023&nbsp;&Aring;</strong> &mdash; while tungsten's first-neighbour bond is
+        <strong>2.7411&nbsp;&Aring;</strong>.
+      </p>
+      <p>
+        The tolerance is therefore 74&nbsp;% of a bond: <em>wider than the registry offset it is
+        supposed to detect</em>. An atom displaced onto a neighbouring lattice site scores as
+        correctly found. The failure mode of &sect;4 is invisible to the metric by construction.
+      </p>
+      <figure class="fig">
+        <a class="fig__mat" href="assets/cross/holes_06_metric_traps.webp">
+          <img src="assets/cross/holes_06_metric_traps.webp"
+               alt="Recall at the honest 0.5 angstrom tolerance plotted against recall at the loose 2.023 angstrom tolerance, showing failed runs clustered at high loose recall and near-zero tight recall, plus a histogram of the gap."
+               loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">Fig&nbsp;6</span>
+          Every point below the diagonal is a run flattered by the loose tolerance. The cluster at
+          the bottom right &mdash; loose recall near 1.0, honest recall near 0 &mdash; is the failure
+          population.
+        </figcaption>
+      </figure>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>
+            Recall at the two tolerances, median over 195 runs with a cached re-measurement. Both
+            columns use exclusive one-to-one matching and are twin-resolved.
+          </caption>
+          <thead>
+            <tr><th>Group</th><th class="num">Runs</th><th class="num">Recall @2.023&nbsp;&Aring;</th><th class="num">Recall @0.5&nbsp;&Aring;</th><th class="num">Gap</th></tr>
+          </thead>
+          <tbody>
+            <tr class="row-good"><td>Converged</td><td class="num">121</td><td class="num">1.0000</td><td class="num">1.0000</td><td class="num">0.0000</td></tr>
+            <tr class="row-bad"><td>Failed</td><td class="num">50</td><td class="num">0.9692</td><td class="num">0.0013</td><td class="num"><strong>0.9678</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--bad">
+        <span class="callout__title">All 50 failed runs score above 0.90 on the loose ruler</span>
+        <p>
+          Not most of them &mdash; all of them. Meanwhile 30 of those 50 score <em>below 0.01</em> at
+          an honest half-&aring;ngstr&ouml;m. Quoted alone, the loose recall cannot distinguish a
+          single failed reconstruction in this archive from a converged one.
+        </p>
+        <p>
+          This is why every figure on this site prints both numbers, and why <code>&chi;&sup2;/floor</code>
+          rather than recall is the headline metric. Note what the loose ruler did <em>not</em>
+          corrupt: it is a scoring default, not something the solver optimises, so no reconstruction
+          was ever trained toward it. The conclusions change; the runs do not.
+        </p>
+      </div>
+
+      <h2><span class="section-number">7.</span>Picking the good run without knowing the answer</h2>
+      <p>
+        Everything above is diagnosis. The practical question is what to do at a real beamline, where
+        there is no truth to score against and no way to know whether the reconstruction in front of
+        you is one of the good ones.
+      </p>
+      <p>
+        The answer is the one on the poster: run several reconstructions and keep the best-fitting.
+        What makes it work is that <code>&chi;&sup2;/floor</code> requires no truth &mdash; the noise
+        floor follows from photon statistics, which are a property of the measurement.
+      </p>
+      <figure class="fig">
+        <a class="fig__mat" href="assets/cross/holes_01_selector.webp">
+          <img src="assets/cross/holes_01_selector.webp"
+               alt="Chi-squared over floor plotted against true position error across the scored library, showing that the truth-free metric separates good runs from bad with an overlap region drawn explicitly."
+               loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">Fig&nbsp;7</span>
+          The truth-free selector against the truth. <code>&chi;&sup2;/floor</code> is computable
+          from the measurement alone; position error is not. The decision boundary and the region
+          where the two populations overlap are drawn explicitly rather than hidden &mdash; the
+          separation is very good, not perfect.
+        </figcaption>
+      </figure>
+      <div class="callout callout--good">
+        <span class="callout__title">Measured: 99.3&nbsp;% of an oracle's benefit, for free</span>
+        <p>
+          Compare three strategies across the archive's seed pairs. Pick blind and you get mean
+          recall 0.9065 with 8.6&nbsp;% of runs broken. Pick the lower <code>&chi;&sup2;/floor</code>
+          of the pair &mdash; no truth used &mdash; and you get 0.9548 with 4.7&nbsp;% broken. Let an
+          all-knowing oracle pick the genuinely better run and you get 0.9552 with 4.7&nbsp;% broken.
+        </p>
+        <p>
+          The truth-free rule captures <strong>99.3&nbsp;%</strong> of what perfect knowledge would
+          buy you, and roughly halves the broken-run rate. That is the whole justification for
+          launching reconstructions in parallel rather than serially refining one.
+        </p>
+      </div>
+      <p>
+        The gallery's <a href="index.html#seed-lottery">seed lottery</a> is this in miniature: eight independent
+        repeats on one grain, &chi;&sup2;/floor of 1.15, 1.16 and 1.53 against 151, 275, 938, 1,046
+        and 1,204. Keep the lowest and you get a reconstruction accurate to 0.0017&nbsp;&Aring;
+        without ever having seen the answer.
+      </p>
+
+      <h2><span class="section-number">8.</span>What would actually fix it</h2>
+      <p>
+        Three things follow from the diagnosis above, in rough order of expected value:
+      </p>
+      <ul>
+        <li>
+          <strong>More Bragg peaks.</strong> Three is the minimum for a 3D displacement field, and
+          the large-grain failures look like underdetermination rather than a search bug &mdash;
+          the same grain that stalls on three peaks does better on nine. This is an experimental
+          cost, not an algorithmic one.
+        </li>
+        <li>
+          <strong>Pin the lattice phase at seeding.</strong> The registry mode exists because the
+          seed's lattice origin is unconstrained. Scanning that origin over a single unit cell at
+          seed time and keeping the best-fitting phase is a search over about one cell, not over the
+          whole structure &mdash; cheap, and it attacks the failure at its source rather than asking
+          the loop to walk it out one atom at a time.
+        </li>
+        <li>
+          <strong>Score honestly by default.</strong> The tolerance should be tied to the material
+          actually being reconstructed. Until it is, read the tight number.
+        </li>
+      </ul>
+
+      <h2>Where to go next</h2>
+      <div class="subpage-grid">
+        <a class="subpage-card" href="index.html">
+          <span class="subpage-card__title">Back to the gallery &rarr;</span>
+          <p class="subpage-card__desc">
+            Eight reconstructions in detail &mdash; four that reached the noise floor and four that
+            did not, with every diagnostic figure.
+          </p>
+        </a>
+        <a class="subpage-card" href="reading-figures.html">
+          <span class="subpage-card__title">How to read these figures &rarr;</span>
+          <p class="subpage-card__desc">
+            Panel by panel through the diagnostic sheets, including which single panel decides
+            whether a run worked.
+          </p>
+        </a>
+        <a class="subpage-card" href="bcdi.html">
+          <span class="subpage-card__title">How BCDI works &rarr;</span>
+          <p class="subpage-card__desc">
+            The phase problem, why three Bragg peaks, the twin ambiguity, and what the noise floor
+            actually is.
+          </p>
+        </a>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Nels Buhrley &middot; <a href="https://nelsbuhrley.github.io">nelsbuhrley.github.io</a></p>
+      <p class="site-footer__ai">This website was built with the assistance of Claude, an AI assistant by Anthropic.</p>
+    </footer>
+    <script src="lightbox.js"></script>
+  </body>
+</html>
