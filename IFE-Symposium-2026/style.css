@@ -1,5 +1,5 @@
 :root {
-    color-scheme: light;
+    color-scheme: light dark;
 
     --font-body: "Source Sans 3", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
@@ -24,6 +24,31 @@
 
     --shadow-soft: 0 8px 28px rgba(0, 30, 60, 0.08);
     --shadow-card: 0 12px 38px rgba(0, 30, 60, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #10141b;
+        --bg-soft: #131a24;
+        --surface: #171e29;
+        --surface-2: #1d2635;
+        --text: #edf2f8;
+        --text-muted: #a9b7c9;
+        --line: #2c3748;
+        --line-strong: #3b4a60;
+
+        --brand: #12457e;
+        --brand-2: #2e6cb5;
+        --brand-ink: #d9e7f6;
+        --accent: #7ba7d9;
+        --accent-soft: #5d86b8;
+        --link: #8db8e8;
+        --link-hover: #b4d3f2;
+        --ack-bg: #1a2636;
+
+        --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.35);
+        --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.42);
+    }
 }
 
 * {
@@ -237,11 +262,11 @@ body {
     align-items: center;
     justify-content: center;
     gap: 1.5rem;
-    margin: 1.6rem 0 0.4rem;
+    margin: 0.2rem 0 0;
     padding: 1.4rem 1rem;
     border: 1px solid var(--line);
     border-radius: 12px;
-    background: #ffffff;
+    background: var(--surface-2);
 }
 
 .logo-strip img {
