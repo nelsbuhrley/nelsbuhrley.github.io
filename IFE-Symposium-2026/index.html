@@ -200,33 +200,15 @@
         atoms, mean position error <strong>0.0008&nbsp;&Aring;</strong> &mdash; about one
         three-thousandth of a tungsten bond.
       </p>
-      <div class="callout callout--warn">
-        <span class="callout__title">This grain is essentially undamaged, and that is a result in itself</span>
-        <p>
-          The run was set up as a helium-implantation cell: 30 ions at 100&nbsp;eV fired into one
-          6&nbsp;&Aring; spot, intended to nucleate a bubble. Checking the molecular dynamics
-          afterwards, it did not work. <strong>Zero of the 30 helium atoms are present</strong> in the
-          final state, none were sputtered, and the grain's bounding box is unchanged. Against its own
-          pristine control the cell shows 7 vacant lattice sites and 7 off-lattice atoms &mdash;
-          surface-level, and no bulk damage.
-        </p>
-        <p>
-          That is not a broken simulation, it is physics. Helium&rarr;tungsten collisions transfer at
-          most 8.34&nbsp;% of the ion's energy, so a 100&nbsp;eV ion delivers at most 8.3&nbsp;eV
-          against tungsten's ~90&nbsp;eV displacement threshold &mdash; <strong>11&times; too weak to
-          move one atom</strong>. Raising the energy does not rescue it either: at 1600 and
-          3200&nbsp;eV, zero helium embedded in any of the six cells tried, because the stopping
-          distance (~1,060&nbsp;&Aring; at 1600&nbsp;eV) is roughly ten times the grain's ~110&nbsp;&Aring;
-          chord and the ion simply passes through. The window is shut from both sides.
-        </p>
-        <p>
-          So read this pair of animations as <em>the cleanest large reconstruction in the archive</em>,
-          not as damage recovery. For real damage at this size, see the cascade below &mdash; and note
-          that single-ion implantation is the wrong model for alpha damage in a nanograin anyway. Real
-          alpha damage is a fluence effect: helium accumulates and bubbles grow by punching out
-          dislocation loops, which is what the zero-energy accumulation recipe reproduces.
-        </p>
-      </div>
+      <p class="footnote">
+        <strong>No bulk damage in this one.</strong> It was set up as a helium cell &mdash; 30 ions at
+        100&nbsp;eV &mdash; but zero of the 30 are present in the final state. He&rarr;W transfers at
+        most 8.34&nbsp;% of the ion's energy, so 100&nbsp;eV delivers 8.3&nbsp;eV against tungsten's
+        ~90&nbsp;eV displacement threshold, and higher energies embed nothing at all because the ion
+        outruns the grain. Read this as the cleanest large reconstruction, not as damage recovery.
+        <a href="#cascade">Real damage is next &rarr;</a>
+      </p>
+
       <div class="fig-pair">
         <figure class="fig">
           <div class="fig__mat">
@@ -256,7 +238,7 @@
         </figure>
       </div>
 
-      <h3 class="sub">22,000 atoms with real cascade damage</h3>
+      <h3 class="sub" id="cascade">22,000 atoms with real cascade damage</h3>
       <p>
         For damage that actually exists at this scale the primary knock-on atom has to be a
         <em>tungsten</em> atom, not a helium ion &mdash; same mass, so no 8.34&nbsp;% transfer penalty,
