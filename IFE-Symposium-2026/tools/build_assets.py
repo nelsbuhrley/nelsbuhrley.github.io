@@ -59,11 +59,26 @@ CROSS = [  # cross-run diagnostics from _figures/
 # holes_07_support and holes_11_refuted are skipped: both are support-oversizing
 # boards, excluded by the same request as process_05.
 
+# Two animations exist per run and they show different things, so both are published:
+#   stage.mp4    -- rotating atom cloud, a-CNA coloured (blue lattice / amber interior
+#                   non-BCC / open true-site rings).  2080x1960 @ 12.4 Mbps at source.
+#   dashboard.gif-- multi-panel: atom cloud, predicted-vs-true real-space slices, the
+#                   predicted-vs-true diffraction pattern, and four live convergence
+#                   curves.  1440x810 GIF; transcoding to h264 is a 7-15x saving.
 VIDEOS = [  # (run dir, output name)
     ("10k_s13",                           "10k-s13-stage"),
     ("10k_s14",                           "10k-s14-stage"),
     ("he/25k/25k_g04_FLU30x100_focus_s2", "he-25k-g04-flu30-stage"),
     ("25kD_s42",                          "25kD-s42-stage"),
+    ("lib_5k_g15_L3deep_E1000_s2",        "lib-5k-g15-deep-stage"),
+]
+
+DASHBOARDS = [  # (run dir, output name) -- source is dashboard.gif
+    ("10k_s13",                           "10k-s13-dashboard"),
+    ("10k_s14",                           "10k-s14-dashboard"),
+    ("he/25k/25k_g04_FLU30x100_focus_s2", "he-25k-g04-flu30-dashboard"),
+    ("lib_5k_g15_L3deep_E1000_s2",        "lib-5k-g15-deep-dashboard"),
+    ("25kD_s42",                          "25kD-s42-dashboard"),
 ]
 
 # ------------------------------------------------------------------- utilities
@@ -89,6 +104,43 @@ def encode(src, dst, scale=2, crf=30):
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
         return None, f"ffmpeg failed: {r.stderr[-300:]}"
+    return os.path.getsize(dst), "ok"
+
+def encode_gif(src, dst, crf=26):
+    """GIF -> h264.  Dimensions are forced even (yuv420p requires it); the source
+    1440x810 is already a sensible web size so resolution is preserved."""
+    if not os.path.isfile(src):
+        return None, f"MISSING {src}"
+    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    r = subprocess.run([FFMPEG, "-y", "-hide_banner", "-loglevel", "error", "-i", src,
+        "-vf", "scale=trunc(iw/2)*2:trunc(ih/2)*2", "-c:v", "libx264", "-crf", str(crf),
+        "-preset", "slow", "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-an", dst],
+        capture_output=True, text=True)
+    if r.returncode != 0:
+        return None, f"ffmpeg failed: {r.stderr[-300:]}"
+    return os.path.getsize(dst), "ok"
+
+def poster_frame(mp4, dst, at=0.65, maxw=1400, q=80):
+    """Still from 65% through the clip, for the <video poster> attribute.  A frame
+    from the run itself beats a black rectangle or an unrelated plot."""
+    probe = subprocess.run([FFMPEG, "-hide_banner", "-i", mp4],
+                           capture_output=True, text=True).stderr
+    line = [l for l in probe.splitlines() if "Duration" in l]
+    if not line:
+        return None, "no duration"
+    h, m, sec = line[0].split("Duration:")[1].split(",")[0].strip().split(":")
+    secs = int(h) * 3600 + int(m) * 60 + float(sec)
+    tmp = dst + ".tmp.png"
+    r = subprocess.run([FFMPEG, "-y", "-hide_banner", "-loglevel", "error",
+                        "-ss", f"{max(0.1, secs*at):.2f}", "-i", mp4,
+                        "-frames:v", "1", tmp], capture_output=True, text=True)
+    if r.returncode != 0:
+        return None, f"ffmpeg failed: {r.stderr[-200:]}"
+    im = Image.open(tmp).convert("RGB")
+    if im.width > maxw:
+        im = im.resize((maxw, round(im.height * maxw / im.width)), Image.LANCZOS)
+    im.save(dst, "WEBP", quality=q, method=6)
+    os.remove(tmp)
     return os.path.getsize(dst), "ok"
 
 # ----------------------------------------------------------------------- build
@@ -139,6 +191,31 @@ for run, name in VIDEOS:
     manifest["video"][name] = size
     src_mb = os.path.getsize(s) / 1e6
     print(f"  {name:<32} {src_mb:6.1f} MB -> {size/1e6:6.3f} MB")
+
+print("\n=== dashboards (GIF -> h264) ===")
+for run, name in DASHBOARDS:
+    s_ = os.path.join(SRC, run, "figures", "dashboard.gif")
+    d_ = os.path.join(DEST, "video", name + ".mp4")
+    size, note = encode_gif(s_, d_)
+    if size is None:
+        print(f"  !! {name}: {note}")
+        continue
+    total += size
+    manifest["video"][name] = size
+    print(f"  {name:<34} {os.path.getsize(s_)/1e6:6.2f} MB gif -> {size/1e6:6.3f} MB")
+
+print("\n=== video poster frames ===")
+for f in sorted(os.listdir(os.path.join(DEST, "video"))):
+    if not f.endswith(".mp4"):
+        continue
+    mp4 = os.path.join(DEST, "video", f)
+    dst = os.path.join(DEST, "video", f[:-4] + "-poster.webp")
+    size, note = poster_frame(mp4, dst)
+    if size is None:
+        print(f"  !! {f}: {note}")
+        continue
+    total += size
+    print(f"  {f[:-4] + '-poster.webp':<44} {size/1e3:6.1f} KB")
 
 json.dump(manifest, open("/tmp/asset_manifest.json", "w"), indent=1)
 print(f"\nTOTAL NEW ASSETS: {total/1e6:.1f} MB (poster PNG itself is a further "

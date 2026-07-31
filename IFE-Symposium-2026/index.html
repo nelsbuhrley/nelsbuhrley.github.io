@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IFE Symposium 2026 &mdash; Atomic Resolution Strain Imaging of First-Wall Tungsten</title>
     <meta name="author" content="Nels Buhrley">
-    <meta name="description" content="Atomic Resolution Strain Imaging of IFE First-Wall Tungsten with Bragg Coherent Diffraction Imaging — IFE Symposium 2026. Poster, curated reconstructions, and the convergence statistics behind them.">
+    <meta name="description" content="Atomic Resolution Strain Imaging of IFE First-Wall Tungsten with Bragg Coherent Diffraction Imaging — IFE Symposium 2026. Poster, reconstruction animations, and the convergence statistics behind them.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
@@ -37,27 +37,20 @@
         <img class="logo-rise logo-rise--dark" src="assets/logos/rise-dark.png" alt="RISE Inertial Fusion Science and Technology Hub" aria-hidden="true">
       </div>
 
-      <h2><span class="section-number">I.</span>Overview</h2>
+      <h2><span class="section-number">I.</span>What this is</h2>
       <p>
-        Inertial Fusion Energy (IFE) reactors expose first wall materials like tungsten and steel
-        to high intensity radiation and thermal cycling. Understanding the strain these conditions
-        produce is vital to the construction of future reactors and ultimately power generation
-        facilities.
+        Inertial Fusion Energy reactors expose first-wall materials like tungsten to intense radiation
+        and thermal cycling. The damage that matters happens atom by atom &mdash; a vacancy here, an
+        interstitial there &mdash; so measuring it means imaging at that scale.
       </p>
       <p>
-        The damage that matters happens at the scale of individual atoms &mdash; a vacancy here, an
-        interstitial there, a lattice plane pushed half a bond out of place. This work asks whether
-        <strong>Bragg coherent diffractive imaging (BCDI)</strong> can see damage at that scale, and
-        answers it by simulating irradiated tungsten nanograins, computing the diffraction they would
-        produce, and then trying to recover the atoms from nothing but those intensities.
-      </p>
-      <p class="lede">
-        This page is the supporting material for the poster. It shows a curated selection of those
-        reconstructions &mdash; the ones that worked, and the ones that did not &mdash; because the
-        failures are as informative as the successes.
+        We simulate irradiated tungsten nanograins, compute the X-ray diffraction they would produce,
+        and then hand a solver <em>only those intensities</em> and ask it to put the atoms back. The
+        truth is never shown to the solver; it is used afterwards, to grade. This page shows what that
+        looks like &mdash; <a href="#watch">the reconstructions running</a>, and
+        <a href="#convergence">how often they succeed</a>.
       </p>
 
-      <h2><span class="section-number">II.</span>The poster</h2>
       <figure class="fig">
         <a class="fig__mat" href="assets/poster-preview.webp">
           <img src="assets/poster-preview.webp"
@@ -66,946 +59,624 @@
         </a>
         <figcaption>
           <span class="fig__label">Poster</span>
-          Presented at the IFE Symposium 2026. Click to enlarge, or download the
+          IFE Symposium 2026. Click to enlarge, or download the
           <a href="assets/BCDI-poster-48x36-250dpi_2.png">full-resolution print file</a>
-          (48&times;36&nbsp;in at 250&nbsp;dpi, 21&nbsp;MB).
+          (48&times;36&nbsp;in, 250&nbsp;dpi, 21&nbsp;MB).
+          New to coherent diffraction? <a href="bcdi.html">Start here &rarr;</a>
         </figcaption>
       </figure>
 
-      <h2><span class="section-number">III.</span>Read more</h2>
+      <h2 id="watch"><span class="section-number">II.</span>Watch it reconstruct</h2>
       <p>
-        Three companion pages unpack what the poster compresses. If you are new to coherent
-        diffraction, start with the first one.
+        Every run is recorded two ways, and they answer different questions.
       </p>
-      <div class="subpage-grid">
-        <a class="subpage-card" href="bcdi.html">
-          <span class="subpage-card__title">How BCDI works &rarr;</span>
-          <p class="subpage-card__desc">
-            The phase problem, why a Bragg peak encodes strain, why three peaks are the minimum,
-            and what PRAMMol adds to a conventional phase-retrieval loop.
-          </p>
-        </a>
-        <a class="subpage-card" href="reading-figures.html">
-          <span class="subpage-card__title">How to read these figures &rarr;</span>
-          <p class="subpage-card__desc">
-            A panel-by-panel guide to the diagnostic sheets below &mdash; what every axis, colour
-            and dashed line means, and which panel to look at first.
-          </p>
-        </a>
-        <a class="subpage-card" href="convergence.html">
-          <span class="subpage-card__title">Convergence &amp; failure &rarr;</span>
-          <p class="subpage-card__desc">
-            What convergence looks like, the two distinct ways a reconstruction fails, and the
-            statistics over all 513 scored runs &mdash; including a metric that flatters failure.
-          </p>
-        </a>
-      </div>
-
-      <h2><span class="section-number">IV.</span>The archive at a glance</h2>
-      <p>
-        Every reconstruction below comes from the same pipeline: a tungsten nanograin is built and
-        relaxed with molecular dynamics, irradiated in a separate MD simulation, its diffraction is
-        computed at three <span class="nw">{110}</span> Bragg peaks, and the solver
-        is then handed <em>only those intensities</em> and asked to produce atoms. The truth is
-        never shown to the solver &mdash; it is used afterwards, to score.
-      </p>
-      <p>
-        There are <strong>513 scored reconstructions</strong> with a full figure suite. A run counts
-        as converged when its fit reaches the measurement's own noise floor
-        (<code>&chi;&sup2;/floor &lt; 5</code>), and as failed when it stalls far above it
-        (<code>&gt; 50</code>). Those two thresholds need no knowledge of the truth, which is what
-        makes them usable on real data.
-      </p>
-
       <div class="table-wrap">
         <table class="data">
-          <caption>All 513 scored reconstructions, grouped by grain size. Percentages are of the row.</caption>
-          <thead>
-            <tr>
-              <th>Grain</th>
-              <th class="num">Runs</th>
-              <th class="num">Converged</th>
-              <th class="num">Partial</th>
-              <th class="num">Failed</th>
-              <th class="num">Converged</th>
-            </tr>
-          </thead>
+          <caption>The two animations, and what each one is for.</caption>
+          <thead><tr><th>View</th><th>What you see</th></tr></thead>
           <tbody>
             <tr>
-              <td>~5,000 atoms</td>
-              <td class="num">207</td><td class="num">146</td><td class="num">30</td><td class="num">31</td>
-              <td class="num"><strong>70.5&nbsp;%</strong></td>
+              <td><strong>a&#8209;CNA view</strong></td>
+              <td>
+                The atoms themselves, rotating, coloured by
+                <strong>adaptive common-neighbour analysis</strong> &mdash; which classifies each atom
+                from the geometry of its neighbours.
+                <span class="swatch swatch--lattice"></span><strong>Blue</strong> is ordinary BCC
+                lattice; <span class="swatch swatch--defect"></span><strong>amber</strong> is an
+                interior atom whose coordination is <em>not</em> BCC (a defect core, a void wall, a
+                fault); open rings are the true atom sites. <strong>Amber is the damage.</strong>
+              </td>
             </tr>
             <tr>
-              <td>~9,300 atoms</td>
-              <td class="num">12</td><td class="num">3</td><td class="num">0</td><td class="num">9</td>
-              <td class="num">25.0&nbsp;%</td>
-            </tr>
-            <tr>
-              <td>~22,000&ndash;26,000 atoms</td>
-              <td class="num">212</td><td class="num">14</td><td class="num">53</td><td class="num">145</td>
-              <td class="num">6.6&nbsp;%</td>
-            </tr>
-            <tr>
-              <td>~50,000 atoms</td>
-              <td class="num">82</td><td class="num">0</td><td class="num">79</td><td class="num">3</td>
-              <td class="num">0.0&nbsp;%</td>
-            </tr>
-            <tr>
-              <td><strong>All</strong></td>
-              <td class="num"><strong>513</strong></td><td class="num"><strong>163</strong></td>
-              <td class="num"><strong>162</strong></td><td class="num"><strong>188</strong></td>
-              <td class="num"><strong>31.8&nbsp;%</strong></td>
+              <td><strong>Dashboard</strong></td>
+              <td>
+                The whole solve at once: atom cloud, predicted-versus-true slices in three planes,
+                predicted-versus-true diffraction, and four live curves. Watch this one for
+                convergence &mdash; the two diffraction panels close on each other as the error curves
+                fall.
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="callout">
-        <span class="callout__title">What that table does and does not say</span>
-        <p>
-          It is a <em>success rate per attempt</em>, not a capability limit. When a 5,000-atom
-          reconstruction works it recovers the atom count exactly and every position to about
-          0.001&nbsp;&Aring; &mdash; roughly a thousandth of a tungsten bond. And the single best
-          result in the archive is not a small grain at all: 26,067 atoms, recovered exactly. The
-          question this archive answers is not <em>can it</em>, but <em>how often, and why not
-          always</em>.
-        </p>
-        <p>
-          The 50,000-atom row is honest about work in progress: 79 of those 82 runs sit in the
-          intermediate band, improving but not yet at the noise floor.
-        </p>
-      </div>
-
-      <h2><span class="section-number">V.</span>When it works</h2>
+      <h3 class="sub">The same crystal, twice &mdash; one works, one does not</h3>
       <p>
-        Four reconstructions that reached the noise floor. In each case the solver was given three
-        Bragg intensity volumes and a starting guess, and nothing else.
+        These two runs got the same 9,334-atom grain, the same three Bragg peaks and the same photon
+        budget. They differ only in a random seed, which makes them two independent repeats of one
+        experiment. The first found every atom to 0.0017&nbsp;&Aring;. The second never found a single
+        one.
       </p>
-
-      <!-- ================================================== GOOD 1 -->
-      <section class="case case--good">
-        <div class="case__head">
-          <span class="case__id">he/25k/25k_g04_FLU30x100_focus_s2</span>
-          <span class="badge badge--good">converged</span>
-        </div>
-        <p class="case__sub">
-          26,067 tungsten atoms. Damage: 30 helium ions at 100&nbsp;eV each, fired into a single
-          6&nbsp;&Aring;-radius spot to build up a bubble rather than spread thin. 300 iterations.
-        </p>
-        <dl class="metrics">
-          <div><dt>atoms</dt><dd>26,067</dd></div>
-          <div><dt>count error</dt><dd class="m-value--good">0</dd></div>
-          <div><dt>position error</dt><dd class="m-value--good">0.0008 &Aring;</dd></div>
-          <div><dt>recall @2.023 &Aring;</dt><dd>1.0000</dd></div>
-          <div><dt>R-factor</dt><dd>0.0185</dd></div>
-          <div><dt>noise floor</dt><dd>0.0182</dd></div>
-          <div><dt>&chi;&sup2;/floor</dt><dd class="m-value--good">1.12</dd></div>
-        </dl>
-        <p class="case__lede">
-          <strong>The best result in the archive.</strong> Twenty-six thousand atoms, and the solver
-          found the count exactly &mdash; not approximately, exactly &mdash; with a mean position
-          error of 0.0008&nbsp;&Aring;. A tungsten first-neighbour bond is 2.7411&nbsp;&Aring;, so
-          that is about one three-thousandth of a bond. Its R-factor of 0.0185 sits 1.6&nbsp;% above
-          the 0.0182 noise floor, meaning the residual mismatch between model and measurement is
-          essentially all photon shot noise. There is nothing structural left to explain.
-        </p>
-        <figure class="fig">
-          <a class="fig__mat" href="assets/runs/he-25k-g04-flu30/process_08_summary.webp">
-            <img src="assets/runs/he-25k-g04-flu30/process_08_summary.webp"
-                 alt="Twelve-panel start-to-finish diagnostic sheet for run 25k_g04_FLU30x100_focus_s2, showing measured diffraction, phased density, add/remove churn, seed and final atom overlays, and converged count, fit and position-error curves."
-                 loading="lazy">
-          </a>
-          <figcaption>
-            <span class="fig__label">Fig&nbsp;A1</span>
-            The whole run on one sheet. Top row: the three measured Bragg peaks the solver was
-            given. Second row: the low-resolution phased density and support, the add/remove churn
-            going flat, and the seed and final atom clouds overlaid on truth. Third row: atom count
-            locking onto the dashed truth line, R-factor descending to the dashed noise floor, and
-            position error collapsing to zero.
-            <a href="reading-figures.html">Panel-by-panel guide &rarr;</a>
-          </figcaption>
-        </figure>
-        <details class="more">
-          <summary>More figures from this run</summary>
-          <div class="more__body">
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/he-25k-g04-flu30/process_07_convergence.webp">
-                <img src="assets/runs/he-25k-g04-flu30/process_07_convergence.webp"
-                     alt="Convergence panel set: atom count, R-factor, position error and add/remove activity against outer iteration." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Convergence</span> The three convergence signatures on their own axes, at full size.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/he-25k-g04-flu30/process_01_diffraction.webp">
-                <img src="assets/runs/he-25k-g04-flu30/process_01_diffraction.webp"
-                     alt="The three measured Bragg peak intensity volumes shown as maximum-intensity projections along each axis." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Measurement</span> The input data in full: three {110} peaks, each a 3D intensity volume shown as projections.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/he-25k-g04-flu30/process_04_phasing.webp">
-                <img src="assets/runs/he-25k-g04-flu30/process_04_phasing.webp"
-                     alt="Phase-retrieval output: the recovered low-resolution electron density and the support derived from it." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Phasing</span> What conventional phase retrieval alone recovers &mdash; a blurred blob with the right outline. This is the starting point, not the answer.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/he-25k-g04-flu30/process_06_seed.webp">
-                <img src="assets/runs/he-25k-g04-flu30/process_06_seed.webp"
-                     alt="Seed atom positions compared against truth in three orthogonal slabs." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Seed</span> The initial atomic guess: an ideal BCC lattice cut to the support. Every defect still has to be discovered from here.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/he-25k-g04-flu30/process_09_residual_field.webp">
-                <img src="assets/runs/he-25k-g04-flu30/process_09_residual_field.webp"
-                     alt="Spatial map of the remaining per-atom position error at the end of the run." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Residual</span> Where the leftover error lives. On a converged run this is uniform and near zero &mdash; there is no region the solver quietly gave up on.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/he-25k-g04-flu30/defect_slices.webp">
-                <img src="assets/runs/he-25k-g04-flu30/defect_slices.webp"
-                     alt="Truth and reconstruction shown as thin atomic slabs with defect atoms highlighted, plus a per-atom position-error map." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Atoms</span> Truth beside reconstruction as thin slabs through the grain, with locally non-BCC atoms picked out. This is the poster's Fig.&nbsp;5&ndash;6 layout.</figcaption>
-            </figure>
-          </div>
-        </details>
+      <div class="fig-pair">
         <figure class="fig">
           <div class="fig__mat">
-            <video controls preload="none" playsinline
-                   poster="assets/runs/he-25k-g04-flu30/process_06_seed.webp">
-              <source src="assets/video/he-25k-g04-flu30-stage.mp4" type="video/mp4">
-              Your browser does not support embedded video.
-              <a href="assets/video/he-25k-g04-flu30-stage.mp4">Download the animation</a>.
-            </video>
-          </div>
-          <figcaption>
-            <span class="fig__label">Video</span>
-            Watch it solve. The camera rotates while the model is redrawn at each saved iteration;
-            the readout tracks atom count, error against truth, R-factor and reduced &chi;&sup2;.
-            Blue is the lattice, amber marks interior atoms whose local coordination is not BCC, and
-            open rings are the true sites. Count settles, then the cloud stops changing.
-          </figcaption>
-        </figure>
-      </section>
-
-      <!-- ================================================== GOOD 2 -->
-      <section class="case case--good">
-        <div class="case__head">
-          <span class="case__id">10k_s13</span>
-          <span class="badge badge--good">converged</span>
-        </div>
-        <p class="case__sub">
-          9,334 atoms. 200 iterations. This run has a sibling further down the page &mdash;
-          <code>10k_s14</code> &mdash; a second, independent attempt at the very same crystal.
-        </p>
-        <dl class="metrics">
-          <div><dt>atoms</dt><dd>9,334</dd></div>
-          <div><dt>count error</dt><dd class="m-value--good">0</dd></div>
-          <div><dt>position error</dt><dd class="m-value--good">0.0017 &Aring;</dd></div>
-          <div><dt>recall @2.023 &Aring;</dt><dd>1.0000</dd></div>
-          <div><dt>R-factor</dt><dd>0.0182</dd></div>
-          <div><dt>noise floor</dt><dd>0.0170</dd></div>
-          <div><dt>&chi;&sup2;/floor</dt><dd class="m-value--good">1.16</dd></div>
-        </dl>
-        <p class="case__lede">
-          All 9,334 atoms matched, at the honest 0.5&nbsp;&Aring; tolerance as well as the loose one.
-          The interesting part is the timing: look at the count panel in the sheet below and you will
-          see the model overshoot to about 9,900 atoms in the first few iterations, fall back, and
-          then lock onto the truth line at roughly iteration 25 &mdash; after which it never moves
-          again for 175 more iterations. The R-factor hits the floor at the same moment. That
-          simultaneous lock is the convergence signature.
-        </p>
-        <figure class="fig">
-          <a class="fig__mat" href="assets/runs/10k-s13/process_08_summary.webp">
-            <img src="assets/runs/10k-s13/process_08_summary.webp"
-                 alt="Start-to-finish diagnostic sheet for run 10k_s13: count locks onto truth at iteration 25, R-factor drops to the noise floor, position error falls to 0.0017 angstroms."
-                 loading="lazy">
-          </a>
-          <figcaption>
-            <span class="fig__label">Fig&nbsp;A2</span>
-            A textbook lock-on. Note the add/remove churn panel: activity for the first two dozen
-            iterations, then a flat line at zero. The solver stopped changing its mind because it
-            had run out of improvements to make, not because it hit an iteration cap.
-          </figcaption>
-        </figure>
-        <details class="more">
-          <summary>More figures from this run</summary>
-          <div class="more__body">
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/10k-s13/process_07_convergence.webp">
-                <img src="assets/runs/10k-s13/process_07_convergence.webp" alt="Convergence curves for 10k_s13." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Convergence</span> The lock-on at iteration 25, at full size.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/10k-s13/process_09_residual_field.webp">
-                <img src="assets/runs/10k-s13/process_09_residual_field.webp" alt="Residual position-error field for 10k_s13, uniformly near zero." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Residual</span> Nothing left anywhere. Compare this against the same panel for <code>10k_s14</code> below.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/10k-s13/defect_slices.webp">
-                <img src="assets/runs/10k-s13/defect_slices.webp" alt="Atomic slabs, truth versus reconstruction, for 10k_s13." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Atoms</span> Truth and reconstruction side by side. The lattice rows line up.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/10k-s13/process_04_phasing.webp">
-                <img src="assets/runs/10k-s13/process_04_phasing.webp" alt="Phased density and support for 10k_s13." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Phasing</span> The low-resolution density this run started from.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/10k-s13/process_01_diffraction.webp">
-                <img src="assets/runs/10k-s13/process_01_diffraction.webp" alt="The three measured Bragg peaks for the 9334-atom grain." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Measurement</span> The three input peaks. <code>10k_s14</code> received the same three peaks from the same crystal at the same dose, differing only in its shot-noise draw.</figcaption>
-            </figure>
-          </div>
-        </details>
-        <figure class="fig">
-          <div class="fig__mat">
-            <video controls preload="none" playsinline poster="assets/runs/10k-s13/process_06_seed.webp">
+            <video controls preload="none" playsinline poster="assets/video/10k-s13-stage-poster.webp">
               <source src="assets/video/10k-s13-stage.mp4" type="video/mp4">
-              Your browser does not support embedded video.
               <a href="assets/video/10k-s13-stage.mp4">Download the animation</a>.
             </video>
           </div>
           <figcaption>
-            <span class="fig__label">Video</span>
-            The successful run, iteration by iteration. Once the count reads
-            <code>+0 vs 9334 true</code> the readout stops moving &mdash; that is the run finishing
-            early on its own rather than being stopped.
+            <span class="fig__label">a-CNA &middot; converged</span>
+            <code>10k_s13</code>. Watch the readout: once it reads <code>+0 vs 9334 true</code> the
+            cloud stops changing. The run ended itself early.
           </figcaption>
         </figure>
-      </section>
-
-      <!-- ================================================== GOOD 3 -->
-      <section class="case case--good">
-        <div class="case__head">
-          <span class="case__id">lib_5k_g15_L3deep_E1000_s2</span>
-          <span class="badge badge--good">converged</span>
-        </div>
-        <p class="case__sub">
-          6,136 atoms. Damage: a 1,000&nbsp;eV primary knock-on atom aimed deep into the grain
-          &mdash; the most violent cascade in the 5k library. 300 iterations.
-        </p>
-        <dl class="metrics">
-          <div><dt>atoms</dt><dd>6,136</dd></div>
-          <div><dt>count error</dt><dd class="m-value--good">0</dd></div>
-          <div><dt>position error</dt><dd class="m-value--good">0.0011 &Aring;</dd></div>
-          <div><dt>recall @2.023 &Aring;</dt><dd>1.0000</dd></div>
-          <div><dt>R-factor</dt><dd>0.0146</dd></div>
-          <div><dt>noise floor</dt><dd>0.0140</dd></div>
-          <div><dt>&chi;&sup2;/floor</dt><dd class="m-value--good">1.08</dd></div>
-        </dl>
-        <p class="case__lede">
-          <strong>The most heavily damaged grain reconstructs the best.</strong> That is not a
-          coincidence of one run. Across the 144-run 5k library, the fraction of reconstructions
-          reaching the noise floor <em>rises</em> with cascade energy: 62.5&nbsp;% for the pristine
-          controls, 65.6&nbsp;% at 150&nbsp;eV, 78.1&nbsp;% at 400&nbsp;eV, and 87.5&nbsp;% at
-          1,000&nbsp;eV. Damage is not what breaks these reconstructions.
-          <a href="convergence.html">What does &rarr;</a>
-        </p>
-        <figure class="fig">
-          <a class="fig__mat" href="assets/runs/lib-5k-g15-deep/process_08_summary.webp">
-            <img src="assets/runs/lib-5k-g15-deep/process_08_summary.webp"
-                 alt="Diagnostic sheet for lib_5k_g15_L3deep_E1000_s2, the best-fitting run in the archive relative to its noise floor."
-                 loading="lazy">
-          </a>
-          <figcaption>
-            <span class="fig__label">Fig&nbsp;A3</span>
-            &chi;&sup2;/floor of 1.08 is the tightest fit in the whole archive: the model explains
-            the measurement to within 8&nbsp;% of what photon statistics alone would allow.
-          </figcaption>
-        </figure>
-        <details class="more">
-          <summary>More figures from this run</summary>
-          <div class="more__body">
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lib-5k-g15-deep/damage_slabs.webp">
-                <img src="assets/runs/lib-5k-g15-deep/damage_slabs.webp" alt="Slab views of the cascade damage in truth and in the reconstruction." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Damage</span> The cascade itself, in truth and as recovered &mdash; the actual physics this technique is meant to measure.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lib-5k-g15-deep/process_07_convergence.webp">
-                <img src="assets/runs/lib-5k-g15-deep/process_07_convergence.webp" alt="Convergence curves." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Convergence</span> Count, fit and position error against iteration.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lib-5k-g15-deep/process_09_residual_field.webp">
-                <img src="assets/runs/lib-5k-g15-deep/process_09_residual_field.webp" alt="Residual field." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Residual</span> Flat and near zero, including through the cascade core.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lib-5k-g15-deep/process_06_seed.webp">
-                <img src="assets/runs/lib-5k-g15-deep/process_06_seed.webp" alt="Seed versus truth." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Seed</span> The undamaged starting lattice, which knows nothing about the cascade.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lib-5k-g15-deep/process_04_phasing.webp">
-                <img src="assets/runs/lib-5k-g15-deep/process_04_phasing.webp" alt="Phased density and support." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Phasing</span> Low-resolution density. At this resolution the cascade is invisible.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lib-5k-g15-deep/process_01_diffraction.webp">
-                <img src="assets/runs/lib-5k-g15-deep/process_01_diffraction.webp" alt="The three measured Bragg peaks from the deeply damaged 6136-atom grain." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Measurement</span> Three {110} peaks from a grain carrying a 1,000&nbsp;eV cascade. The damage is in here somewhere &mdash; it is what the extra speckle structure encodes.</figcaption>
-            </figure>
-          </div>
-        </details>
-      </section>
-
-      <!-- ================================================== GOOD 4 -->
-      <section class="case case--good">
-        <div class="case__head">
-          <span class="case__id">large/lgE_25k_g01_L1_E150_s2</span>
-          <span class="badge badge--good">converged</span>
-        </div>
-        <p class="case__sub">
-          21,843 atoms. Damage: a 150&nbsp;eV cascade. 300 iterations. Grain g01 is the hardest
-          22,000-atom grain in the archive &mdash; only 4 of its 48 attempts converged, and this is
-          one of them.
-        </p>
-        <dl class="metrics">
-          <div><dt>atoms</dt><dd>21,843</dd></div>
-          <div><dt>count error</dt><dd class="m-value--good">0</dd></div>
-          <div><dt>position error</dt><dd class="m-value--good">0.0027 &Aring;</dd></div>
-          <div><dt>recall @2.023 &Aring;</dt><dd>0.9998</dd></div>
-          <div><dt>R-factor</dt><dd>0.0242</dd></div>
-          <div><dt>noise floor</dt><dd>0.0182</dd></div>
-          <div><dt>&chi;&sup2;/floor</dt><dd class="m-value--good">2.18</dd></div>
-        </dl>
-        <p class="case__lede">
-          Worth including precisely because it is a hard case that landed. Its sibling attempts on
-          the same grain mostly stalled at position errors above 1&nbsp;&Aring;; this one found the
-          count exactly and the positions to 0.0027&nbsp;&Aring;. Grain shape turns out to matter
-          more than dose: at this size, grain g09 converges 55.6&nbsp;% of the time, g04
-          26.3&nbsp;%, g01 8.3&nbsp;%, and g02 has not converged once in 25 attempts.
-        </p>
-        <figure class="fig">
-          <a class="fig__mat" href="assets/runs/lg-25k-g01-e150/process_08_summary.webp">
-            <img src="assets/runs/lg-25k-g01-e150/process_08_summary.webp"
-                 alt="Diagnostic sheet for lgE_25k_g01_L1_E150_s2, a converged 21843-atom reconstruction on an otherwise difficult grain." loading="lazy">
-          </a>
-          <figcaption>
-            <span class="fig__label">Fig&nbsp;A4</span>
-            Twenty-two thousand atoms, count error zero. The same grain and the same code failed
-            on most other attempts &mdash; see the seed lottery in section VII.
-          </figcaption>
-        </figure>
-        <details class="more">
-          <summary>More figures from this run</summary>
-          <div class="more__body">
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lg-25k-g01-e150/process_07_convergence.webp">
-                <img src="assets/runs/lg-25k-g01-e150/process_07_convergence.webp" alt="Convergence curves." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Convergence</span> Count, fit and position error against iteration.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lg-25k-g01-e150/process_09_residual_field.webp">
-                <img src="assets/runs/lg-25k-g01-e150/process_09_residual_field.webp" alt="Residual field." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Residual</span> Uniform and near zero.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lg-25k-g01-e150/process_06_seed.webp">
-                <img src="assets/runs/lg-25k-g01-e150/process_06_seed.webp" alt="Seed versus truth." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Seed</span> The starting lattice for a 21,843-atom grain.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lg-25k-g01-e150/process_04_phasing.webp">
-                <img src="assets/runs/lg-25k-g01-e150/process_04_phasing.webp" alt="Phased density and support." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Phasing</span> Low-resolution density and the support derived from it.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lg-25k-g01-e150/process_01_diffraction.webp">
-                <img src="assets/runs/lg-25k-g01-e150/process_01_diffraction.webp" alt="The three measured Bragg peaks." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Measurement</span> Three {110} peaks.</figcaption>
-            </figure>
-          </div>
-        </details>
-      </section>
-
-      <h2><span class="section-number">VI.</span>When it fails</h2>
-      <p>
-        Four reconstructions that did not get there. None of them crashed, none of them threw an
-        error, and every one of them produced a plausible-looking grain full of atoms. That is
-        exactly why the failure diagnostics matter.
-      </p>
-
-      <!-- ================================================== BAD 1 -->
-      <section class="case case--bad">
-        <div class="case__head">
-          <span class="case__id">10k_s14</span>
-          <span class="badge badge--bad">failed</span>
-        </div>
-        <p class="case__sub">
-          9,334 atoms &mdash; the same crystal (a byte-identical truth file), the same measurement
-          geometry and photon budget, and the same 200 iterations as <code>10k_s13</code> above. The
-          only difference is one random seed, 13 versus 14 &mdash; which makes this an independent
-          repeat of the same experiment rather than a rerun of the same numbers.
-        </p>
-        <dl class="metrics">
-          <div><dt>atoms</dt><dd>9,334</dd></div>
-          <div><dt>count error</dt><dd class="m-value--bad">&minus;118</dd></div>
-          <div><dt>position error</dt><dd class="m-value--bad">1.4187 &Aring;</dd></div>
-          <div><dt>recall @2.023 &Aring;</dt><dd>0.9605</dd></div>
-          <div><dt>R-factor</dt><dd class="m-value--bad">0.2325</dd></div>
-          <div><dt>noise floor</dt><dd>0.0170</dd></div>
-          <div><dt>&chi;&sup2;/floor</dt><dd class="m-value--bad">1204</dd></div>
-        </dl>
-        <p class="case__lede">
-          Set the two sheets side by side and the failure is unmistakable. The R-factor drops for
-          about twenty iterations, flattens at 0.23 &mdash; fourteen times its own noise floor
-          &mdash; and then stays there for the remaining 180 iterations. The atom count never
-          reaches the truth line, ending 118 atoms short. And the teal recall trace on the
-          position-error panel never leaves zero: from the first iteration to the last, not one atom
-          of 9,334 comes within half an &aring;ngstr&ouml;m of a true site. The final mean position
-          error is 1.42&nbsp;&Aring;, about half a tungsten bond. The run was not short of time; it
-          was stuck.
-        </p>
-        <div class="callout callout--warn">
-          <span class="callout__title">The number that hides this</span>
-          <p>
-            The recall in the strip above is 0.9605, which looks like success. It is measured at a
-            2.023&nbsp;&Aring; matching tolerance &mdash; but a tungsten bond is 2.7411&nbsp;&Aring;,
-            so that tolerance is only 74&nbsp;% of a bond and an atom sitting on the
-            <em>wrong lattice site</em> still counts as found. Re-measured at an honest
-            0.5&nbsp;&Aring;, this run's recall is <strong>0.0000</strong>. Not one atom of 9,334 is
-            actually where it belongs.
-            <a href="convergence.html#ruler">How the tolerance got that loose &rarr;</a>
-          </p>
-        </div>
-        <figure class="fig">
-          <a class="fig__mat" href="assets/runs/10k-s14/process_08_summary.webp">
-            <img src="assets/runs/10k-s14/process_08_summary.webp"
-                 alt="Diagnostic sheet for the failed run 10k_s14: R-factor plateaus at 0.23 far above the noise floor, atom count never reaches truth, position error frozen at 0.47 angstroms."
-                 loading="lazy">
-          </a>
-          <figcaption>
-            <span class="fig__label">Fig&nbsp;B1</span>
-            The same twelve panels as Fig.&nbsp;A2, for the seed that failed. The density and support
-            panels look fine &mdash; failure does not show up in the low-resolution image at all.
-            It shows up in the R-factor curve, which never reaches the dashed floor.
-          </figcaption>
-        </figure>
-        <div class="fig-pair">
-          <figure class="fig">
-            <a class="fig__mat" href="assets/runs/10k-s13/process_09_residual_field.webp">
-              <img src="assets/runs/10k-s13/process_09_residual_field.webp" alt="Residual position-error field for the converged run, uniformly near zero." loading="lazy">
-            </a>
-            <figcaption><span class="fig__label">seed 13</span> Converged. Residual error uniform and negligible.</figcaption>
-          </figure>
-          <figure class="fig">
-            <a class="fig__mat" href="assets/runs/10k-s14/process_09_residual_field.webp">
-              <img src="assets/runs/10k-s14/process_09_residual_field.webp" alt="Residual position-error field for the failed run, showing large error across the whole grain." loading="lazy">
-            </a>
-            <figcaption><span class="fig__label">seed 14</span> Failed. The error is spread across the entire grain, not concentrated at a defect &mdash; the signature of a global lattice offset rather than a local mistake.</figcaption>
-          </figure>
-        </div>
-        <details class="more">
-          <summary>More figures from this run</summary>
-          <div class="more__body">
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/10k-s14/process_07_convergence.webp">
-                <img src="assets/runs/10k-s14/process_07_convergence.webp" alt="Convergence curves for the failed run, showing an early plateau." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Convergence</span> The plateau, at full size. The orange position-error trace spans only 0.38&ndash;0.47&nbsp;&Aring; and then stops, because it is averaged over the handful of atoms that ever came within 0.5&nbsp;&Aring; of a true site &mdash; and after the opening iterations there are none. A trace that runs out of atoms to average is itself a failure signal.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/10k-s14/defect_slices.webp">
-                <img src="assets/runs/10k-s14/defect_slices.webp" alt="Atomic slabs, truth versus the failed reconstruction." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Atoms</span> The reconstruction is a clean crystal &mdash; just not the right one. It is internally well ordered and globally misregistered.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/10k-s14/process_04_phasing.webp">
-                <img src="assets/runs/10k-s14/process_04_phasing.webp" alt="Phased density and support for the failed run, which look normal." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Phasing</span> Indistinguishable from the successful run's. The phase-retrieval step was not the problem.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/10k-s14/process_06_seed.webp">
-                <img src="assets/runs/10k-s14/process_06_seed.webp" alt="Seed versus truth for the failed run." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Seed</span> The starting lattice. This is where the two runs diverge, and the difference is not visible here.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/10k-s14/process_01_diffraction.webp">
-                <img src="assets/runs/10k-s14/process_01_diffraction.webp" alt="The three measured Bragg peaks for the failed run's own noise realisation." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Measurement</span> This run's own three peaks. Set them beside <code>10k_s13</code>'s and they are indistinguishable to the eye &mdash; same crystal, same geometry, same 7.5&times;10<sup>9</sup> photons, a different draw of shot noise. That difference is the entire input to the 1,000&times; gap in outcome.</figcaption>
-            </figure>
-          </div>
-        </details>
         <figure class="fig">
           <div class="fig__mat">
-            <video controls preload="none" playsinline poster="assets/runs/10k-s14/process_06_seed.webp">
+            <video controls preload="none" playsinline poster="assets/video/10k-s14-stage-poster.webp">
               <source src="assets/video/10k-s14-stage.mp4" type="video/mp4">
-              Your browser does not support embedded video.
               <a href="assets/video/10k-s14-stage.mp4">Download the animation</a>.
             </video>
           </div>
           <figcaption>
-            <span class="fig__label">Video</span>
-            The failed run. It looks busy and productive throughout, and the R-factor readout barely
-            budges from 0.23. Play this next to the <code>10k_s13</code> animation above: the visual
-            difference is far smaller than the 1,000&times; difference in fit quality.
+            <span class="fig__label">a-CNA &middot; failed</span>
+            <code>10k_s14</code>. It looks just as busy and just as crystalline, and its R-factor
+            readout barely moves off 0.23. The visual difference is far smaller than the
+            1,000&times; difference in fit.
           </figcaption>
         </figure>
-      </section>
-
-      <!-- ================================================== BAD 2 -->
-      <section class="case case--bad">
-        <div class="case__head">
-          <span class="case__id">25kD_s42</span>
-          <span class="badge badge--bad">failed</span>
-        </div>
-        <p class="case__sub">
-          24,800-atom truth, measured at 4.6&times; the photon dose of the standard runs
-          (3.5&times;10<sup>10</sup> photons rather than 7.5&times;10<sup>9</sup>), which pushes the
-          noise floor down to R&nbsp;=&nbsp;0.0094. 200 iterations.
-        </p>
-        <dl class="metrics">
-          <div><dt>true atoms</dt><dd>24,800</dd></div>
-          <div><dt>atoms produced</dt><dd class="m-value--bad">34,125</dd></div>
-          <div><dt>count error</dt><dd class="m-value--bad">+9,325</dd></div>
-          <div><dt>position error</dt><dd class="m-value--bad">2.9405 &Aring;</dd></div>
-          <div><dt>precision</dt><dd class="m-value--bad">0.6905</dd></div>
-          <div><dt>R-factor</dt><dd class="m-value--bad">0.5950</dd></div>
-          <div><dt>&chi;&sup2;/floor</dt><dd class="m-value--bad">10,370</dd></div>
-        </dl>
-        <p class="case__lede">
-          <strong>The worst run in the archive, and the most instructive.</strong> It invented
-          9,325 atoms &mdash; a 38&nbsp;% overpopulation &mdash; and its R-factor of 0.595 is
-          63&times; the noise floor. More photons did not help; this is a search failure, not a data
-          problem. And note where it happened: at <em>higher</em> dose than the runs that merely
-          stalled, which is the clearest evidence in the archive that these failures are not caused
-          by lack of signal.
-        </p>
-        <div class="callout callout--bad">
-          <span class="callout__title">A 0.95 recall on a grain that is 38&nbsp;% too big</span>
-          <p>
-            At the 2.023&nbsp;&Aring; tolerance this run scores recall 0.9501. At 0.5&nbsp;&Aring; it
-            scores <strong>0.0015</strong>. Its median atomic displacement is 1.38&nbsp;&Aring; and
-            its precision &mdash; the fraction of the atoms it produced that correspond to a real one
-            &mdash; is 0.6905. Any one of the loose-tolerance numbers, quoted alone, would describe
-            this as a good reconstruction.
-          </p>
-        </div>
-        <figure class="fig">
-          <a class="fig__mat" href="assets/cross/holes_04_good_vs_bad.webp">
-            <img src="assets/cross/holes_04_good_vs_bad.webp"
-                 alt="Two rows of identical diagnostic panels: a converged run on top and the worst failed run below, comparing measured peak, density, atom overlay, count curve and R-factor curve."
-                 loading="lazy">
-          </a>
-          <figcaption>
-            <span class="fig__label">Fig&nbsp;B2</span>
-            The two extremes of the archive on identical axes &mdash; the best-fitting run
-            (&chi;&sup2;/floor 1.08) on top, <code>25kD_s42</code> (10,370) below. Read the panels
-            left to right: the measured peak looks the same, the density looks the same, the atom
-            overlay is where it first goes wrong, and the R-factor curve is where it is unambiguous.
-            The failed run's count curve is <em>drifting downward</em> at iteration 200 &mdash; it
-            was still 9,000 atoms too heavy and had not begun to recover.
-          </figcaption>
-        </figure>
-        <details class="more">
-          <summary>More figures from this run</summary>
-          <div class="more__body">
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/25kD-s42/process_08_summary.webp">
-                <img src="assets/runs/25kD-s42/process_08_summary.webp" alt="Full diagnostic sheet for 25kD_s42." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Summary</span> All twelve panels for the worst run in the archive.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/25kD-s42/process_09_residual_field.webp">
-                <img src="assets/runs/25kD-s42/process_09_residual_field.webp" alt="Residual field for 25kD_s42." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Residual</span> Large error everywhere, with no clean structure to it &mdash; the non-rigid failure mode rather than a simple offset.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/25kD-s42/defect_slices.webp">
-                <img src="assets/runs/25kD-s42/defect_slices.webp" alt="Atomic slabs for 25kD_s42, showing a badly overpopulated reconstruction." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Atoms</span> The overpopulation made visible: the reconstruction slab is far denser than the truth slab beside it.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/25kD-s42/process_07_convergence.webp">
-                <img src="assets/runs/25kD-s42/process_07_convergence.webp" alt="Convergence curves for 25kD_s42." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Convergence</span> A slow downward drift in count and essentially no movement in fit.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/25kD-s42/process_01_diffraction.webp">
-                <img src="assets/runs/25kD-s42/process_01_diffraction.webp" alt="The three measured Bragg peaks at high dose." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Measurement</span> The high-dose input data &mdash; visibly cleaner than the standard runs, and it did not help.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/25kD-s42/process_04_phasing.webp">
-                <img src="assets/runs/25kD-s42/process_04_phasing.webp" alt="Phased density and support for the worst run in the archive, which look entirely normal." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Phasing</span> The low-resolution density behind a reconstruction that ended 9,325 atoms too heavy. It looks completely healthy, which is the point: the phase-retrieval step did its job and the failure came later.</figcaption>
-            </figure>
-          </div>
-        </details>
+      </div>
+      <div class="fig-pair">
         <figure class="fig">
           <div class="fig__mat">
-            <video controls preload="none" playsinline poster="assets/runs/25kD-s42/process_06_seed.webp">
+            <video controls preload="none" playsinline poster="assets/video/10k-s13-dashboard-poster.webp">
+              <source src="assets/video/10k-s13-dashboard.mp4" type="video/mp4">
+              <a href="assets/video/10k-s13-dashboard.mp4">Download the animation</a>.
+            </video>
+          </div>
+          <figcaption>
+            <span class="fig__label">Dashboard &middot; converged</span>
+            The predicted diffraction pattern locks onto the true one, and both error curves fall off
+            a cliff at about iteration 25 and then flatten. That cliff <em>is</em> convergence.
+          </figcaption>
+        </figure>
+        <figure class="fig">
+          <div class="fig__mat">
+            <video controls preload="none" playsinline poster="assets/video/10k-s14-dashboard-poster.webp">
+              <source src="assets/video/10k-s14-dashboard.mp4" type="video/mp4">
+              <a href="assets/video/10k-s14-dashboard.mp4">Download the animation</a>.
+            </video>
+          </div>
+          <figcaption>
+            <span class="fig__label">Dashboard &middot; failed</span>
+            No cliff. The error curves drop briefly, level off, and stay level for the rest of the
+            run &mdash; while the slices and the atom count still look plausible.
+          </figcaption>
+        </figure>
+      </div>
+
+      <h3 class="sub">26,067 atoms, recovered exactly</h3>
+      <p>
+        The best result in the archive: a helium-irradiated grain &mdash; 30 ions at 100&nbsp;eV driven
+        into one 6&nbsp;&Aring; spot to build a bubble &mdash; reconstructed with a count error of
+        <strong>zero</strong> and a mean position error of <strong>0.0008&nbsp;&Aring;</strong>, about
+        one three-thousandth of a tungsten bond.
+      </p>
+      <div class="fig-pair">
+        <figure class="fig">
+          <div class="fig__mat">
+            <video controls preload="none" playsinline poster="assets/video/he-25k-g04-flu30-stage-poster.webp">
+              <source src="assets/video/he-25k-g04-flu30-stage.mp4" type="video/mp4">
+              <a href="assets/video/he-25k-g04-flu30-stage.mp4">Download the animation</a>.
+            </video>
+          </div>
+          <figcaption>
+            <span class="fig__label">a-CNA</span>
+            <code>25k_g04_FLU30x100_focus_s2</code>. The amber region is the helium bubble damage
+            &mdash; found from diffraction intensities alone.
+          </figcaption>
+        </figure>
+        <figure class="fig">
+          <div class="fig__mat">
+            <video controls preload="none" playsinline poster="assets/video/he-25k-g04-flu30-dashboard-poster.webp">
+              <source src="assets/video/he-25k-g04-flu30-dashboard.mp4" type="video/mp4">
+              <a href="assets/video/he-25k-g04-flu30-dashboard.mp4">Download the animation</a>.
+            </video>
+          </div>
+          <figcaption>
+            <span class="fig__label">Dashboard</span>
+            R-factor 0.0185 against a noise floor of 0.0182 &mdash; the residual is 1.6&nbsp;% above
+            what photon shot noise alone would give. Nothing structural is left to explain.
+          </figcaption>
+        </figure>
+      </div>
+
+      <h3 class="sub">A 1,000&nbsp;eV cascade, seen atom by atom</h3>
+      <p>
+        The a-CNA view earning its keep. This grain took a 1,000&nbsp;eV primary knock-on atom deep
+        into its interior &mdash; the most violent cascade in the 5,000-atom library &mdash; and it is
+        also the <em>tightest fit in the whole archive</em> at &chi;&sup2;/floor 1.08. Heavily damaged
+        grains reconstruct better than clean ones, which is not what anyone expected;
+        <a href="#convergence">&sect;III explains why</a>.
+      </p>
+      <div class="fig-pair">
+        <figure class="fig">
+          <div class="fig__mat">
+            <video controls preload="none" playsinline poster="assets/video/lib-5k-g15-deep-stage-poster.webp">
+              <source src="assets/video/lib-5k-g15-deep-stage.mp4" type="video/mp4">
+              <a href="assets/video/lib-5k-g15-deep-stage.mp4">Download the animation</a>.
+            </video>
+          </div>
+          <figcaption>
+            <span class="fig__label">a-CNA</span>
+            <code>lib_5k_g15_L3deep_E1000_s2</code>, 6,136 atoms, all of them found.
+          </figcaption>
+        </figure>
+        <figure class="fig">
+          <div class="fig__mat">
+            <video controls preload="none" playsinline poster="assets/video/lib-5k-g15-deep-dashboard-poster.webp">
+              <source src="assets/video/lib-5k-g15-deep-dashboard.mp4" type="video/mp4">
+              <a href="assets/video/lib-5k-g15-deep-dashboard.mp4">Download the animation</a>.
+            </video>
+          </div>
+          <figcaption>
+            <span class="fig__label">Dashboard</span>
+            A clean descent to the floor with no plateau on the way.
+          </figcaption>
+        </figure>
+      </div>
+      <figure class="fig">
+        <a class="fig__mat" href="assets/runs/he-25k-g04-flu30/defect_slices.webp">
+          <img src="assets/runs/he-25k-g04-flu30/defect_slices.webp"
+               alt="Thin atomic slabs through the truth and the reconstruction with defect atoms highlighted in red, beside a per-atom position-error map."
+               loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">a-CNA, as a still</span>
+          The same classification, frozen and cut open: truth, reconstruction, per-atom error. Light
+          blue is bulk BCC, red is interior non-BCC (the damage), grey is the surface shell within
+          3.5&nbsp;&Aring; of the boundary &mdash; faded because surface atoms have odd coordination
+          for trivial reasons. The classifier agrees with OVITO's on all 88,833 atoms tested.
+        </figcaption>
+      </figure>
+
+      <h3 class="sub">And a runaway</h3>
+      <p>
+        The worst run in the archive, and the most instructive. Given a 24,800-atom truth at
+        4.6&times; the usual photon dose, it produced <strong>34,125 atoms</strong> &mdash; inventing
+        9,325 &mdash; and ended with an R-factor 63&times; its noise floor. More photons did not help:
+        this is a search failure, not a data problem.
+      </p>
+      <div class="fig-pair">
+        <figure class="fig">
+          <div class="fig__mat">
+            <video controls preload="none" playsinline poster="assets/video/25kD-s42-stage-poster.webp">
               <source src="assets/video/25kD-s42-stage.mp4" type="video/mp4">
-              Your browser does not support embedded video.
               <a href="assets/video/25kD-s42-stage.mp4">Download the animation</a>.
             </video>
           </div>
           <figcaption>
-            <span class="fig__label">Video</span>
-            A runaway, animated. Watch the atom count in the readout stay thousands above the truth
-            for the entire run while the model keeps rearranging itself. This is what "churns
-            indefinitely" looks like.
+            <span class="fig__label">a-CNA &middot; failed</span>
+            <code>25kD_s42</code>. The atom count in the readout stays thousands above truth for the
+            entire run while the model keeps rearranging itself. This is what &ldquo;churns
+            indefinitely&rdquo; looks like.
           </figcaption>
         </figure>
-      </section>
-
-      <!-- ================================================== BAD 3 -->
-      <section class="case case--bad">
-        <div class="case__head">
-          <span class="case__id">lib_5k_g03_L0</span>
-          <span class="badge badge--bad">failed</span>
-        </div>
-        <p class="case__sub">
-          4,828 atoms. <strong>No radiation damage at all</strong> &mdash; <code>L0</code> is the
-          pristine control, a relaxed but undamaged grain. 300 iterations.
-        </p>
-        <dl class="metrics">
-          <div><dt>atoms</dt><dd>4,828</dd></div>
-          <div><dt>count error</dt><dd>&minus;7</dd></div>
-          <div><dt>position error</dt><dd class="m-value--bad">1.4821 &Aring;</dd></div>
-          <div><dt>recall @2.023 &Aring;</dt><dd>0.9486</dd></div>
-          <div><dt>R-factor</dt><dd class="m-value--bad">0.1789</dd></div>
-          <div><dt>noise floor</dt><dd>0.0135</dd></div>
-          <div><dt>&chi;&sup2;/floor</dt><dd class="m-value--bad">1478</dd></div>
-        </dl>
-        <p class="case__lede">
-          The easiest possible target &mdash; a small, undamaged, perfectly periodic grain &mdash;
-          and it failed harder than the 1,000&nbsp;eV cascade in section&nbsp;V. Its atom count is
-          almost right (&minus;7 out of 4,828), which is what makes it dangerous: the count looks
-          fine, the density looks fine, and every atom is 1.48&nbsp;&Aring; from where it should be.
-          This run is the single clearest argument that the failure mode is a search problem and has
-          nothing to do with radiation damage.
-        </p>
         <figure class="fig">
-          <a class="fig__mat" href="assets/runs/lib-5k-g03-pristine/process_08_summary.webp">
-            <img src="assets/runs/lib-5k-g03-pristine/process_08_summary.webp"
-                 alt="Diagnostic sheet for lib_5k_g03_L0, an undamaged 4828-atom grain that failed to converge." loading="lazy">
-          </a>
+          <div class="fig__mat">
+            <video controls preload="none" playsinline poster="assets/video/25kD-s42-dashboard-poster.webp">
+              <source src="assets/video/25kD-s42-dashboard.mp4" type="video/mp4">
+              <a href="assets/video/25kD-s42-dashboard.mp4">Download the animation</a>.
+            </video>
+          </div>
           <figcaption>
-            <span class="fig__label">Fig&nbsp;B3</span>
-            An undamaged grain, stuck. The count panel is nearly perfect and the fit panel is
-            thirteen times above the floor &mdash; a reminder that getting the number of atoms right
-            is necessary but nowhere near sufficient.
+            <span class="fig__label">Dashboard &middot; failed</span>
+            The atom-count curve is still drifting downward when the run ends, 9,000 atoms too heavy
+            and nowhere near recovering.
           </figcaption>
         </figure>
-        <details class="more">
-          <summary>More figures from this run</summary>
-          <div class="more__body">
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lib-5k-g03-pristine/process_09_residual_field.webp">
-                <img src="assets/runs/lib-5k-g03-pristine/process_09_residual_field.webp" alt="Residual field for the pristine failed run." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Residual</span> Uniform, large error across a grain with no defects in it at all.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lib-5k-g03-pristine/process_07_convergence.webp">
-                <img src="assets/runs/lib-5k-g03-pristine/process_07_convergence.webp" alt="Convergence curves for the pristine failed run." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Convergence</span> Count converges, fit does not. The two are not the same thing.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lib-5k-g03-pristine/process_06_seed.webp">
-                <img src="assets/runs/lib-5k-g03-pristine/process_06_seed.webp" alt="Seed versus truth for the pristine grain." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Seed</span> An ideal lattice against an undamaged truth &mdash; the closest starting point in the archive, and it still went wrong.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lib-5k-g03-pristine/process_04_phasing.webp">
-                <img src="assets/runs/lib-5k-g03-pristine/process_04_phasing.webp" alt="Phased density and support." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Phasing</span> A perfectly ordinary low-resolution reconstruction.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/lib-5k-g03-pristine/process_01_diffraction.webp">
-                <img src="assets/runs/lib-5k-g03-pristine/process_01_diffraction.webp" alt="The three measured Bragg peaks." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Measurement</span> Three {110} peaks from an undamaged grain.</figcaption>
-            </figure>
-          </div>
-        </details>
-      </section>
+      </div>
 
-      <!-- ================================================== BAD 4 -->
-      <section class="case case--bad">
-        <div class="case__head">
-          <span class="case__id">he/25k/25k_g01_E3200x3_spread_s1</span>
-          <span class="badge badge--bad">failed</span>
-        </div>
-        <p class="case__sub">
-          21,845 atoms. Damage: three helium ions at 3,200&nbsp;eV each, spread through the grain
-          &mdash; the highest-energy helium recipe in the campaign. 300 iterations.
-        </p>
-        <dl class="metrics">
-          <div><dt>atoms</dt><dd>21,845</dd></div>
-          <div><dt>count error</dt><dd class="m-value--bad">&minus;106</dd></div>
-          <div><dt>position error</dt><dd class="m-value--bad">1.3789 &Aring;</dd></div>
-          <div><dt>recall @2.023 &Aring;</dt><dd>0.9711</dd></div>
-          <div><dt>R-factor</dt><dd class="m-value--bad">0.1360</dd></div>
-          <div><dt>noise floor</dt><dd>0.0183</dd></div>
-          <div><dt>&chi;&sup2;/floor</dt><dd class="m-value--bad">1074</dd></div>
-        </dl>
-        <p class="case__lede">
-          The same grain g01 that converged beautifully in section&nbsp;V, and the same
-          22,000-atom size class as the 26,067-atom success &mdash; but a different attempt, and it
-          stalled at 1.38&nbsp;&Aring;. Fourteen separate reconstructions were run against this
-          exact truth; one reached the noise floor and thirteen did not. Included here because it is
-          the representative 25k failure, not an outlier: at this size the outcome is decided by
-          which basin the search happens to fall into.
-        </p>
-        <figure class="fig">
-          <a class="fig__mat" href="assets/runs/he-25k-g01-e3200/process_08_summary.webp">
-            <img src="assets/runs/he-25k-g01-e3200/process_08_summary.webp"
-                 alt="Diagnostic sheet for a failed 21845-atom helium-irradiated reconstruction." loading="lazy">
-          </a>
-          <figcaption>
-            <span class="fig__label">Fig&nbsp;B4</span>
-            A representative 25k stall. The plateau sits at R&nbsp;=&nbsp;0.136, roughly 7&times; the
-            floor &mdash; better than <code>10k_s14</code>'s plateau, still nowhere near converged.
-          </figcaption>
-        </figure>
-        <details class="more">
-          <summary>More figures from this run</summary>
-          <div class="more__body">
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/he-25k-g01-e3200/process_09_residual_field.webp">
-                <img src="assets/runs/he-25k-g01-e3200/process_09_residual_field.webp" alt="Residual field." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Residual</span> Broadly distributed error rather than a localised mistake.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/he-25k-g01-e3200/process_07_convergence.webp">
-                <img src="assets/runs/he-25k-g01-e3200/process_07_convergence.webp" alt="Convergence curves." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Convergence</span> The plateau and the count deficit.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/he-25k-g01-e3200/process_06_seed.webp">
-                <img src="assets/runs/he-25k-g01-e3200/process_06_seed.webp" alt="Seed versus truth." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Seed</span> The starting lattice.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/he-25k-g01-e3200/process_04_phasing.webp">
-                <img src="assets/runs/he-25k-g01-e3200/process_04_phasing.webp" alt="Phased density and support." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Phasing</span> Low-resolution density and support.</figcaption>
-            </figure>
-            <figure class="fig">
-              <a class="fig__mat" href="assets/runs/he-25k-g01-e3200/process_01_diffraction.webp">
-                <img src="assets/runs/he-25k-g01-e3200/process_01_diffraction.webp" alt="The three measured Bragg peaks." loading="lazy">
-              </a>
-              <figcaption><span class="fig__label">Measurement</span> Three {110} peaks.</figcaption>
-            </figure>
-          </div>
-        </details>
-      </section>
-
-      <h2 id="seed-lottery"><span class="section-number">VII.</span>The seed lottery</h2>
+      <h2 id="convergence"><span class="section-number">III.</span>Convergence</h2>
       <p>
-        The poster's remedy for a failed reconstruction is to run several in parallel from slightly
-        different initial conditions. Here is the measurement behind that sentence.
+        Three things happen at once when a reconstruction succeeds, and the simultaneity is the point.
+        The R-factor reaches the measurement's own <strong>noise floor</strong> &mdash; the residual
+        the <em>true</em> structure would leave, set by photon shot noise. The atom count locks,
+        because adding or removing any atom now makes the fit worse. And the add/remove churn goes to
+        zero, so the run ends itself instead of exhausting its iteration budget.
       </p>
       <p>
-        Eight reconstructions were run against one 9,334-atom grain. The truth file is identical
-        across all eight, byte for byte, as is the measurement recipe: three
-        <span class="nw">{110}</span> peaks at 7.5&times;10<sup>9</sup> photons,
-        200 iterations, the same sampling fraction. Every configuration value matches except one
-        random seed.
-      </p>
-      <p>
-        That seed does two things in this pipeline. It draws the photon shot noise of the simulated
-        measurement, and it chooses which subset of measured voxels the solver fits at each
-        iteration. So these are not eight reruns over one frozen dataset &mdash; they are
-        <strong>eight independent repeats of the same experiment on the same crystal</strong>, the
-        computational equivalent of carrying one grain back to the beamline eight times. Three
-        converged and five did not.
+        A failed run has none of the three. It flattens above the floor, stalls short or drifts past
+        the true count, and churns to the cap. The single number that captures it is
+        <code>&chi;&sup2;/floor</code>: this run's fit divided by the fit the truth itself achieves.
+        Near 1 means everything but the shot noise is explained. The archive spans 1.08 to 10,370.
       </p>
 
+      <figure class="fig">
+        <a class="fig__mat" href="assets/cross/holes_04_good_vs_bad.webp">
+          <img src="assets/cross/holes_04_good_vs_bad.webp"
+               alt="The archive's best and worst runs on identical panels: measured Bragg peak, density, atom overlay, atom-count curve and R-factor curve, with a numeric scorecard for each."
+               loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">Fig&nbsp;1</span>
+          The two extremes on identical axes &mdash; &chi;&sup2;/floor 1.08 on top, 10,370 below. Read
+          left to right and notice how <em>late</em> the difference becomes visible: the measured peak
+          looks the same, the density looks the same. It is the atom overlay, and then unmistakably the
+          R-factor curve, that give it away.
+        </figcaption>
+      </figure>
+
+      <h3 class="sub">How often it works</h3>
       <div class="table-wrap">
         <table class="data">
           <caption>
-            One grain, eight independent repeats. Position error is the mean distance from each
-            reconstructed atom to its true site.
+            All 513 scored reconstructions. Converged is <code>&chi;&sup2;/floor &lt; 5</code>, failed
+            is <code>&gt; 50</code>; both thresholds are computable without knowing the answer.
           </caption>
           <thead>
             <tr>
-              <th class="num">Seed</th>
-              <th>Run</th>
-              <th class="num">&chi;&sup2;/floor</th>
-              <th class="num">Position error</th>
-              <th>Outcome</th>
+              <th>Grain</th><th class="num">Runs</th><th class="num">Converged</th>
+              <th class="num">Partial</th><th class="num">Failed</th><th class="num">Converged</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="row-good"><td class="num">22</td><td><code>10k_s22</code></td><td class="num">1.15</td><td class="num">0.0017 &Aring;</td><td>converged</td></tr>
-            <tr class="row-good"><td class="num">13</td><td><code>10k_s13</code></td><td class="num">1.16</td><td class="num">0.0017 &Aring;</td><td>converged</td></tr>
-            <tr class="row-good"><td class="num">21</td><td><code>10k_s21</code></td><td class="num">1.53</td><td class="num">0.0035 &Aring;</td><td>converged</td></tr>
-            <tr class="row-bad"><td class="num">15</td><td><code>10k_s15</code></td><td class="num">151</td><td class="num">0.2219 &Aring;</td><td>failed</td></tr>
-            <tr class="row-bad"><td class="num">3</td><td><code>10k_tpd035_s3</code></td><td class="num">275</td><td class="num">0.5220 &Aring;</td><td>failed</td></tr>
-            <tr class="row-bad"><td class="num">11</td><td><code>10k_s11</code></td><td class="num">938</td><td class="num">0.7301 &Aring;</td><td>failed</td></tr>
-            <tr class="row-bad"><td class="num">19</td><td><code>10k_s19</code></td><td class="num">1046</td><td class="num">1.3750 &Aring;</td><td>failed</td></tr>
-            <tr class="row-bad"><td class="num">14</td><td><code>10k_s14</code></td><td class="num">1204</td><td class="num">1.4187 &Aring;</td><td>failed</td></tr>
+            <tr><td>~5,000 atoms</td><td class="num">207</td><td class="num">146</td><td class="num">30</td><td class="num">31</td><td class="num"><strong>70.5&nbsp;%</strong></td></tr>
+            <tr><td>~9,300 atoms</td><td class="num">12</td><td class="num">3</td><td class="num">0</td><td class="num">9</td><td class="num">25.0&nbsp;%</td></tr>
+            <tr><td>~22,000&ndash;26,000</td><td class="num">212</td><td class="num">14</td><td class="num">53</td><td class="num">145</td><td class="num">6.6&nbsp;%</td></tr>
+            <tr><td>~50,000 atoms</td><td class="num">82</td><td class="num">0</td><td class="num">79</td><td class="num">3</td><td class="num">0.0&nbsp;%</td></tr>
+            <tr><td><strong>All</strong></td><td class="num"><strong>513</strong></td><td class="num"><strong>163</strong></td><td class="num"><strong>162</strong></td><td class="num"><strong>188</strong></td><td class="num"><strong>31.8&nbsp;%</strong></td></tr>
           </tbody>
         </table>
       </div>
-      <p class="footnote">
-        Three of eight, or 37.5&nbsp;%. The seed-3 run carries a directory name from an earlier
-        experiment; its <code>config.toml</code> was checked line by line against
-        <code>10k_s13</code>'s and differs only in the seed and in two atom-count bounds derived
-        from it.
+      <p>
+        This is a success rate per attempt, not a capability limit &mdash; when a run lands, it lands
+        exactly. Success falls with size because unknowns grow as three coordinates per atom while
+        usefully-measured intensity does not, and every run here used three Bragg peaks, the bare
+        minimum that can constrain a 3D displacement field. Large grains want <em>more peaks</em>, not
+        more iterations. The 50,000-atom row is unfinished work rather than a wall: 79 of its 82 runs
+        are still improving.
       </p>
 
+      <h3 class="sub">It is not the radiation damage</h3>
+      <p>
+        The obvious guess is that damaged grains are harder, since defects are exactly what the ideal
+        starting lattice lacks. Across the 144-run 5,000-atom library the trend runs the other way:
+        pristine controls converge <strong>62.5&nbsp;%</strong> of the time, 150&nbsp;eV cascades
+        65.6&nbsp;%, 400&nbsp;eV 78.1&nbsp;%, and 1,000&nbsp;eV <strong>87.5&nbsp;%</strong> &mdash;
+        with not one outright failure among the 32 deep-cascade runs. The pristine control is the
+        hardest case in the table.
+      </p>
       <div class="callout callout--good">
-        <span class="callout__title">Why this is usable rather than merely discouraging</span>
+        <span class="callout__title">Why damage helps</span>
         <p>
-          &chi;&sup2;/floor separates these eight runs cleanly &mdash; 1.15, 1.16 and 1.53 against
-          151, 275, 938, 1046 and 1204 &mdash; and computing it requires <strong>no knowledge of
-          the truth</strong>. It is the model's fit to the measurement you actually took, divided by
-          the best fit photon statistics would permit. So on real data you can launch several
-          reconstructions, keep the one with the lowest &chi;&sup2;/floor, and discard the rest
-          without ever knowing the answer. Measured across the archive, that truth-free rule
-          captures 99.3&nbsp;% of the improvement an all-knowing oracle would achieve.
+          Because the failure is a <em>registry</em> problem. A perfect crystal looks identical after
+          sliding it by one lattice site, so nothing in the data prefers one alignment and the solver
+          can settle into the wrong one. Put a recognisable cascade in the middle and that degeneracy
+          is gone &mdash; exactly one alignment now explains the measurement.
+        </p>
+        <p>
+          Grain <em>shape</em> matters more than dose. At 22,000&ndash;26,000 atoms, one grain
+          converged in 5 of 9 attempts, another in 5 of 19, another in 4 of 48, and another in
+          <strong>0 of 25</strong> &mdash; same code, same damage recipes, same peaks.
         </p>
       </div>
 
+      <h3 class="sub">There is almost no partial credit</h3>
       <p>
-        <a href="convergence.html">The full convergence and failure analysis &rarr;</a>
-        &mdash; including the two distinct failure modes, why a stuck run cannot stop itself, and
-        how the scoring tolerance came to be wider than a tungsten bond.
+        Accuracy is not spread smoothly from good to bad. Of all 513 runs, 214 land below
+        0.05&nbsp;&Aring; and 273 land at or above 0.5&nbsp;&Aring; &mdash; and only
+        <strong>26 (5.1&nbsp;%)</strong> fall in between. In the tightly controlled 5,000-atom library
+        the gap is starker: 129 below, 14 above, and <strong>exactly one</strong> in the middle.
       </p>
+      <p>
+        Continuous error sources produce continuous degradation. A gap that clean means something
+        <em>discrete</em> decides the outcome: the model latches onto the right lattice registry or a
+        wrong one, with no stable state part-way between two sites. That is good news &mdash; a
+        discrete failure is one you can detect and retry, not an accuracy limit you live with.
+      </p>
+      <figure class="fig">
+        <a class="fig__mat" href="assets/cross/chart_convergence.webp">
+          <img src="assets/cross/chart_convergence.webp"
+               alt="Three panels: 144 R-factor trajectories against iteration coloured by cascade dose, the same runs' reduced chi-squared, and final count error against final position error showing two separated clusters."
+               loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">Fig&nbsp;2</span>
+          All 144 library runs at once, coloured by cascade energy. Two bundles: one descending to the
+          floor, one flattening high and staying there &mdash; plus a few that break out late, past
+          iteration 150. The right panel plots final count error against final position error; the two
+          clusters and the empty gap between them are the bimodality above, drawn.
+        </figcaption>
+      </figure>
+
+      <h3 class="sub" id="seed-lottery">Picking the good run without knowing the answer</h3>
+      <p>
+        Eight independent repeats were run on one 9,334-atom grain &mdash; identical truth, identical
+        measurement recipe, one differing random seed, which sets both the shot-noise draw and the
+        subset of voxels the solver fits. Three converged; five did not.
+      </p>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>One grain, eight repeats. &chi;&sup2;/floor needs no knowledge of the truth; position error does.</caption>
+          <thead>
+            <tr><th>Run</th><th class="num">&chi;&sup2;/floor</th><th class="num">Position error</th><th>Outcome</th></tr>
+          </thead>
+          <tbody>
+            <tr class="row-good"><td><code>10k_s22</code></td><td class="num">1.15</td><td class="num">0.0017 &Aring;</td><td>converged</td></tr>
+            <tr class="row-good"><td><code>10k_s13</code></td><td class="num">1.16</td><td class="num">0.0017 &Aring;</td><td>converged</td></tr>
+            <tr class="row-good"><td><code>10k_s21</code></td><td class="num">1.53</td><td class="num">0.0035 &Aring;</td><td>converged</td></tr>
+            <tr class="row-bad"><td><code>10k_s15</code></td><td class="num">151</td><td class="num">0.2219 &Aring;</td><td>failed</td></tr>
+            <tr class="row-bad"><td><code>10k_tpd035_s3</code></td><td class="num">275</td><td class="num">0.5220 &Aring;</td><td>failed</td></tr>
+            <tr class="row-bad"><td><code>10k_s11</code></td><td class="num">938</td><td class="num">0.7301 &Aring;</td><td>failed</td></tr>
+            <tr class="row-bad"><td><code>10k_s19</code></td><td class="num">1046</td><td class="num">1.3750 &Aring;</td><td>failed</td></tr>
+            <tr class="row-bad"><td><code>10k_s14</code></td><td class="num">1204</td><td class="num">1.4187 &Aring;</td><td>failed</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--good">
+        <span class="callout__title">The practical consequence</span>
+        <p>
+          &chi;&sup2;/floor separates those eight cleanly &mdash; 1.15, 1.16, 1.53 against 151, 275,
+          938, 1046, 1204 &mdash; and it requires no truth, because the noise floor follows from photon
+          statistics rather than from the sample. So at a real beamline you launch several
+          reconstructions, keep the lowest &chi;&sup2;/floor, and discard the rest without ever knowing
+          the answer.
+        </p>
+        <p>
+          Measured across the archive: picking blind gives mean recall 0.9065 with 8.6&nbsp;% of runs
+          broken; keeping the lower &chi;&sup2;/floor gives 0.9548 with 4.7&nbsp;% broken; an
+          all-knowing oracle gives 0.9552 with 4.7&nbsp;%. The truth-free rule captures
+          <strong>99.3&nbsp;%</strong> of what perfect knowledge would buy, and roughly halves the
+          broken-run rate. That is the whole case for running reconstructions in parallel.
+        </p>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__title">One number to distrust</span>
+        <p>
+          The archived recall figures use a 2.023&nbsp;&Aring; matching tolerance &mdash; half of
+          <em>aluminium's</em> lattice parameter, inherited from a metadata default &mdash; while a
+          tungsten bond is 2.7411&nbsp;&Aring;. At 74&nbsp;% of a bond it is wider than the registry
+          offset it should be catching, so an atom on the wrong lattice site still scores as found.
+          Every one of the 50 failed runs in the measurement cache scores above 0.90 on it; 30 score
+          below 0.01 at an honest 0.5&nbsp;&Aring;. Both numbers are printed side by side throughout.
+          <a href="convergence.html#ruler">The full accounting &rarr;</a>
+        </p>
+      </div>
+
+      <h2><span class="section-number">IV.</span>Going deeper</h2>
+      <div class="subpage-grid">
+        <a class="subpage-card" href="convergence.html">
+          <span class="subpage-card__title">Convergence &amp; failure, in full &rarr;</span>
+          <p class="subpage-card__desc">
+            The two distinct failure modes &mdash; a correct crystal in the wrong place, versus a
+            genuinely warped one &mdash; why a stuck run cannot stop itself, and what would fix it.
+          </p>
+        </a>
+        <a class="subpage-card" href="bcdi.html">
+          <span class="subpage-card__title">How BCDI works &rarr;</span>
+          <p class="subpage-card__desc">
+            The phase problem, why a Bragg peak encodes strain, why three peaks are the minimum, the
+            twin ambiguity, and what molecular dynamics adds to the loop.
+          </p>
+        </a>
+        <a class="subpage-card" href="reading-figures.html">
+          <span class="subpage-card__title">How to read the figures &rarr;</span>
+          <p class="subpage-card__desc">
+            A panel-by-panel guide to the diagnostic sheets, including which single panel decides
+            whether a run worked.
+          </p>
+        </a>
+      </div>
+
+      <h3 class="sub">The eight runs shown above, and every figure for each</h3>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>
+            Recall is at the loose 2.023&nbsp;&Aring; tolerance, as archived &mdash; read it alongside
+            &chi;&sup2;/floor, not instead of it.
+          </caption>
+          <thead>
+            <tr>
+              <th>Run</th><th class="num">Atoms</th><th class="num">Count err</th>
+              <th class="num">Pos. error</th><th class="num">&chi;&sup2;/floor</th><th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-good">
+              <td><code>he/25k/…g04_FLU30x100_focus_s2</code></td><td class="num">26,067</td>
+              <td class="num">0</td><td class="num">0.0008 &Aring;</td><td class="num">1.12</td>
+              <td>largest exact recovery</td>
+            </tr>
+            <tr class="row-good">
+              <td><code>lib_5k_g15_L3deep_E1000_s2</code></td><td class="num">6,136</td>
+              <td class="num">0</td><td class="num">0.0011 &Aring;</td><td class="num">1.08</td>
+              <td>tightest fit; heaviest damage</td>
+            </tr>
+            <tr class="row-good">
+              <td><code>10k_s13</code></td><td class="num">9,334</td>
+              <td class="num">0</td><td class="num">0.0017 &Aring;</td><td class="num">1.16</td>
+              <td>converged half of the seed pair</td>
+            </tr>
+            <tr class="row-good">
+              <td><code>large/lgE_25k_g01_L1_E150_s2</code></td><td class="num">21,843</td>
+              <td class="num">0</td><td class="num">0.0027 &Aring;</td><td class="num">2.18</td>
+              <td>a hard grain that landed</td>
+            </tr>
+            <tr class="row-bad">
+              <td><code>he/25k/25k_g01_E3200x3_spread_s1</code></td><td class="num">21,845</td>
+              <td class="num">&minus;106</td><td class="num">1.3789 &Aring;</td><td class="num">1074</td>
+              <td>representative 25k stall</td>
+            </tr>
+            <tr class="row-bad">
+              <td><code>lib_5k_g03_L0</code></td><td class="num">4,828</td>
+              <td class="num">&minus;7</td><td class="num">1.4821 &Aring;</td><td class="num">1478</td>
+              <td><strong>undamaged</strong>, and still failed</td>
+            </tr>
+            <tr class="row-bad">
+              <td><code>10k_s14</code></td><td class="num">9,334</td>
+              <td class="num">&minus;118</td><td class="num">1.4187 &Aring;</td><td class="num">1204</td>
+              <td>failed half of the seed pair</td>
+            </tr>
+            <tr class="row-bad">
+              <td><code>25kD_s42</code></td><td class="num">24,800</td>
+              <td class="num">+9,325</td><td class="num">2.9405 &Aring;</td><td class="num">10,370</td>
+              <td>runaway; 34,125 atoms produced</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <details class="more">
+        <summary>Open the full diagnostic figure set for these eight runs</summary>
+        <div class="more__body">
+          <p class="footnote">
+            Each run's nine-panel <code>summary</code> sheet shows the whole pipeline on one page; the
+            others break out individual stages. <a href="reading-figures.html">What the panels
+            mean &rarr;</a> Support-oversizing figures are deliberately not published.
+          </p>
+
+          <h3 class="sub"><code>he/25k/25k_g04_FLU30x100_focus_s2</code> &mdash; converged, 26,067 atoms</h3>
+          <p class="footnote">
+            <a href="assets/runs/he-25k-g04-flu30/process_08_summary.webp">summary</a> &middot;
+            <a href="assets/runs/he-25k-g04-flu30/process_07_convergence.webp">convergence</a> &middot;
+            <a href="assets/runs/he-25k-g04-flu30/process_01_diffraction.webp">measurement</a> &middot;
+            <a href="assets/runs/he-25k-g04-flu30/process_04_phasing.webp">phasing</a> &middot;
+            <a href="assets/runs/he-25k-g04-flu30/process_06_seed.webp">seed</a> &middot;
+            <a href="assets/runs/he-25k-g04-flu30/process_09_residual_field.webp">residual field</a> &middot;
+            <a href="assets/runs/he-25k-g04-flu30/defect_slices.webp">atom slabs</a>
+          </p>
+          <figure class="fig">
+            <a class="fig__mat" href="assets/runs/he-25k-g04-flu30/process_08_summary.webp">
+              <img src="assets/runs/he-25k-g04-flu30/process_08_summary.webp"
+                   alt="Nine-panel start-to-finish diagnostic sheet for the 26,067-atom converged run." loading="lazy">
+            </a>
+            <figcaption>Count locks onto truth, R-factor meets the noise floor, position error collapses.</figcaption>
+          </figure>
+
+          <h3 class="sub"><code>lib_5k_g15_L3deep_E1000_s2</code> &mdash; converged, tightest fit in the archive</h3>
+          <p class="footnote">
+            <a href="assets/runs/lib-5k-g15-deep/process_08_summary.webp">summary</a> &middot;
+            <a href="assets/runs/lib-5k-g15-deep/process_07_convergence.webp">convergence</a> &middot;
+            <a href="assets/runs/lib-5k-g15-deep/process_01_diffraction.webp">measurement</a> &middot;
+            <a href="assets/runs/lib-5k-g15-deep/process_04_phasing.webp">phasing</a> &middot;
+            <a href="assets/runs/lib-5k-g15-deep/process_06_seed.webp">seed</a> &middot;
+            <a href="assets/runs/lib-5k-g15-deep/process_09_residual_field.webp">residual field</a> &middot;
+            <a href="assets/runs/lib-5k-g15-deep/damage_slabs.webp">cascade damage</a>
+          </p>
+          <figure class="fig">
+            <a class="fig__mat" href="assets/runs/lib-5k-g15-deep/damage_slabs.webp">
+              <img src="assets/runs/lib-5k-g15-deep/damage_slabs.webp"
+                   alt="Slab views of the 1000 eV cascade damage in the truth and in the reconstruction." loading="lazy">
+            </a>
+            <figcaption>The cascade in truth and as recovered &mdash; the physics this technique exists to measure.</figcaption>
+          </figure>
+
+          <h3 class="sub"><code>10k_s13</code> vs <code>10k_s14</code> &mdash; the seed pair</h3>
+          <p class="footnote">
+            Converged: <a href="assets/runs/10k-s13/process_08_summary.webp">summary</a> &middot;
+            <a href="assets/runs/10k-s13/process_07_convergence.webp">convergence</a> &middot;
+            <a href="assets/runs/10k-s13/process_01_diffraction.webp">measurement</a> &middot;
+            <a href="assets/runs/10k-s13/process_04_phasing.webp">phasing</a> &middot;
+            <a href="assets/runs/10k-s13/process_06_seed.webp">seed</a> &middot;
+            <a href="assets/runs/10k-s13/process_09_residual_field.webp">residual field</a> &middot;
+            <a href="assets/runs/10k-s13/defect_slices.webp">atom slabs</a>
+            <br>
+            Failed: <a href="assets/runs/10k-s14/process_08_summary.webp">summary</a> &middot;
+            <a href="assets/runs/10k-s14/process_07_convergence.webp">convergence</a> &middot;
+            <a href="assets/runs/10k-s14/process_01_diffraction.webp">measurement</a> &middot;
+            <a href="assets/runs/10k-s14/process_04_phasing.webp">phasing</a> &middot;
+            <a href="assets/runs/10k-s14/process_06_seed.webp">seed</a> &middot;
+            <a href="assets/runs/10k-s14/process_09_residual_field.webp">residual field</a> &middot;
+            <a href="assets/runs/10k-s14/defect_slices.webp">atom slabs</a>
+          </p>
+          <div class="fig-pair">
+            <figure class="fig">
+              <a class="fig__mat" href="assets/runs/10k-s13/process_09_residual_field.webp">
+                <img src="assets/runs/10k-s13/process_09_residual_field.webp"
+                     alt="Residual position-error map for the converged run, uniformly near zero." loading="lazy">
+              </a>
+              <figcaption>Seed 13, converged. Nothing left anywhere.</figcaption>
+            </figure>
+            <figure class="fig">
+              <a class="fig__mat" href="assets/runs/10k-s14/process_09_residual_field.webp">
+                <img src="assets/runs/10k-s14/process_09_residual_field.webp"
+                     alt="Residual position-error map for the failed run, large across the whole grain." loading="lazy">
+              </a>
+              <figcaption>Seed 14, failed. Error spread evenly over the whole grain &mdash; a global lattice offset, not a local mistake.</figcaption>
+            </figure>
+          </div>
+
+          <h3 class="sub"><code>large/lgE_25k_g01_L1_E150_s2</code> &mdash; converged on a hard grain</h3>
+          <p class="footnote">
+            <a href="assets/runs/lg-25k-g01-e150/process_08_summary.webp">summary</a> &middot;
+            <a href="assets/runs/lg-25k-g01-e150/process_07_convergence.webp">convergence</a> &middot;
+            <a href="assets/runs/lg-25k-g01-e150/process_01_diffraction.webp">measurement</a> &middot;
+            <a href="assets/runs/lg-25k-g01-e150/process_04_phasing.webp">phasing</a> &middot;
+            <a href="assets/runs/lg-25k-g01-e150/process_06_seed.webp">seed</a> &middot;
+            <a href="assets/runs/lg-25k-g01-e150/process_09_residual_field.webp">residual field</a>
+          </p>
+
+          <h3 class="sub"><code>he/25k/25k_g01_E3200x3_spread_s1</code> &mdash; a representative 25k stall</h3>
+          <p class="footnote">
+            <a href="assets/runs/he-25k-g01-e3200/process_08_summary.webp">summary</a> &middot;
+            <a href="assets/runs/he-25k-g01-e3200/process_07_convergence.webp">convergence</a> &middot;
+            <a href="assets/runs/he-25k-g01-e3200/process_01_diffraction.webp">measurement</a> &middot;
+            <a href="assets/runs/he-25k-g01-e3200/process_04_phasing.webp">phasing</a> &middot;
+            <a href="assets/runs/he-25k-g01-e3200/process_06_seed.webp">seed</a> &middot;
+            <a href="assets/runs/he-25k-g01-e3200/process_09_residual_field.webp">residual field</a>
+          </p>
+
+          <h3 class="sub"><code>lib_5k_g03_L0</code> &mdash; undamaged, and still failed</h3>
+          <p class="footnote">
+            <a href="assets/runs/lib-5k-g03-pristine/process_08_summary.webp">summary</a> &middot;
+            <a href="assets/runs/lib-5k-g03-pristine/process_07_convergence.webp">convergence</a> &middot;
+            <a href="assets/runs/lib-5k-g03-pristine/process_01_diffraction.webp">measurement</a> &middot;
+            <a href="assets/runs/lib-5k-g03-pristine/process_04_phasing.webp">phasing</a> &middot;
+            <a href="assets/runs/lib-5k-g03-pristine/process_06_seed.webp">seed</a> &middot;
+            <a href="assets/runs/lib-5k-g03-pristine/process_09_residual_field.webp">residual field</a>
+          </p>
+          <figure class="fig">
+            <a class="fig__mat" href="assets/runs/lib-5k-g03-pristine/process_08_summary.webp">
+              <img src="assets/runs/lib-5k-g03-pristine/process_08_summary.webp"
+                   alt="Diagnostic sheet for an undamaged 4,828-atom grain that failed to converge." loading="lazy">
+            </a>
+            <figcaption>
+              The easiest target in the archive &mdash; small, undamaged, perfectly periodic &mdash;
+              stuck at 1.48&nbsp;&Aring;. Its atom count is almost right, at &minus;7 of 4,828, which
+              is what makes it dangerous: the count looks fine and every atom is in the wrong place.
+            </figcaption>
+          </figure>
+
+          <h3 class="sub"><code>25kD_s42</code> &mdash; the runaway</h3>
+          <p class="footnote">
+            <a href="assets/runs/25kD-s42/process_08_summary.webp">summary</a> &middot;
+            <a href="assets/runs/25kD-s42/process_07_convergence.webp">convergence</a> &middot;
+            <a href="assets/runs/25kD-s42/process_01_diffraction.webp">measurement</a> &middot;
+            <a href="assets/runs/25kD-s42/process_04_phasing.webp">phasing</a> &middot;
+            <a href="assets/runs/25kD-s42/process_06_seed.webp">seed</a> &middot;
+            <a href="assets/runs/25kD-s42/process_09_residual_field.webp">residual field</a> &middot;
+            <a href="assets/runs/25kD-s42/defect_slices.webp">atom slabs</a>
+          </p>
+          <figure class="fig">
+            <a class="fig__mat" href="assets/runs/25kD-s42/defect_slices.webp">
+              <img src="assets/runs/25kD-s42/defect_slices.webp"
+                   alt="Atom slabs for the runaway run, showing a reconstruction far denser than the truth." loading="lazy">
+            </a>
+            <figcaption>Overpopulation made visible: the reconstruction slab is far denser than the truth slab beside it.</figcaption>
+          </figure>
+        </div>
+      </details>
 
       <h2>Acknowledgments</h2>
       <div class="acknowledgments">

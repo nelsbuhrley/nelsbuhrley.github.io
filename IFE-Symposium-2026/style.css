@@ -830,3 +830,20 @@ code, kbd, samp, pre {
     line-height: 1.3;
     margin: 1.5rem 0 0.5rem;
 }
+
+/* a-CNA legend swatches. Colours are the actual render constants from
+   viz/scripts/stage_video.jl -- lattice #5aa9e6, defect amber #faad1c -- shown as
+   swatches rather than coloured text, because amber on white fails contrast as
+   type but reads correctly as a filled dot next to its label. */
+.swatch {
+    display: inline-block;
+    width: 0.72em;
+    height: 0.72em;
+    margin-right: 0.3em;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.28);
+}
+
+.swatch--lattice { background: #5aa9e6; }
+.swatch--defect  { background: #faad1c; }
+.swatch--true    { background: transparent; border: 1.5px solid var(--text-muted); }
