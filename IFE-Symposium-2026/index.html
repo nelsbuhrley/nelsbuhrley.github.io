@@ -66,7 +66,36 @@
         </figcaption>
       </figure>
 
-      <h2 id="watch"><span class="section-number">II.</span>Watch it reconstruct</h2>
+      <h2 id="deeper"><span class="section-number">II.</span>Going deeper</h2>
+      <p>
+        Three companion pages carry the detail this one compresses. If coherent diffraction is new
+        to you, start with <a href="bcdi.html">How BCDI works</a>.
+      </p>
+      <div class="subpage-grid">
+        <a class="subpage-card" href="convergence.html">
+          <span class="subpage-card__title">Convergence &amp; failure, in full &rarr;</span>
+          <p class="subpage-card__desc">
+            The two distinct failure modes &mdash; a correct crystal in the wrong place, versus a
+            genuinely warped one &mdash; why a stuck run cannot stop itself, and what would fix it.
+          </p>
+        </a>
+        <a class="subpage-card" href="bcdi.html">
+          <span class="subpage-card__title">How BCDI works &rarr;</span>
+          <p class="subpage-card__desc">
+            The phase problem, why a Bragg peak encodes strain, why three peaks are the minimum, the
+            twin ambiguity, and what molecular dynamics adds to the loop.
+          </p>
+        </a>
+        <a class="subpage-card" href="reading-figures.html">
+          <span class="subpage-card__title">How to read the figures &rarr;</span>
+          <p class="subpage-card__desc">
+            A panel-by-panel guide to the diagnostic sheets, including which single panel decides
+            whether a run worked.
+          </p>
+        </a>
+      </div>
+
+      <h2 id="watch"><span class="section-number">III.</span>Watch it reconstruct</h2>
       <p>
         Every run is recorded two ways, and they answer different questions.
       </p>
@@ -207,7 +236,7 @@
         into its interior &mdash; the most violent cascade in the 5,000-atom library &mdash; and it is
         also the <em>tightest fit in the whole archive</em> at &chi;&sup2;/floor 1.08. Heavily damaged
         grains reconstruct better than clean ones, which is not what anyone expected;
-        <a href="#convergence">&sect;III explains why</a>.
+        <a href="#convergence">&sect;IV explains why</a>.
       </p>
       <div class="fig-pair">
         <figure class="fig">
@@ -287,7 +316,7 @@
         </figure>
       </div>
 
-      <h2 id="convergence"><span class="section-number">III.</span>Convergence</h2>
+      <h2 id="convergence"><span class="section-number">IV.</span>Convergence</h2>
       <p>
         Three things happen at once when a reconstruction succeeds, and the simultaneity is the point.
         The R-factor reaches the measurement's own <strong>noise floor</strong> &mdash; the residual
@@ -454,38 +483,14 @@
         </p>
       </div>
 
-      <h2><span class="section-number">IV.</span>Going deeper</h2>
-      <div class="subpage-grid">
-        <a class="subpage-card" href="convergence.html">
-          <span class="subpage-card__title">Convergence &amp; failure, in full &rarr;</span>
-          <p class="subpage-card__desc">
-            The two distinct failure modes &mdash; a correct crystal in the wrong place, versus a
-            genuinely warped one &mdash; why a stuck run cannot stop itself, and what would fix it.
-          </p>
-        </a>
-        <a class="subpage-card" href="bcdi.html">
-          <span class="subpage-card__title">How BCDI works &rarr;</span>
-          <p class="subpage-card__desc">
-            The phase problem, why a Bragg peak encodes strain, why three peaks are the minimum, the
-            twin ambiguity, and what molecular dynamics adds to the loop.
-          </p>
-        </a>
-        <a class="subpage-card" href="reading-figures.html">
-          <span class="subpage-card__title">How to read the figures &rarr;</span>
-          <p class="subpage-card__desc">
-            A panel-by-panel guide to the diagnostic sheets, including which single panel decides
-            whether a run worked.
-          </p>
-        </a>
-      </div>
-
-      <h3 class="sub">The eight runs shown above, and every figure for each</h3>
+      <h2><span class="section-number">V.</span>Every run, every figure</h2>
+      <p>
+        The eight reconstructions above, scored. Recall is at the loose 2.023&nbsp;&Aring;
+        tolerance, as archived &mdash; read it alongside &chi;&sup2;/floor, not instead of it.
+      </p>
       <div class="table-wrap">
         <table class="data">
-          <caption>
-            Recall is at the loose 2.023&nbsp;&Aring; tolerance, as archived &mdash; read it alongside
-            &chi;&sup2;/floor, not instead of it.
-          </caption>
+          <caption>The eight runs featured above, most accurate first within each group.</caption>
           <thead>
             <tr>
               <th>Run</th><th class="num">Atoms</th><th class="num">Count err</th>
@@ -519,14 +524,14 @@
               <td>representative 25k stall</td>
             </tr>
             <tr class="row-bad">
-              <td><code>lib_5k_g03_L0</code></td><td class="num">4,828</td>
-              <td class="num">&minus;7</td><td class="num">1.4821 &Aring;</td><td class="num">1478</td>
-              <td><strong>undamaged</strong>, and still failed</td>
-            </tr>
-            <tr class="row-bad">
               <td><code>10k_s14</code></td><td class="num">9,334</td>
               <td class="num">&minus;118</td><td class="num">1.4187 &Aring;</td><td class="num">1204</td>
               <td>failed half of the seed pair</td>
+            </tr>
+            <tr class="row-bad">
+              <td><code>lib_5k_g03_L0</code></td><td class="num">4,828</td>
+              <td class="num">&minus;7</td><td class="num">1.4821 &Aring;</td><td class="num">1478</td>
+              <td><strong>undamaged</strong>, and still failed</td>
             </tr>
             <tr class="row-bad">
               <td><code>25kD_s42</code></td><td class="num">24,800</td>
