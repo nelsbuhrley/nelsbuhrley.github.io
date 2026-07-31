@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How BCDI works &mdash; IFE Symposium 2026</title>
+    <meta name="author" content="Nels Buhrley">
+    <meta name="description" content="A primer on Bragg coherent diffractive imaging: the phase problem, why a Bragg peak encodes strain, why three peaks are the minimum, and what molecular dynamics adds to a phase-retrieval loop.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/ui/css/menu.css">
+    <script src="/ui/js/site-menu.js"></script>
+  </head>
+  <body>
+    <header class="page-header">
+      <p class="page-header__eyebrow">IFE Symposium 2026 &middot; Supporting material</p>
+      <h1 class="project-name">How BCDI works</h1>
+      <p class="project-tagline">From a diffraction pattern to individual atoms</p>
+      <nav class="page-header__links">
+        <a class="btn-pill" href="index.html">&larr; Poster &amp; gallery</a>
+        <a class="btn-pill" href="reading-figures.html">Reading the figures</a>
+        <a class="btn-pill" href="convergence.html">Convergence &amp; failure</a>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <p class="breadcrumb"><a href="index.html">IFE Symposium 2026</a> &rsaquo; How BCDI works</p>
+
+      <p class="lede">
+        Bragg coherent diffractive imaging is a lensless microscope. There is no objective, no
+        eyepiece and no image sensor recording an image &mdash; only a detector counting photons far
+        from the sample, and a computation that turns those counts back into a picture. This page
+        explains what the measurement contains, what it is missing, and how that missing piece gets
+        supplied.
+      </p>
+
+      <h2><span class="section-number">1.</span>The measurement</h2>
+      <p>
+        A coherent X-ray beam illuminates a single crystalline grain a few tens of nanometres across.
+        Most of the beam passes through. A small fraction scatters, and because the grain is
+        crystalline, that scattering is concentrated into sharp <strong>Bragg peaks</strong> at
+        specific angles set by the lattice spacing.
+      </p>
+      <p>
+        Point a detector at one of those peaks and rock the sample through it, and you record not a
+        single spot but a three-dimensional volume of intensity surrounding the peak. That
+        surrounding structure &mdash; the fringes and speckle around the bright centre &mdash; is
+        where the information about the individual grain lives. A perfect infinite crystal would give
+        a mathematical point; a finite, imperfect, strained grain smears that point into a pattern
+        that encodes its shape and its distortions.
+      </p>
+      <p>
+        The poster's Fig.&nbsp;1 shows the geometry and Fig.&nbsp;2 shows three such measured volumes
+        from a tungsten grain. Every reconstruction on this site was given exactly that: three
+        intensity volumes and nothing else.
+      </p>
+
+      <h2><span class="section-number">2.</span>The phase problem</h2>
+      <p>
+        An X-ray detector counts photons. What it records at each pixel is proportional to
+        <code>|F(q)|&sup2;</code> &mdash; the squared magnitude of the scattered wave. But the wave
+        that arrived was complex: it had a magnitude <em>and</em> a phase, and the phase is destroyed
+        the moment the photon is counted.
+      </p>
+      <p>
+        This matters because the phase is not a minor detail. The scattered amplitude from a set of
+        atoms at positions <code>r<sub>j</sub></code> is
+      </p>
+      <pre><code>F(q) = &Sigma;<sub>j</sub> exp(&minus;2&pi;i q&middot;r<sub>j</sub>)</code></pre>
+      <p>
+        and inverting that sum to recover the <code>r<sub>j</sub></code> requires the full complex
+        <code>F</code>. Roughly half the information you need was thrown away by the detector. This
+        is <strong>the phase problem</strong>, and every technique in coherent imaging is, at bottom,
+        a strategy for getting the phase back.
+      </p>
+      <div class="callout">
+        <span class="callout__title">Why it is solvable at all</span>
+        <p>
+          Because the measurement is <em>oversampled</em>. The grain occupies a finite region of
+          space and is surrounded by vacuum, and that constraint &mdash; knowing that the object is
+          zero outside some boundary &mdash; is enough information to pin down the phase in most
+          cases. Iterative algorithms exploit this by bouncing back and forth between real space,
+          where they enforce the boundary, and reciprocal space, where they enforce the measured
+          magnitudes. The classic version is <strong>error reduction</strong>, with hybrid
+          input&ndash;output and shrinkwrap as the standard improvements.
+        </p>
+      </div>
+
+      <h2><span class="section-number">3.</span>What a Bragg peak knows about strain</h2>
+      <p>
+        Here is the property that makes <em>Bragg</em> CDI different from ordinary CDI, and it is
+        worth following the algebra because it explains why three peaks are needed.
+      </p>
+      <p>
+        Split each atom's position into where it would sit in a perfect lattice,
+        <code>R<sub>j</sub></code>, plus how far it has actually been displaced,
+        <code>u<sub>j</sub></code>:
+      </p>
+      <pre><code>r<sub>j</sub> = R<sub>j</sub> + u<sub>j</sub></code></pre>
+      <p>
+        Now evaluate <code>F</code> near a Bragg peak <code>g</code>. The ideal-lattice part
+        contributes the peak itself, and what is left over &mdash; the phase of the reconstructed
+        complex density &mdash; is
+      </p>
+      <pre><code>&phi;(r) = &minus;2&pi; g&middot;u(r)</code></pre>
+      <p>
+        So the recovered phase at each point is <strong>one projection of the displacement vector
+        onto the scattering vector</strong>. A single Bragg peak does not measure displacement; it
+        measures the single component of displacement along its own direction. The other two
+        components are invisible to it.
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__title">Three peaks, and they must not be coplanar</span>
+        <p>
+          Displacement is a 3-vector, so you need three linearly independent <code>g</code> to
+          recover it. If the three chosen peaks happen to be coplanar, one direction of displacement
+          is <em>never measured</em> &mdash; and no amount of extra iterations, better potentials or
+          finer sampling can recover it, because the information was never collected.
+        </p>
+        <p>
+          The pipeline therefore checks this before it starts, computing the normalised determinant
+          of the three normalised <code>g</code> vectors: 1.0 means mutually orthogonal, 0.0 means
+          coplanar, and anything below 0.3 is rejected outright. The three
+          <span class="nw">{110}</span> peaks used throughout this work &mdash;
+          (1,1,0), (1,0,1) and (0,1,1) &mdash; score <strong>0.707</strong>. Comfortably
+          independent. You can read that number printed on the measurement panel of every diagnostic
+          sheet in the gallery.
+        </p>
+      </div>
+
+      <h2><span class="section-number">4.</span>Why tungsten hides half its peaks</h2>
+      <p>
+        Tungsten is body-centred cubic with a lattice parameter of 3.1652&nbsp;&Aring;, which means
+        two atoms per conventional cubic cell rather than one. Those two atoms interfere, and for
+        some reflections they interfere destructively and cancel exactly. The surviving condition is
+        simple:
+      </p>
+      <pre><code>h + k + l  must be EVEN</code></pre>
+      <p>
+        So <span class="nw">{110}</span>,
+        <span class="nw">{200}</span> and
+        <span class="nw">{211}</span> are available, while
+        <span class="nw">{111}</span> is <strong>forbidden</strong> &mdash; it is
+        extinct in BCC. This is worth stating explicitly because
+        <span class="nw">{111}</span> is the workhorse reflection of face-centred
+        cubic materials like aluminium, copper and gold, which is most of the published BCDI
+        literature. Moving to a BCC first-wall material means the familiar peak set is simply not
+        there, and <span class="nw">{110}</span> takes its place. The archive's peak
+        selection rule is unit-tested against the structure factor of the BCC motif rather than
+        against a hard-coded list, so a mistake here would fail the test suite rather than quietly
+        produce a reconstruction of nothing.
+      </p>
+
+      <h2><span class="section-number">5.</span>The twin ambiguity</h2>
+      <p>
+        One more thing intensity cannot tell you. Because only <code>|F|&sup2;</code> is measured,
+        an object and its point-inverted, complex-conjugated copy produce
+        <em>exactly the same diffraction pattern</em>. They are indistinguishable in principle, not
+        merely in practice, and a phase-retrieval algorithm is free to return either. This is the
+        <strong>twin</strong>, and it is a standard feature of the field rather than a bug in any
+        particular code.
+      </p>
+      <p>
+        For an atomic model the consequence is concrete: a reconstruction may come out correct but
+        inverted through its own centre. If you then score it against the truth without checking,
+        you compare a structure against a mirror of itself and conclude, wrongly, that the
+        reconstruction failed &mdash; two clean but oppositely-oriented atom clouds, drawn on top of
+        each other, look like noise.
+      </p>
+      <div class="callout callout--good">
+        <span class="callout__title">How the figures handle it</span>
+        <p>
+          Every score and every atom overlay on this site is <strong>twin-resolved</strong>: both
+          signs are tested, the better one is used consistently for the numbers <em>and</em> for the
+          drawing, and the sign that was chosen is printed in the quality panel of each diagnostic
+          sheet as <code>twin sign used</code>. If you see that line read <code>-1</code>, the
+          reconstruction came back inverted and was flipped for display.
+        </p>
+      </div>
+
+      <h2><span class="section-number">6.</span>Where conventional phase retrieval stops</h2>
+      <p>
+        Run error reduction, hybrid input&ndash;output and shrinkwrap on the three measured volumes
+        and you get a genuine three-dimensional reconstruction &mdash; a complex electron density
+        whose magnitude gives the grain's shape and whose phase gives the displacement field. The
+        poster's Fig.&nbsp;3 shows one. Every diagnostic sheet in the gallery shows one, in the
+        panel labelled <code>PHASED |rho|</code>.
+      </p>
+      <p>
+        And it is a blob. Recognisably the right shape, useful for measuring average strain, and
+        nowhere near atomic resolution. Two things limit it. First, resolution in a diffraction
+        experiment is set by how far from the Bragg peak you collected signal, and the useful signal
+        falls off quickly. Second, the algorithm is unconstrained between voxels: it will happily
+        return a smooth density that no arrangement of actual atoms could produce.
+      </p>
+      <p>
+        Error reduction is also, mathematically, a form of gradient descent, which means it gets
+        stuck in local minima. Hybrid input&ndash;output and shrinkwrap help it escape, but only so
+        far.
+      </p>
+
+      <h2><span class="section-number">7.</span>PRAMMol: adding physics as the missing constraint</h2>
+      <p>
+        The insight behind PRAMMol &mdash; <em>Phase Retrieval with Atomic Modeling and Molecular
+        Dynamics</em> &mdash; is that we know something about tungsten that the phase-retrieval
+        algorithm does not. Real tungsten is made of discrete atoms. Those atoms interact through a
+        known interatomic potential. They cannot overlap, cannot sit at arbitrary spacings, and
+        cannot occupy energetically impossible configurations.
+      </p>
+      <p>
+        Feeding that knowledge into the loop shrinks the search space enormously. Instead of
+        searching over all possible smooth densities, the solver searches over
+        <em>physically realisable atomic configurations</em>. The loop, drawn as Fig.&nbsp;4 on the
+        poster:
+      </p>
+      <ol class="step-list">
+        <li>
+          <strong>Phase.</strong> Conventional error reduction on the measured intensities yields a
+          low-resolution complex density and, from it, a support &mdash; the region the grain
+          occupies.
+        </li>
+        <li>
+          <strong>Seed.</strong> Fill that support with an ideal BCC tungsten lattice. This is the
+          starting model: right material, right shape, right lattice, and completely wrong in every
+          detail that matters. It contains no defects at all.
+        </li>
+        <li>
+          <strong>Simulate.</strong> Compute the diffraction the current model <em>would</em>
+          produce, and compare it against what was actually measured.
+        </li>
+        <li>
+          <strong>Move.</strong> Shift atoms to reduce the mismatch, following the gradient of the
+          fit with respect to every atomic coordinate.
+        </li>
+        <li>
+          <strong>Relax.</strong> Run molecular dynamics to pull the model back onto a physically
+          possible configuration. Anything the fit step proposed that tungsten would not tolerate
+          gets undone here.
+        </li>
+        <li>
+          <strong>Add and remove.</strong> Propose new atoms where the residual suggests missing
+          density, delete atoms that are not earning their place, and keep whichever changes improve
+          the fit. <em>This is the step that makes the atom count a free parameter</em>, and it is
+          what lets the method find a vacancy or an interstitial rather than assuming a perfect
+          lattice.
+        </li>
+        <li>
+          <strong>Repeat</strong> until the fit stops improving.
+        </li>
+      </ol>
+      <p>
+        Step 6 is the part with no analogue in conventional phase retrieval, and it is why the method
+        can report &ldquo;this grain has 26,067 atoms&rdquo; rather than &ldquo;this grain has
+        roughly this much density&rdquo;. It is also the step that misbehaves when a run fails:
+        a stuck reconstruction adds and removes atoms forever without improving.
+      </p>
+
+      <h2><span class="section-number">8.</span>The noise floor, and why a bare R-factor means nothing</h2>
+      <p>
+        The natural way to judge a reconstruction is to ask how well its computed diffraction matches
+        the measurement. The usual summary is the <strong>R-factor</strong> &mdash; roughly, mean
+        absolute disagreement divided by mean intensity. Lower is better, and zero would be perfect.
+      </p>
+      <p>
+        Except that zero is not achievable, and not even desirable. The measurement contains photon
+        shot noise. Feed the <em>exact true structure</em> back through the same comparison and it
+        does not score zero either &mdash; it scores whatever the noise happens to be. That value is
+        the <strong>noise floor</strong>: the residual you would get if you already knew the answer
+        perfectly.
+      </p>
+      <div class="callout">
+        <span class="callout__title">The one number to read</span>
+        <p>
+          Every run on this site reports <code>&chi;&sup2;/floor</code>: its own goodness of fit
+          divided by the goodness of fit achieved by the truth. A value near 1 means the model
+          explains everything in the data except the shot noise &mdash; there is no structure left
+          to find. A value of 1,000 means the model is missing something real and large.
+        </p>
+        <p>
+          The crucial property is that <strong>the floor can be estimated without knowing the
+          answer</strong>, because photon statistics are a property of the measurement rather than of
+          the sample. That is what makes this a usable criterion on real experimental data, and it is
+          the basis of the truth-free run selection described on the
+          <a href="convergence.html">convergence page</a>.
+        </p>
+        <p class="footnote">
+          A fit that lands <em>below</em> its floor is over-fitting &mdash; absorbing shot noise into
+          atomic positions &mdash; and the pipeline flags that case separately rather than
+          celebrating it.
+        </p>
+      </div>
+
+      <h2>Where to go next</h2>
+      <div class="subpage-grid">
+        <a class="subpage-card" href="reading-figures.html">
+          <span class="subpage-card__title">How to read these figures &rarr;</span>
+          <p class="subpage-card__desc">
+            Every panel of the diagnostic sheets, explained &mdash; including which one to look at
+            first if you only have ten seconds.
+          </p>
+        </a>
+        <a class="subpage-card" href="convergence.html">
+          <span class="subpage-card__title">Convergence &amp; failure &rarr;</span>
+          <p class="subpage-card__desc">
+            What convergence looks like, the two distinct ways these reconstructions fail, and the
+            statistics over all 513 scored runs.
+          </p>
+        </a>
+        <a class="subpage-card" href="index.html">
+          <span class="subpage-card__title">Back to the gallery &rarr;</span>
+          <p class="subpage-card__desc">
+            Eight reconstructions in detail: four that reached the noise floor and four that did not.
+          </p>
+        </a>
+      </div>
+
+      <h2>References</h2>
+      <ol class="footnote">
+        <li>Robinson, I. &amp; Harder, R. <em>Nature Materials</em> <strong>8</strong>, 291&ndash;298 (2009).</li>
+        <li>Karpov, D. &amp; Fohtung, E. <em>Journal of Applied Physics</em> <strong>125</strong>, 121101 (2019).</li>
+        <li>Meziere, J. <em>et al.</em> <em>npj Computational Materials</em> <strong>10</strong>, 167 (2024).</li>
+        <li>Fienup, J. R. <em>Applied Optics</em> <strong>21</strong>, 2758&ndash;2769 (1982).</li>
+      </ol>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Nels Buhrley &middot; <a href="https://nelsbuhrley.github.io">nelsbuhrley.github.io</a></p>
+      <p class="site-footer__ai">This website was built with the assistance of Claude, an AI assistant by Anthropic.</p>
+    </footer>
+    <script src="lightbox.js"></script>
+  </body>
+</html>
