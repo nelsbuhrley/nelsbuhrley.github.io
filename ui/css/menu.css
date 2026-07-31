@@ -1,0 +1,195 @@
+.corner-menu {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 60;
+    display: grid;
+    justify-items: end;
+}
+
+.corner-menu-toggle {
+    width: auto;
+    min-width: 5.2rem;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.42rem 0.6rem;
+    border: 1px solid color-mix(in srgb, var(--line-strong) 82%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 20px rgba(10, 26, 42, 0.14);
+    color: var(--text-muted);
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    opacity: 0.84;
+    transition:
+        opacity 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease,
+        transform 180ms ease;
+}
+
+.corner-menu-toggle:hover,
+.corner-menu-toggle:focus-visible,
+.corner-menu[data-pinned="true"] .corner-menu-toggle {
+    opacity: 1;
+    color: var(--text);
+    border-color: var(--brand-2);
+    transform: translateY(-1px);
+}
+
+.corner-menu-toggle:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--brand) 75%, white 25%);
+    outline-offset: 2px;
+}
+
+.corner-menu-panel {
+    position: absolute;
+    top: calc(100% + 2px);
+    right: 0;
+    width: min(330px, calc(100vw - 20px));
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    padding: 0.78rem;
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-card);
+    transform-origin: top right;
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: min(calc(100vh - 54px), 760px);
+    overflow-y: auto;
+}
+
+.corner-menu[data-pinned="true"] .corner-menu-panel {
+    display: flex;
+}
+
+.corner-menu-section--settings {
+    position: sticky;
+    top: -0.78rem;
+    z-index: 1;
+    background: color-mix(in srgb, var(--surface) 95%, transparent);
+    margin: -0.78rem -0.78rem 0;
+    padding: 0.72rem 0.78rem 0.64rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.corner-menu-section--settings .corner-menu-title {
+    margin-bottom: 0.42rem;
+}
+
+.corner-menu-section + .corner-menu-section {
+    margin-top: 0.9rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--line);
+}
+
+.corner-menu-title {
+    margin: 0 0 0.45rem;
+    color: var(--text-muted);
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.corner-menu-nav {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.24rem;
+}
+
+.corner-menu-nav a {
+    display: block;
+    padding: 0.38rem 0.55rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.88rem;
+    line-height: 1.3;
+}
+
+.corner-menu-nav a:hover,
+.corner-menu-nav a:focus-visible,
+.corner-menu-nav a.is-active {
+    background: color-mix(in srgb, var(--surface-2) 74%, var(--brand-ink));
+    border-color: color-mix(in srgb, var(--brand-2) 35%, transparent);
+    color: var(--link-hover);
+}
+
+.corner-menu-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.7rem;
+}
+
+.corner-menu-label {
+    color: var(--text);
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+
+.corner-menu select {
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--text);
+    border-radius: 8px;
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.83rem;
+    font-weight: 600;
+    padding: 0.28rem 0.5rem;
+    cursor: pointer;
+}
+
+.corner-menu select:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--brand) 75%, white 25%);
+    outline-offset: 1px;
+}
+
+@media (max-width: 900px) {
+    .corner-menu {
+        top: 10px;
+        right: 10px;
+    }
+
+    .corner-menu-toggle {
+        font-size: 0.72rem;
+        padding: 0.38rem 0.52rem;
+    }
+
+    .corner-menu-panel {
+        width: min(294px, calc(100vw - 16px));
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .corner-menu-toggle,
+    .corner-menu-panel {
+        animation: cornerMenuRise 380ms ease-out both;
+    }
+}
+
+@keyframes cornerMenuRise {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
