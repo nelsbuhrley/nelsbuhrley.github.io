@@ -48,6 +48,10 @@ FEATURED = [
     ("lib_5k_g15_L3deep_E1000_s2",         "lib-5k-g15-deep",     CORE + ["damage_slabs"]),
     ("lib_5k_g03_L0",                      "lib-5k-g03-pristine", CORE),
     ("large/lgE_25k_g01_L1_E150_s2",       "lg-25k-g01-e150",     CORE),
+    # the 800 eV rung of grain g09's dose ladder: 49 vacant sites / 40 off-lattice atoms
+    # measured against that grain's own pristine control, and the most heavily damaged
+    # 22k reconstruction in the archive that still reached the noise floor.
+    ("large/lgE_25k_g09_L3_E800_s2",       "lg-25k-g09-e800",     CORE + ["defect_slices"]),
     ("25kD_s42",                           "25kD-s42",            CORE + ["defect_slices"]),
 ]
 
@@ -71,6 +75,7 @@ VIDEOS = [  # (run dir, output name)
     ("he/25k/25k_g04_FLU30x100_focus_s2", "he-25k-g04-flu30-stage"),
     ("25kD_s42",                          "25kD-s42-stage"),
     ("lib_5k_g15_L3deep_E1000_s2",        "lib-5k-g15-deep-stage"),
+    ("large/lgE_25k_g09_L3_E800_s2",       "lg-25k-g09-e800-stage"),
 ]
 
 DASHBOARDS = [  # (run dir, output name) -- source is dashboard.gif
@@ -79,6 +84,7 @@ DASHBOARDS = [  # (run dir, output name) -- source is dashboard.gif
     ("he/25k/25k_g04_FLU30x100_focus_s2", "he-25k-g04-flu30-dashboard"),
     ("lib_5k_g15_L3deep_E1000_s2",        "lib-5k-g15-deep-dashboard"),
     ("25kD_s42",                          "25kD-s42-dashboard"),
+    ("large/lgE_25k_g09_L3_E800_s2",       "lg-25k-g09-e800-dashboard"),
 ]
 
 # ------------------------------------------------------------------- utilities

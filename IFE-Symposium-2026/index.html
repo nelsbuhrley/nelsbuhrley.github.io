@@ -196,11 +196,37 @@
 
       <h3 class="sub">26,067 atoms, recovered exactly</h3>
       <p>
-        The best result in the archive: a helium-irradiated grain &mdash; 30 ions at 100&nbsp;eV driven
-        into one 6&nbsp;&Aring; spot to build a bubble &mdash; reconstructed with a count error of
-        <strong>zero</strong> and a mean position error of <strong>0.0008&nbsp;&Aring;</strong>, about
-        one three-thousandth of a tungsten bond.
+        The largest exact recovery in the archive: count error <strong>zero</strong> out of 26,067
+        atoms, mean position error <strong>0.0008&nbsp;&Aring;</strong> &mdash; about one
+        three-thousandth of a tungsten bond.
       </p>
+      <div class="callout callout--warn">
+        <span class="callout__title">This grain is essentially undamaged, and that is a result in itself</span>
+        <p>
+          The run was set up as a helium-implantation cell: 30 ions at 100&nbsp;eV fired into one
+          6&nbsp;&Aring; spot, intended to nucleate a bubble. Checking the molecular dynamics
+          afterwards, it did not work. <strong>Zero of the 30 helium atoms are present</strong> in the
+          final state, none were sputtered, and the grain's bounding box is unchanged. Against its own
+          pristine control the cell shows 7 vacant lattice sites and 7 off-lattice atoms &mdash;
+          surface-level, and no bulk damage.
+        </p>
+        <p>
+          That is not a broken simulation, it is physics. Helium&rarr;tungsten collisions transfer at
+          most 8.34&nbsp;% of the ion's energy, so a 100&nbsp;eV ion delivers at most 8.3&nbsp;eV
+          against tungsten's ~90&nbsp;eV displacement threshold &mdash; <strong>11&times; too weak to
+          move one atom</strong>. Raising the energy does not rescue it either: at 1600 and
+          3200&nbsp;eV, zero helium embedded in any of the six cells tried, because the stopping
+          distance (~1,060&nbsp;&Aring; at 1600&nbsp;eV) is roughly ten times the grain's ~110&nbsp;&Aring;
+          chord and the ion simply passes through. The window is shut from both sides.
+        </p>
+        <p>
+          So read this pair of animations as <em>the cleanest large reconstruction in the archive</em>,
+          not as damage recovery. For real damage at this size, see the cascade below &mdash; and note
+          that single-ion implantation is the wrong model for alpha damage in a nanograin anyway. Real
+          alpha damage is a fluence effect: helium accumulates and bubbles grow by punching out
+          dislocation loops, which is what the zero-energy accumulation recipe reproduces.
+        </p>
+      </div>
       <div class="fig-pair">
         <figure class="fig">
           <div class="fig__mat">
@@ -211,8 +237,8 @@
           </div>
           <figcaption>
             <span class="fig__label">a-CNA</span>
-            <code>25k_g04_FLU30x100_focus_s2</code>. The amber region is the helium bubble damage
-            &mdash; found from diffraction intensities alone.
+            <code>25k_g04_FLU30x100_focus_s2</code>. Almost entirely blue: this grain has no bulk
+            damage to find, which is exactly why it reconstructs so cleanly.
           </figcaption>
         </figure>
         <figure class="fig">
@@ -229,6 +255,97 @@
           </figcaption>
         </figure>
       </div>
+
+      <h3 class="sub">22,000 atoms with real cascade damage</h3>
+      <p>
+        For damage that actually exists at this scale the primary knock-on atom has to be a
+        <em>tungsten</em> atom, not a helium ion &mdash; same mass, so no 8.34&nbsp;% transfer penalty,
+        and a few-hundred-eV recoil clears the ~90&nbsp;eV displacement threshold easily. Grain g09 was
+        run as a complete dose ladder, and measuring each truth against that grain's own pristine
+        control gives a clean monotone trend:
+      </p>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>
+            One 22,000-atom grain, four doses. Damage counted against this grain's own pristine
+            control at tungsten's Wigner&ndash;Seitz radius (1.371&nbsp;&Aring;).
+          </caption>
+          <thead>
+            <tr>
+              <th>Cascade</th><th class="num">Vacant sites</th><th class="num">Off-lattice atoms</th>
+              <th class="num">Atoms lost</th><th class="num">&chi;&sup2;/floor</th><th class="num">Pos. error</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-bad">
+              <td>none &mdash; pristine control</td><td class="num">0</td><td class="num">0</td>
+              <td class="num">0</td><td class="num">136.6</td><td class="num">0.6994 &Aring;</td>
+            </tr>
+            <tr class="row-good">
+              <td>150 eV PKA</td><td class="num">23</td><td class="num">23</td>
+              <td class="num">0</td><td class="num">2.79</td><td class="num">0.0079 &Aring;</td>
+            </tr>
+            <tr class="row-good">
+              <td>400 eV PKA</td><td class="num">33</td><td class="num">30</td>
+              <td class="num">&minus;3</td><td class="num">2.52</td><td class="num">0.0050 &Aring;</td>
+            </tr>
+            <tr class="row-good">
+              <td><strong>800 eV PKA</strong></td><td class="num"><strong>49</strong></td><td class="num">40</td>
+              <td class="num">&minus;9</td><td class="num">4.27</td><td class="num">0.0138 &Aring;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Two things to take from that table. Damage rises with energy exactly as you would expect
+        &mdash; 23, 33, 49 vacant sites &mdash; and <strong>every damaged rung converged while the
+        undamaged control failed outright</strong>, at &chi;&sup2;/floor 137 and a position error of
+        0.70&nbsp;&Aring;. Same grain, same code, same peaks. The videos below are the 800&nbsp;eV rung,
+        the most heavily damaged 22,000-atom reconstruction in the archive that reached the noise floor.
+      </p>
+      <div class="fig-pair">
+        <figure class="fig">
+          <div class="fig__mat">
+            <video controls preload="none" playsinline poster="assets/video/lg-25k-g09-e800-stage-poster.webp">
+              <source src="assets/video/lg-25k-g09-e800-stage.mp4" type="video/mp4">
+              <a href="assets/video/lg-25k-g09-e800-stage.mp4">Download the animation</a>.
+            </video>
+          </div>
+          <figcaption>
+            <span class="fig__label">a-CNA</span>
+            <code>lgE_25k_g09_L3_E800_s2</code>, 22,007 atoms. The amber atoms here <em>are</em> the
+            cascade &mdash; interior sites whose coordination is no longer BCC.
+          </figcaption>
+        </figure>
+        <figure class="fig">
+          <div class="fig__mat">
+            <video controls preload="none" playsinline poster="assets/video/lg-25k-g09-e800-dashboard-poster.webp">
+              <source src="assets/video/lg-25k-g09-e800-dashboard.mp4" type="video/mp4">
+              <a href="assets/video/lg-25k-g09-e800-dashboard.mp4">Download the animation</a>.
+            </video>
+          </div>
+          <figcaption>
+            <span class="fig__label">Dashboard</span>
+            &chi;&sup2;/floor 4.27, position error 0.0138&nbsp;&Aring;, count error +6 of 22,007. This
+            is the result the technique is actually for: damage present, damage found.
+          </figcaption>
+        </figure>
+      </div>
+      <figure class="fig">
+        <a class="fig__mat" href="assets/runs/lg-25k-g09-e800/defect_slices.webp">
+          <img src="assets/runs/lg-25k-g09-e800/defect_slices.webp"
+               alt="Thin atomic slabs through the truth and the reconstruction of the 800 eV cascade cell, with non-BCC interior atoms in red, beside a per-atom position-error map."
+               loading="lazy">
+        </a>
+        <figcaption>
+          <span class="fig__label">a-CNA, as a still</span>
+          The same classification, frozen and cut open: truth, reconstruction, per-atom error. Light
+          blue is bulk BCC, red is interior non-BCC &mdash; the cascade &mdash; and grey is the surface
+          shell within 3.5&nbsp;&Aring; of the boundary, faded because surface atoms have odd
+          coordination for trivial reasons. The classifier agrees with OVITO's on all 88,833 atoms
+          tested.
+        </figcaption>
+      </figure>
 
       <h3 class="sub">A 1,000&nbsp;eV cascade, seen atom by atom</h3>
       <p>
@@ -264,20 +381,6 @@
           </figcaption>
         </figure>
       </div>
-      <figure class="fig">
-        <a class="fig__mat" href="assets/runs/he-25k-g04-flu30/defect_slices.webp">
-          <img src="assets/runs/he-25k-g04-flu30/defect_slices.webp"
-               alt="Thin atomic slabs through the truth and the reconstruction with defect atoms highlighted in red, beside a per-atom position-error map."
-               loading="lazy">
-        </a>
-        <figcaption>
-          <span class="fig__label">a-CNA, as a still</span>
-          The same classification, frozen and cut open: truth, reconstruction, per-atom error. Light
-          blue is bulk BCC, red is interior non-BCC (the damage), grey is the surface shell within
-          3.5&nbsp;&Aring; of the boundary &mdash; faded because surface atoms have odd coordination
-          for trivial reasons. The classifier agrees with OVITO's on all 88,833 atoms tested.
-        </figcaption>
-      </figure>
 
       <h3 class="sub">And a runaway</h3>
       <p>
@@ -485,12 +588,12 @@
 
       <h2><span class="section-number">V.</span>Every run, every figure</h2>
       <p>
-        The eight reconstructions above, scored. Recall is at the loose 2.023&nbsp;&Aring;
+        The nine reconstructions above, scored. Recall is at the loose 2.023&nbsp;&Aring;
         tolerance, as archived &mdash; read it alongside &chi;&sup2;/floor, not instead of it.
       </p>
       <div class="table-wrap">
         <table class="data">
-          <caption>The eight runs featured above, most accurate first within each group.</caption>
+          <caption>The nine runs featured above, most accurate first within each group.</caption>
           <thead>
             <tr>
               <th>Run</th><th class="num">Atoms</th><th class="num">Count err</th>
@@ -501,7 +604,7 @@
             <tr class="row-good">
               <td><code>he/25k/…g04_FLU30x100_focus_s2</code></td><td class="num">26,067</td>
               <td class="num">0</td><td class="num">0.0008 &Aring;</td><td class="num">1.12</td>
-              <td>largest exact recovery</td>
+              <td>largest exact recovery; <strong>no bulk damage</strong></td>
             </tr>
             <tr class="row-good">
               <td><code>lib_5k_g15_L3deep_E1000_s2</code></td><td class="num">6,136</td>
@@ -518,10 +621,15 @@
               <td class="num">0</td><td class="num">0.0027 &Aring;</td><td class="num">2.18</td>
               <td>a hard grain that landed</td>
             </tr>
+            <tr class="row-good">
+              <td><code>large/lgE_25k_g09_L3_E800_s2</code></td><td class="num">22,007</td>
+              <td class="num">+6</td><td class="num">0.0138 &Aring;</td><td class="num">4.27</td>
+              <td>800&nbsp;eV cascade; 49 vacant sites in the truth</td>
+            </tr>
             <tr class="row-bad">
               <td><code>he/25k/25k_g01_E3200x3_spread_s1</code></td><td class="num">21,845</td>
               <td class="num">&minus;106</td><td class="num">1.3789 &Aring;</td><td class="num">1074</td>
-              <td>representative 25k stall</td>
+              <td>representative 25k stall (also no bulk damage)</td>
             </tr>
             <tr class="row-bad">
               <td><code>10k_s14</code></td><td class="num">9,334</td>
@@ -543,7 +651,7 @@
       </div>
 
       <details class="more">
-        <summary>Open the full diagnostic figure set for these eight runs</summary>
+        <summary>Open the full diagnostic figure set for these nine runs</summary>
         <div class="more__body">
           <p class="footnote">
             Each run's nine-panel <code>summary</code> sheet shows the whole pipeline on one page; the
@@ -551,7 +659,7 @@
             mean &rarr;</a> Support-oversizing figures are deliberately not published.
           </p>
 
-          <h3 class="sub"><code>he/25k/25k_g04_FLU30x100_focus_s2</code> &mdash; converged, 26,067 atoms</h3>
+          <h3 class="sub"><code>he/25k/25k_g04_FLU30x100_focus_s2</code> &mdash; converged, 26,067 atoms, no bulk damage</h3>
           <p class="footnote">
             <a href="assets/runs/he-25k-g04-flu30/process_08_summary.webp">summary</a> &middot;
             <a href="assets/runs/he-25k-g04-flu30/process_07_convergence.webp">convergence</a> &middot;
@@ -622,6 +730,24 @@
             </figure>
           </div>
 
+          <h3 class="sub"><code>large/lgE_25k_g09_L3_E800_s2</code> &mdash; converged, 800&nbsp;eV cascade</h3>
+          <p class="footnote">
+            <a href="assets/runs/lg-25k-g09-e800/process_08_summary.webp">summary</a> &middot;
+            <a href="assets/runs/lg-25k-g09-e800/process_07_convergence.webp">convergence</a> &middot;
+            <a href="assets/runs/lg-25k-g09-e800/process_01_diffraction.webp">measurement</a> &middot;
+            <a href="assets/runs/lg-25k-g09-e800/process_04_phasing.webp">phasing</a> &middot;
+            <a href="assets/runs/lg-25k-g09-e800/process_06_seed.webp">seed</a> &middot;
+            <a href="assets/runs/lg-25k-g09-e800/process_09_residual_field.webp">residual field</a> &middot;
+            <a href="assets/runs/lg-25k-g09-e800/defect_slices.webp">atom slabs</a>
+          </p>
+          <figure class="fig">
+            <a class="fig__mat" href="assets/runs/lg-25k-g09-e800/process_08_summary.webp">
+              <img src="assets/runs/lg-25k-g09-e800/process_08_summary.webp"
+                   alt="Nine-panel diagnostic sheet for the converged 800 eV cascade reconstruction." loading="lazy">
+            </a>
+            <figcaption>22,007 atoms against 49 vacant lattice sites and 40 off-lattice atoms in the truth &mdash; the most damaged 22k run that reached the floor.</figcaption>
+          </figure>
+
           <h3 class="sub"><code>large/lgE_25k_g01_L1_E150_s2</code> &mdash; converged on a hard grain</h3>
           <p class="footnote">
             <a href="assets/runs/lg-25k-g01-e150/process_08_summary.webp">summary</a> &middot;
@@ -633,6 +759,10 @@
           </p>
 
           <h3 class="sub"><code>he/25k/25k_g01_E3200x3_spread_s1</code> &mdash; a representative 25k stall</h3>
+          <p class="footnote">
+            Another helium cell that embedded nothing &mdash; 0 of 3 ions retained, 4 vacant sites
+            against its pristine control. Its failure is a search failure, not a damage effect.
+          </p>
           <p class="footnote">
             <a href="assets/runs/he-25k-g01-e3200/process_08_summary.webp">summary</a> &middot;
             <a href="assets/runs/he-25k-g01-e3200/process_07_convergence.webp">convergence</a> &middot;
