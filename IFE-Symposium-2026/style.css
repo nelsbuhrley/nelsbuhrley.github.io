@@ -233,10 +233,10 @@ body {
 
 .logo-strip {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 1.5rem;
     margin: 1.6rem 0 0.4rem;
     padding: 1.4rem 1rem;
     border: 1px solid var(--line);
@@ -245,23 +245,8 @@ body {
 }
 
 .logo-strip img {
-    height: 74px;
+    height: 64px;
     width: auto;
-}
-
-.logo-figure {
-    margin: 0;
-    text-align: center;
-}
-
-.logo-figure figcaption {
-    margin-top: 0.35rem;
-    color: #002e5d;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    line-height: 1.3;
-    text-transform: uppercase;
 }
 
 .site-footer {
@@ -290,11 +275,11 @@ body {
     }
 
     .logo-strip {
-        gap: 1.2rem;
+        gap: 0.6rem;
     }
 
     .logo-strip img {
-        height: 56px;
+        height: 28px;
     }
 }
 
