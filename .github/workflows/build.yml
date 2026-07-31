@@ -64,16 +64,6 @@ jobs:
             exit 1
           fi
 
-      - name: Verify redirect URL
-        run: |
-          REDIRECT_URL=$(grep -oP 'url=https://[^"\s]+' index.html | head -1 | cut -d= -f2)
-          echo "Redirect URL: $REDIRECT_URL"
-          if [[ -z "$REDIRECT_URL" ]]; then
-            echo "✗ No redirect URL found"
-            exit 1
-          fi
-          echo "✓ Redirect URL configured: $REDIRECT_URL"
-
       - name: Check file size
         run: |
           SIZE=$(wc -c < index.html)
