@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/ui/css/menu.css">
+    <script src="/ui/js/site-menu.js"></script>
   </head>
   <body>
     <header class="page-header">
@@ -31,10 +33,8 @@
         <img src="assets/logos/byu-idaho.png" alt="Brigham Young University–Idaho">
         <img src="assets/logos/doe.png" alt="U.S. Department of Energy">
         <img src="assets/logos/us-ife.png" alt="U.S. Inertial Fusion Energy program">
-        <picture>
-          <source srcset="assets/logos/rise-dark.png" media="(prefers-color-scheme: dark)">
-          <img src="assets/logos/rise-light.png" alt="RISE Inertial Fusion Science and Technology Hub">
-        </picture>
+        <img class="logo-rise logo-rise--light" src="assets/logos/rise-light.png" alt="RISE Inertial Fusion Science and Technology Hub">
+        <img class="logo-rise logo-rise--dark" src="assets/logos/rise-dark.png" alt="RISE Inertial Fusion Science and Technology Hub" aria-hidden="true">
       </div>
 
       <h2><span class="section-number">I.</span>Overview</h2>
