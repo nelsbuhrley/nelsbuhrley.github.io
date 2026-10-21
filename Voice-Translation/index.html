@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polyglot &mdash; Automated Voice Translation and Dubbing</title>
+    <meta name="author" content="Nels Buhrley">
+    <meta name="description" content="Polyglot is an automated voice translation and dubbing pipeline: one English recording is transcribed, translated, checked and re-spoken in many languages, in a clone of the speaker's own voice.">
+    <link rel="canonical" href="https://nelsbuhrley.github.io/Voice-Translation/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/ui/css/menu.css">
+    <script src="/ui/js/site-menu.js"></script>
+  </head>
+  <body>
+    <header class="page-header">
+      <p class="page-header__eyebrow">Automated voice translation</p>
+      <h1 class="project-name">Polyglot</h1>
+      <p class="project-tagline">Speak once. Be heard in many languages, in your own voice.</p>
+      <nav class="page-header__links" aria-label="Contact links">
+        <a class="btn-pill" href="../documents/CV-Nels-Buhrley.pdf">CV</a>
+        <a class="btn-pill" href="https://github.com/nelsbuhrley">GitHub</a>
+        <a class="btn-pill" href="mailto:nbuhrley@student.byu.edu">Email</a>
+        <a class="btn-pill" href="https://www.linkedin.com/in/nelsbuhrley/">LinkedIn</a>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <h2 id="demo"><span class="section-number">I.</span>Hear it</h2>
+      <p class="lede">One English phrase in, many languages out. Here are seven of them, all in my own cloned voice.</p>
+      <noscript><p class="placeholder">The players on this page are built by a small script, so they need JavaScript.</p></noscript>
+      <p class="demo-note" id="demo-note" hidden>Demo recording coming soon. Each card below will play its translation once the audio is in.</p>
+
+      <div class="demo-source" id="demo-source"></div>
+
+      <div class="demo-toolbar">
+        <button type="button" class="btn-solid" id="play-all" aria-pressed="false">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path class="i-play" d="M4 2.2v11.6L13.4 8z"/><rect class="i-stop" x="3.5" y="3.5" width="9" height="9" rx="1.5"/></svg>
+          <span id="play-all-label">Play all</span>
+        </button>
+        <p class="demo-hint">English first, then each language in turn.</p>
+      </div>
+
+      <ul class="lang-grid" id="lang-grid" aria-label="Translations"></ul>
+      <div class="sr-only" id="demo-live" role="status" aria-live="polite"></div>
+
+      <script type="application/json" id="demo-data">
+{
+  "english": {
+    "text": "Hi, my name is Nels Buhrley. At the time of this recording, I am studying computational physics at BYU-Idaho. I love learning and I love sharing what I learn with others. This is my voice translated automatically.",
+    "audio": "assets/audio/en.m4a"
+  },
+  "languages": [
+    {
+      "code": "ja",
+      "name": "Japanese",
+      "native": "日本語",
+      "text": "こんにちは、ネルス・バーリーです。この録音の時点で、僕はBYU-Idahoで計算物理学を勉強しています。学ぶことが大好きで、学んだことを他の人と共有するのも大好きです。これは、自動で翻訳された僕の声です。",
+      "back_translation": "Hello, I am Nels Barley. At the point of this recording, I am studying computational physics at BYU-Idaho. I love learning, and I also love sharing things I have learned with other people. This is my voice, translated automatically.",
+      "audio": "assets/audio/ja.m4a"
+    },
+    {
+      "code": "es-419",
+      "name": "Spanish (Latin America)",
+      "native": "Español (Latinoamérica)",
+      "text": "Hola, me llamo Nels Buhrley. En el momento de esta grabación, estoy estudiando física computacional en BYU-Idaho. Me encanta aprender y me encanta compartir con los demás lo que aprendo. Esta es mi voz traducida automáticamente.",
+      "back_translation": "Hello, my name is Nels Buhrley. At the moment of this recording, I am studying computational physics at BYU-Idaho. I love to learn and I love to share with others what I learn. This is my voice translated automatically.",
+      "audio": "assets/audio/es-419.m4a"
+    },
+    {
+      "code": "pt-BR",
+      "name": "Portuguese (Brazil)",
+      "native": "Português (Brasil)",
+      "text": "Oi, meu nome é Nels Buhrley. No momento desta gravação, estou estudando física computacional na BYU-Idaho. Eu adoro aprender e adoro compartilhar com os outros o que aprendo. Esta é a minha voz traduzida automaticamente.",
+      "back_translation": "Hi, my name is Nels Buhrley. At the moment of this recording, I am studying computational physics at BYU-Idaho. I love to learn and love to share with others what I learn. This is my voice translated automatically.",
+      "audio": "assets/audio/pt-BR.m4a"
+    },
+    {
+      "code": "hi",
+      "name": "Hindi",
+      "native": "हिन्दी",
+      "text": "नमस्ते, मेरा नाम नेल्स बर्ली है। इस रिकॉर्डिंग के समय मैं BYU-Idaho में कंप्यूटेशनल फ़िज़िक्स पढ़ रहा हूँ। मुझे सीखना बहुत पसंद है, और जो कुछ मैं सीखता हूँ, उसे दूसरों के साथ साझा करना भी मुझे बहुत अच्छा लगता है। यह मेरी आवाज़ है, जिसका अपने आप अनुवाद हुआ है।",
+      "back_translation": "Hi, my name is Nels Buhrley. I am studying computational physics at BYU-Idaho at the time of this recording. I love to learn, and I also love to share what I learn with others. This is my voice, translated automatically.",
+      "audio": "assets/audio/hi.m4a"
+    },
+    {
+      "code": "fr",
+      "name": "French",
+      "native": "Français",
+      "text": "Bonjour, je m'appelle Nels Buhrley. Au moment de cet enregistrement, j'étudie la physique computationnelle à BYU-Idaho. J'adore apprendre et j'adore partager avec les autres ce que j'apprends. C'est ma voix, traduite automatiquement.",
+      "back_translation": "Hello, my name is Nels Buhrley. At the moment of this recording, I study computational physics at BYU-Idaho. I love learning and I love sharing with others what I learn. It is my voice, translated automatically.",
+      "audio": "assets/audio/fr.m4a"
+    },
+    {
+      "code": "de",
+      "name": "German",
+      "native": "Deutsch",
+      "text": "Hallo, mein Name ist Nels Buhrley. Zum Zeitpunkt dieser Aufnahme studiere ich Computerphysik an der BYU-Idaho. Ich liebe es zu lernen, und ich liebe es, mit anderen zu teilen, was ich lerne. Das ist meine automatisch übersetzte Stimme.",
+      "back_translation": "Hello, my name is Nels Buhrley. At the time of this recording I study computer physics at the BYU-Idaho. I love it to learn, and I love it, with others to share, what I learn. That is my automatically translated voice.",
+      "audio": "assets/audio/de.m4a"
+    },
+    {
+      "code": "it",
+      "name": "Italian",
+      "native": "Italiano",
+      "text": "Ciao, mi chiamo Nels Buhrley. Al momento di questa registrazione sto studiando fisica computazionale alla BYU-Idaho. Adoro imparare e adoro condividere con gli altri quello che imparo. Questa è la mia voce, tradotta automaticamente.",
+      "back_translation": "Hello, my name is Nels Buhrley. At the moment of this recording I am studying computational physics at BYU-Idaho. I love to learn and I love to share with others that which I learn. This is my voice, translated automatically.",
+      "audio": "assets/audio/it.m4a"
+    }
+  ]
+}
+    </script>
+
+      <h2 id="how"><span class="section-number">II.</span>How it works</h2>
+      <div class="flow-wrap">
+        <svg class="flow flow--wide" viewBox="-4 -4 928 526" role="img" aria-labelledby="flow-wide-title flow-wide-desc" focusable="false">
+        <title id="flow-wide-title">Polyglot pipeline</title>
+        <desc id="flow-wide-desc">Your voice goes through six stages: transcribe with faster-whisper large-v3, translate with Claude, verify with a blind back-translation, re-speak with Chatterbox Multilingual V3, check with back-ASR and speaker similarity, master the loudness, and output the phrase in many languages. For full videos, Demucs separates the voice first, the lines are time-fitted and mixed with the original sound bed, and titles and captions are published through the YouTube Data API.</desc>
+        <g class="fl-n fl-n--io-voice" transform="translate(0 0)"><rect class="fl-node fl-node--io" width="200" height="120" rx="12"/><rect class="fl-bar" x="14" y="22.0" width="4" height="8" rx="2"/><rect class="fl-bar" x="21" y="18.0" width="4" height="16" rx="2"/><rect class="fl-bar" x="28" y="14.0" width="4" height="24" rx="2"/><rect class="fl-bar" x="35" y="19.0" width="4" height="14" rx="2"/><rect class="fl-bar" x="42" y="16.0" width="4" height="20" rx="2"/><text class="fl-title" x="57" y="31">Your voice</text><text class="fl-desc" x="16" y="62">One English recording,</text><text class="fl-desc" x="16" y="77">spoken once</text></g>
+        <line class="fl-arrow" x1="204" y1="60" x2="231" y2="60"/><polygon class="fl-head" points="237,60 229,55.5 229,64.5"/>
+        <g class="fl-n fl-n--step" transform="translate(240 0)"><rect class="fl-node" width="200" height="120" rx="12"/><circle class="fl-badge" cx="26" cy="26" r="12"/><text class="fl-badge-text" x="26" y="30.5" text-anchor="middle">1</text><text class="fl-title" x="46" y="31">Transcribe</text><text class="fl-model" x="16" y="58">faster-whisper</text><text class="fl-model" x="16" y="74">large-v3</text><text class="fl-desc" x="16" y="94">Text with word-level timing</text></g>
+        <line class="fl-arrow" x1="444" y1="60" x2="471" y2="60"/><polygon class="fl-head" points="477,60 469,55.5 469,64.5"/>
+        <g class="fl-n fl-n--step" transform="translate(480 0)"><rect class="fl-node" width="200" height="120" rx="12"/><circle class="fl-badge" cx="26" cy="26" r="12"/><text class="fl-badge-text" x="26" y="30.5" text-anchor="middle">2</text><text class="fl-title" x="46" y="31">Translate</text><text class="fl-model" x="16" y="58">Claude</text><text class="fl-desc" x="16" y="78">Glossary, regional vocabulary,</text><text class="fl-desc" x="16" y="93">length budgets</text></g>
+        <line class="fl-arrow" x1="684" y1="60" x2="711" y2="60"/><polygon class="fl-head" points="717,60 709,55.5 709,64.5"/>
+        <g class="fl-n fl-n--gate" transform="translate(720 0)"><rect class="fl-node fl-node--gate" width="200" height="120" rx="12"/><rect class="fl-gatebar" x="0" y="14" width="4" height="92" rx="2"/><circle class="fl-badge" cx="26" cy="26" r="12"/><text class="fl-badge-text" x="26" y="30.5" text-anchor="middle">3</text><text class="fl-title" x="46" y="31">Verify translation</text><text class="fl-model" x="16" y="58">Gemma 4 31B</text><text class="fl-desc" x="16" y="78">Blind back-translation;</text><text class="fl-desc" x="16" y="93">Indic-Translate for Hindi</text></g>
+        <path class="fl-arrow" d="M820 124 V148 H100 V170"/>
+        <polygon class="fl-head" points="100,175 95.5,167 104.5,167"/>
+        <g class="fl-n fl-n--step" transform="translate(0 176)"><rect class="fl-node" width="200" height="120" rx="12"/><circle class="fl-badge" cx="26" cy="26" r="12"/><text class="fl-badge-text" x="26" y="30.5" text-anchor="middle">4</text><text class="fl-title" x="46" y="31">Re-speak</text><text class="fl-model" x="16" y="58">Chatterbox</text><text class="fl-model" x="16" y="74">Multilingual V3</text><text class="fl-desc" x="16" y="94">Your cloned voice; language</text><text class="fl-desc" x="16" y="109">packs for es, pt and hi</text></g>
+        <line class="fl-arrow" x1="204" y1="236" x2="231" y2="236"/><polygon class="fl-head" points="237,236 229,231.5 229,240.5"/>
+        <g class="fl-n fl-n--gate" transform="translate(240 176)"><rect class="fl-node fl-node--gate" width="200" height="120" rx="12"/><rect class="fl-gatebar" x="0" y="14" width="4" height="92" rx="2"/><circle class="fl-badge" cx="26" cy="26" r="12"/><text class="fl-badge-text" x="26" y="30.5" text-anchor="middle">5</text><text class="fl-title" x="46" y="31">Verify TTS</text><text class="fl-model" x="16" y="58">Whisper, Qwen3-ASR,</text><text class="fl-model" x="16" y="74">ECAPA-TDNN</text><text class="fl-desc" x="16" y="94">Back-ASR (Qwen3-ASR for</text><text class="fl-desc" x="16" y="109">Hindi); speaker similarity</text></g>
+        <line class="fl-arrow" x1="444" y1="236" x2="471" y2="236"/><polygon class="fl-head" points="477,236 469,231.5 469,240.5"/>
+        <g class="fl-n fl-n--step" transform="translate(480 176)"><rect class="fl-node" width="200" height="120" rx="12"/><circle class="fl-badge" cx="26" cy="26" r="12"/><text class="fl-badge-text" x="26" y="30.5" text-anchor="middle">6</text><text class="fl-title" x="46" y="31">Master</text><text class="fl-desc" x="16" y="62">Loudness matched in LUFS,</text><text class="fl-desc" x="16" y="77">true-peak limited</text></g>
+        <line class="fl-arrow" x1="684" y1="236" x2="711" y2="236"/><polygon class="fl-head" points="717,236 709,231.5 709,240.5"/>
+        <g class="fl-n fl-n--io-out" transform="translate(720 176)"><rect class="fl-node fl-node--io" width="200" height="120" rx="12"/><rect class="fl-bar" x="14" y="21.0" width="4" height="10" rx="2"/><rect class="fl-bar" x="21" y="17.0" width="4" height="18" rx="2"/><rect class="fl-bar" x="28" y="13.0" width="4" height="26" rx="2"/><rect class="fl-bar" x="35" y="17.0" width="4" height="18" rx="2"/><rect class="fl-bar" x="42" y="20.0" width="4" height="12" rx="2"/><rect class="fl-bar" x="49" y="15.0" width="4" height="22" rx="2"/><rect class="fl-bar" x="56" y="19.0" width="4" height="14" rx="2"/><text class="fl-title" x="71" y="31">Many languages</text><text class="fl-desc" x="16" y="62">Japanese · Spanish · Hindi</text><text class="fl-desc" x="16" y="77">French · German · Italian</text><text class="fl-desc" x="16" y="92">Portuguese · and more</text></g>
+        <rect class="fl-lane" x="1" y="344" width="918" height="172" rx="16"/>
+        <text class="fl-lane-title" x="20" y="372">For full videos</text>
+        <text class="fl-lane-sub" x="900" y="372" text-anchor="end">a side branch around the main steps</text>
+        <g transform="translate(17 390)"><rect class="fl-node fl-node--lane" width="190" height="112" rx="12"/><text class="fl-tag" x="16" y="24">BEFORE 1</text><text class="fl-title" x="16" y="46">Demucs v4</text><text class="fl-desc" x="16" y="67">Separates the voice from</text><text class="fl-desc" x="16" y="82">music and background</text></g>
+        <line class="fl-arrow fl-arrow--dash" x1="211" y1="446" x2="240" y2="446"/><polygon class="fl-head" points="246,446 238,441.5 238,450.5"/>
+        <g transform="translate(249 390)"><rect class="fl-node fl-node--lane" width="190" height="112" rx="12"/><text class="fl-tag" x="16" y="24">AFTER 5</text><text class="fl-title" x="16" y="46">Timing fit</text><text class="fl-desc" x="16" y="67">WSOLA tempo, pauses</text><text class="fl-desc" x="16" y="82">redistributed, room tone</text><text class="fl-desc" x="16" y="97">synthesized</text></g>
+        <line class="fl-arrow fl-arrow--dash" x1="443" y1="446" x2="472" y2="446"/><polygon class="fl-head" points="478,446 470,441.5 470,450.5"/>
+        <g transform="translate(481 390)"><rect class="fl-node fl-node--lane" width="190" height="112" rx="12"/><text class="fl-tag" x="16" y="24">BEFORE 6</text><text class="fl-title" x="16" y="46">Mix</text><text class="fl-desc" x="16" y="67">Dub voice over the</text><text class="fl-desc" x="16" y="82">original sound bed</text></g>
+        <line class="fl-arrow fl-arrow--dash" x1="675" y1="446" x2="704" y2="446"/><polygon class="fl-head" points="710,446 702,441.5 702,450.5"/>
+        <g transform="translate(713 390)"><rect class="fl-node fl-node--lane" width="190" height="112" rx="12"/><text class="fl-tag" x="16" y="24">AT THE END</text><text class="fl-title" x="16" y="46">Publish</text><text class="fl-desc" x="16" y="67">Titles and captions via</text><text class="fl-desc" x="16" y="82">the YouTube Data API</text></g>
+        </svg>
+        <svg class="flow flow--tall" viewBox="-4 -4 348 1427" role="img" aria-labelledby="flow-tall-title flow-tall-desc" focusable="false">
+        <title id="flow-tall-title">Polyglot pipeline</title>
+        <desc id="flow-tall-desc">Your voice goes through six stages: transcribe with faster-whisper large-v3, translate with Claude, verify with a blind back-translation, re-speak with Chatterbox Multilingual V3, check with back-ASR and speaker similarity, master the loudness, and output the phrase in many languages. For full videos, Demucs separates the voice first, the lines are time-fitted and mixed with the original sound bed, and titles and captions are published through the YouTube Data API.</desc>
+        <g class="fl-n fl-n--io-voice" transform="translate(0 0)"><rect class="fl-node fl-node--io" width="340" height="73" rx="12"/><rect class="fl-bar" x="16" y="22.0" width="4" height="8" rx="2"/><rect class="fl-bar" x="23" y="18.0" width="4" height="16" rx="2"/><rect class="fl-bar" x="30" y="14.0" width="4" height="24" rx="2"/><rect class="fl-bar" x="37" y="19.0" width="4" height="14" rx="2"/><rect class="fl-bar" x="44" y="16.0" width="4" height="20" rx="2"/><text class="fl-title" x="59" y="31">Your voice</text><text class="fl-desc" x="16" y="53">One English recording, spoken once</text></g>
+        <line class="fl-arrow" x1="170" y1="76" x2="170" y2="93"/><polygon class="fl-head" points="170,99 165.5,91 174.5,91"/>
+        <g class="fl-n fl-n--step" transform="translate(0 101)"><rect class="fl-node" width="340" height="91" rx="12"/><circle class="fl-badge" cx="28" cy="26" r="12"/><text class="fl-badge-text" x="28" y="30.5" text-anchor="middle">1</text><text class="fl-title" x="48" y="31">Transcribe</text><text class="fl-model" x="16" y="58">faster-whisper large-v3</text><text class="fl-desc" x="16" y="78">Text with word-level timing</text></g>
+        <line class="fl-arrow" x1="170" y1="195" x2="170" y2="212"/><polygon class="fl-head" points="170,218 165.5,210 174.5,210"/>
+        <g class="fl-n fl-n--step" transform="translate(0 220)"><rect class="fl-node" width="340" height="91" rx="12"/><circle class="fl-badge" cx="28" cy="26" r="12"/><text class="fl-badge-text" x="28" y="30.5" text-anchor="middle">2</text><text class="fl-title" x="48" y="31">Translate</text><text class="fl-model" x="16" y="58">Claude</text><text class="fl-desc" x="16" y="78">Glossary, regional vocabulary, length budgets</text></g>
+        <line class="fl-arrow" x1="170" y1="314" x2="170" y2="331"/><polygon class="fl-head" points="170,337 165.5,329 174.5,329"/>
+        <g class="fl-n fl-n--gate" transform="translate(0 339)"><rect class="fl-node fl-node--gate" width="340" height="91" rx="12"/><rect class="fl-gatebar" x="0" y="14" width="4" height="63" rx="2"/><circle class="fl-badge" cx="28" cy="26" r="12"/><text class="fl-badge-text" x="28" y="30.5" text-anchor="middle">3</text><text class="fl-title" x="48" y="31">Verify translation</text><text class="fl-model" x="16" y="58">Gemma 4 31B</text><text class="fl-desc" x="16" y="78">Blind back-translation; Indic-Translate for Hindi</text></g>
+        <line class="fl-arrow" x1="170" y1="433" x2="170" y2="450"/><polygon class="fl-head" points="170,456 165.5,448 174.5,448"/>
+        <g class="fl-n fl-n--step" transform="translate(0 458)"><rect class="fl-node" width="340" height="106" rx="12"/><circle class="fl-badge" cx="28" cy="26" r="12"/><text class="fl-badge-text" x="28" y="30.5" text-anchor="middle">4</text><text class="fl-title" x="48" y="31">Re-speak</text><text class="fl-model" x="16" y="58">Chatterbox Multilingual V3</text><text class="fl-desc" x="16" y="78">Your cloned voice; language packs for es, pt and</text><text class="fl-desc" x="16" y="93">hi</text></g>
+        <line class="fl-arrow" x1="170" y1="567" x2="170" y2="584"/><polygon class="fl-head" points="170,590 165.5,582 174.5,582"/>
+        <g class="fl-n fl-n--gate" transform="translate(0 592)"><rect class="fl-node fl-node--gate" width="340" height="91" rx="12"/><rect class="fl-gatebar" x="0" y="14" width="4" height="63" rx="2"/><circle class="fl-badge" cx="28" cy="26" r="12"/><text class="fl-badge-text" x="28" y="30.5" text-anchor="middle">5</text><text class="fl-title" x="48" y="31">Verify TTS</text><text class="fl-model" x="16" y="58">Whisper, Qwen3-ASR, ECAPA-TDNN</text><text class="fl-desc" x="16" y="78">Back-ASR (Qwen3-ASR for Hindi); speaker similarity</text></g>
+        <line class="fl-arrow" x1="170" y1="686" x2="170" y2="703"/><polygon class="fl-head" points="170,709 165.5,701 174.5,701"/>
+        <g class="fl-n fl-n--step" transform="translate(0 711)"><rect class="fl-node" width="340" height="73" rx="12"/><circle class="fl-badge" cx="28" cy="26" r="12"/><text class="fl-badge-text" x="28" y="30.5" text-anchor="middle">6</text><text class="fl-title" x="48" y="31">Master</text><text class="fl-desc" x="16" y="53">Loudness matched in LUFS, true-peak limited</text></g>
+        <line class="fl-arrow" x1="170" y1="787" x2="170" y2="804"/><polygon class="fl-head" points="170,810 165.5,802 174.5,802"/>
+        <g class="fl-n fl-n--io-out" transform="translate(0 812)"><rect class="fl-node fl-node--io" width="340" height="88" rx="12"/><rect class="fl-bar" x="16" y="21.0" width="4" height="10" rx="2"/><rect class="fl-bar" x="23" y="17.0" width="4" height="18" rx="2"/><rect class="fl-bar" x="30" y="13.0" width="4" height="26" rx="2"/><rect class="fl-bar" x="37" y="17.0" width="4" height="18" rx="2"/><rect class="fl-bar" x="44" y="20.0" width="4" height="12" rx="2"/><rect class="fl-bar" x="51" y="15.0" width="4" height="22" rx="2"/><rect class="fl-bar" x="58" y="19.0" width="4" height="14" rx="2"/><text class="fl-title" x="73" y="31">Many languages</text><text class="fl-desc" x="16" y="53">Japanese · Spanish · Hindi · French · German ·</text><text class="fl-desc" x="16" y="68">Italian · Portuguese · and more</text></g>
+        <rect class="fl-lane" x="1" y="930" width="338" height="487" rx="16"/>
+        <text class="fl-lane-title" x="20" y="960">For full videos</text>
+        <text class="fl-lane-sub" x="20" y="982">a side branch around the main steps</text>
+        <g transform="translate(12 1002)"><rect class="fl-node fl-node--lane" width="316" height="75" rx="12"/><text class="fl-tag" x="16" y="24">BEFORE 1</text><text class="fl-title" x="16" y="46">Demucs v4</text><text class="fl-desc" x="16" y="66">Separates the voice from music and background</text></g>
+        <line class="fl-arrow fl-arrow--dash" x1="170" y1="1080" x2="170" y2="1097"/><polygon class="fl-head" points="170,1103 165.5,1095 174.5,1095"/>
+        <g transform="translate(12 1105)"><rect class="fl-node fl-node--lane" width="316" height="90" rx="12"/><text class="fl-tag" x="16" y="24">AFTER 5</text><text class="fl-title" x="16" y="46">Timing fit</text><text class="fl-desc" x="16" y="66">WSOLA tempo, pauses redistributed, room tone</text><text class="fl-desc" x="16" y="81">synthesized</text></g>
+        <line class="fl-arrow fl-arrow--dash" x1="170" y1="1198" x2="170" y2="1215"/><polygon class="fl-head" points="170,1221 165.5,1213 174.5,1213"/>
+        <g transform="translate(12 1223)"><rect class="fl-node fl-node--lane" width="316" height="75" rx="12"/><text class="fl-tag" x="16" y="24">BEFORE 6</text><text class="fl-title" x="16" y="46">Mix</text><text class="fl-desc" x="16" y="66">Dub voice over the original sound bed</text></g>
+        <line class="fl-arrow fl-arrow--dash" x1="170" y1="1301" x2="170" y2="1318"/><polygon class="fl-head" points="170,1324 165.5,1316 174.5,1316"/>
+        <g transform="translate(12 1326)"><rect class="fl-node fl-node--lane" width="316" height="75" rx="12"/><text class="fl-tag" x="16" y="24">AT THE END</text><text class="fl-title" x="16" y="46">Publish</text><text class="fl-desc" x="16" y="66">Titles and captions via the YouTube Data API</text></g>
+        </svg>
+      </div>
+      <p>
+        The recording is transcribed with word-level timing, and Claude translates it with a glossary,
+        regional vocabulary and a length budget for every phrase. A model from another family then
+        translates each result back to English without seeing the original, so mistakes surface before
+        any audio exists.
+      </p>
+      <p>
+        Chatterbox speaks the checked text in a clone of my voice. Every take is transcribed again and
+        scored for speaker similarity, and the best one is kept. For full videos, Demucs preserves the
+        original sound bed and each line is time-fitted to the picture before mastering.
+      </p>
+
+      <h2 id="models"><span class="section-number">III.</span>The models</h2>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>Nine models, all but Claude open-weight.</caption>
+          <thead>
+            <tr><th scope="col">Model</th><th scope="col">Role</th><th scope="col">Made by</th><th scope="col">Licence</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Model"><strong>faster-whisper large-v3</strong></td>
+              <td data-label="Role">Speech recognition, word timing and the back-ASR check</td>
+              <td data-label="Made by">OpenAI (Whisper weights); SYSTRAN (CTranslate2)</td>
+              <td data-label="Licence" class="licence">MIT</td>
+            </tr>
+            <tr>
+              <td data-label="Model"><strong>Claude</strong></td>
+              <td data-label="Role">Translation and pipeline orchestration, through Claude Code agents</td>
+              <td data-label="Made by">Anthropic</td>
+              <td data-label="Licence" class="licence">Proprietary, hosted</td>
+            </tr>
+            <tr>
+              <td data-label="Model"><strong>Gemma 4 31B-it</strong></td>
+              <td data-label="Role">Independent back-translation</td>
+              <td data-label="Made by">Google</td>
+              <td data-label="Licence" class="licence">Apache-2.0</td>
+            </tr>
+            <tr>
+              <td data-label="Model"><strong>Indic-Translate 8B</strong></td>
+              <td data-label="Role">Hindi back-translation</td>
+              <td data-label="Made by">Bodhan AI / AI4Bharat</td>
+              <td data-label="Licence" class="licence">Indic Open Model License</td>
+            </tr>
+            <tr>
+              <td data-label="Model"><strong>Lumen 14.8B</strong></td>
+              <td data-label="Role">Independent Japanese draft to compare against</td>
+              <td data-label="Made by">ATH-MaaS</td>
+              <td data-label="Licence" class="licence">Apache-2.0</td>
+            </tr>
+            <tr>
+              <td data-label="Model">
+                <strong>Chatterbox Multilingual V3</strong>
+              </td>
+              <td data-label="Role">Voice-cloning speech synthesis</td>
+              <td data-label="Made by">Resemble AI</td>
+              <td data-label="Licence" class="licence">MIT</td>
+            </tr>
+            <tr>
+              <td data-label="Model"><strong>Qwen3-ASR 1.7B</strong></td>
+              <td data-label="Role">Hindi speech recognition for the check</td>
+              <td data-label="Made by">Alibaba Qwen</td>
+              <td data-label="Licence" class="licence">Apache-2.0</td>
+            </tr>
+            <tr>
+              <td data-label="Model"><strong>SpeechBrain ECAPA-TDNN</strong></td>
+              <td data-label="Role">Speaker similarity</td>
+              <td data-label="Made by">SpeechBrain</td>
+              <td data-label="Licence" class="licence">Apache-2.0</td>
+            </tr>
+            <tr>
+              <td data-label="Model"><strong>Demucs v4 (htdemucs)</strong></td>
+              <td data-label="Role">Voice and background separation</td>
+              <td data-label="Made by">Meta</td>
+              <td data-label="Licence" class="licence">MIT</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="affiliation-strip">
+        <img src="../img/logos/byu-idaho.png" alt="Brigham Young University–Idaho">
+      </div>
+      <p>&copy; 2026 Nels Buhrley &middot; <a href="https://nelsbuhrley.github.io">nelsbuhrley.github.io</a></p>
+      <p class="site-footer__ai">This website was built with the assistance of Claude, an AI assistant by Anthropic.</p>
+    </footer>
+    <script src="demo.js" defer></script>
+  </body>
+</html>

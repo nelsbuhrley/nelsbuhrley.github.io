@@ -6,6 +6,7 @@
         { title: "Home", href: "/" },
         { title: "Computational Physics Portfolio", href: "/CPP-Numerical-Modeling/" },
         { title: "IFE Symposium 2026", href: "/IFE-Symposium-2026/" },
+        { title: "Polyglot — Voice Translation", href: "/Voice-Translation/" },
         { title: "CSE 450 — Machine Learning", href: "/CSE-450-Machine-learning/" },
         { title: "Visualizations", href: "/Visualizations/" },
         { title: "AI in Higher Education", href: "/AI-Ethics-and-Discussion/" }
