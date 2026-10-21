@@ -187,11 +187,22 @@
         scored for speaker similarity, and the best one is kept. For full videos, Demucs preserves the
         original sound bed and each line is time-fitted to the picture before mastering.
       </p>
+      <h3 class="modes-title">As little or as much voice data as you have</h3>
+      <div class="infra-grid modes-grid">
+        <div class="infra-tile">
+          <span class="infra-tile__k">Instant</span>
+          <p>No training at all. The voice is cloned from the very sentence being translated, so a single recording is enough.</p>
+        </div>
+        <div class="infra-tile">
+          <span class="infra-tile__k">Tailored</span>
+          <p>For the closest match, a personal voice model is trained on about 15 minutes of scripted reading, then applied to every language.</p>
+        </div>
+      </div>
 
       <h2 id="models"><span class="section-number">III.</span>The models</h2>
       <div class="table-wrap">
         <table class="data">
-          <caption>Nine models, all but Claude open-weight.</caption>
+          <caption>Ten models, all but Claude open-weight.</caption>
           <thead>
             <tr><th scope="col">Model</th><th scope="col">Role</th><th scope="col">Made by</th><th scope="col">Licence</th></tr>
           </thead>
@@ -245,6 +256,12 @@
               <td data-label="Role">Speaker similarity</td>
               <td data-label="Made by">SpeechBrain</td>
               <td data-label="Licence" class="licence">Apache-2.0</td>
+            </tr>
+            <tr>
+              <td data-label="Model"><strong>Applio (RVC)</strong></td>
+              <td data-label="Role">Optional personal voice model, trained on scripted reading</td>
+              <td data-label="Made by">IAHispano</td>
+              <td data-label="Licence" class="licence">MIT</td>
             </tr>
             <tr>
               <td data-label="Model"><strong>Demucs v4 (htdemucs)</strong></td>
