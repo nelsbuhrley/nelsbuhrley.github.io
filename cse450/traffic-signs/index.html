@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traffic-Sign Recognition | CSE 450 | Nels Buhrley</title>
+  <meta name="description" content="CNNs trained from scratch on 39,209 German traffic-sign images. A spatial transformer plus CLAHE reached 99.0% on a 201-image holdout, 2 errors.">
+  <meta name="author" content="Nels Buhrley">
+  <meta name="theme-color" content="#002e5d">
+  <link rel="canonical" href="https://nels.buhrley.com/cse450/traffic-signs/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Traffic-Sign Recognition | CSE 450 | Nels Buhrley">
+  <meta property="og:description" content="CNNs trained from scratch on 39,209 German traffic-sign images. A spatial transformer plus CLAHE reached 99.0% on a 201-image holdout, 2 errors.">
+  <meta property="og:url" content="https://nels.buhrley.com/cse450/traffic-signs/">
+  <meta property="og:image" content="https://nels.buhrley.com/cse450/img/og/traffic-signs.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/ui/css/project.css">
+  <link rel="stylesheet" href="/ui/css/menu.css">
+  <script src="/ui/js/site-menu.js"></script>
+</head>
+<body>
+  <svg class="sr-only" width="0" height="0" aria-hidden="true" focusable="false">
+    <symbol id="i-github" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="cs-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol><li><a href="/">Home</a></li><li><a href="/cse450/">CSE 450</a></li><li aria-current="page">Traffic Signs</li></ol>
+      </nav>
+      <p class="cs-hero__eyebrow">Module 5 &middot; Computer vision</p>
+      <h1>Reading Traffic Signs in Bad Light</h1>
+      <p class="cs-hero__dek">A compact CNN trained from scratch, with a spatial transformer and contrast equalization, cut errors from 6 to 2 on a 201-image holdout.</p>
+      <dl class="cs-hero__meta">
+        <div><dt>Team</dt><dd>Team NorthWind</dd></div>
+        <div><dt>Course</dt><dd>CSE 450, BYU-Idaho</dd></div>
+        <div><dt>Term</dt><dd>Spring 2026</dd></div>
+        <div><dt>Stack</dt><dd>Python, PyTorch, GPU cluster</dd></div>
+      </dl>
+      <div class="cs-hero__links">
+        <a class="btn-pill btn-pill--primary" href="https://github.com/nelsbuhrley/CSE-450-Machine-learning"><svg aria-hidden="true"><use href="#i-github"/></svg>Source on GitHub<span class="sr-only"> (external)</span></a>
+        <a class="btn-pill" href="/CSE-450-Machine-learning/"><svg aria-hidden="true"><use href="#i-grid"/></svg>Team project site</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="cs-body">
+      <section class="cs-section">
+        <p class="cs-lede">Small, dark, tilted photos of 43 kinds of sign. Preprocessing aimed at those failure modes did more than bigger networks, and grouped validation kept the numbers honest.</p>
+      <dl class="cs-metrics">
+        <div><dt>Top-1 accuracy</dt><dd>99.0%<span class="cs-metrics__note">on a 201-image holdout (2 errors)</span></dd></div>
+        <div><dt>Holdout errors</dt><dd>6 &rarr; 2<span class="cs-metrics__note">from baseline to final model</span></dd></div>
+        <div><dt>Sign classes</dt><dd>43<span class="cs-metrics__note">from speed limits to roundabouts</span></dd></div>
+        <div><dt>Training images</dt><dd>39,209<span class="cs-metrics__note">all models trained from scratch</span></dd></div>
+      </dl>
+      <figure class="cs-figure cs-figure--light cs-figure--narrow">
+        <div class="cs-figure__mat">
+          <img src="../img/signs/class_grid.webp" width="744" height="268" decoding="async" alt="Grid of 43 sample traffic-sign images, one per class, many of them dark or blurry.">
+        </div>
+        <figcaption><span class="cs-figure__label">Fig. 1</span>One example from each of the 43 GTSRB classes. Many arrive dark, blurred or off-center.</figcaption>
+      </figure>
+      </section>
+
+      <section class="cs-section">
+        <h2>The problem</h2>
+        <p>The task was to classify photos of German traffic signs into 43 classes, from speed limits to yield and roundabout signs. Many images are small, blurry, tilted or nearly black, the conditions a real camera faces. The final score was top-1 accuracy on a labeled 201-image mini holdout. We also wanted validation numbers we could trust, which turned out to be the harder problem.</p>
+      </section>
+
+      <section class="cs-section">
+        <h2>The data</h2>
+        <p>We used the German Traffic Sign Recognition Benchmark (GTSRB): 39,209 training images at 100&times;100 pixels across 43 classes. The classes are imbalanced, from 210 to 2,250 images each. The key detail is how the images were collected. Each physical sign was filmed as a track of 30 consecutive frames, so the 39,209 images come from only 1,307 real signs. Neighboring frames are nearly identical, and that shapes how validation has to work.</p>
+      </section>
+
+      <section class="cs-section">
+        <h2>Our approach</h2>
+        <p>We wrote the training pipeline in PyTorch. The main model is a small CNN: three blocks of paired 3&times;3 convolutions with batch norm, global average pooling and dropout. We also trained ResNet-18 and MobileNetV3-Small from scratch, not fine-tuned from pretrained weights.</p>
+        <p>Two additions targeted the data&rsquo;s weaknesses. A spatial transformer network learns to straighten and crop each sign before classifying it, and starts from an identity transform. CLAHE contrast equalization, which we implemented in NumPy on the brightness channel only, recovers dark images while keeping their colors.</p>
+      <figure class="cs-figure cs-figure--light cs-figure--narrow">
+        <div class="cs-figure__mat">
+          <img src="../img/signs/clahe_before_after.webp" width="1016" height="248" loading="lazy" decoding="async" alt="Eight dark traffic-sign images (top row) and the same images after CLAHE contrast equalization (bottom row), where the symbols become much easier to read.">
+        </div>
+        <figcaption><span class="cs-figure__label">Fig. 2</span>Top: original images. Bottom: after our CLAHE preprocessing, applied to brightness only so sign colors are preserved.</figcaption>
+      </figure>
+        <p>Validation used grouped splits, so all 30 frames of a sign land on the same side. Training used AdamW, cosine learning-rate decay, mixed precision, early stopping and checkpointing on a university GPU cluster. We used AI coding assistance (Claude Code) to build the pipeline.</p>
+      </section>
+
+      <section class="cs-section">
+        <h2>Results</h2>
+        <p>Each addition helped the small CNN at 48&times;48 pixels. The baseline missed 6 of 201 holdout images, the spatial transformer cut that to 4, and CLAHE cut it to 2, for 99.0% top-1 accuracy. Larger backbones did worse here: ResNet-18 peaked at 97.01% and MobileNetV3-Small at 89.55%. Soft-vote ensembles never beat the best single model.</p>
+      <div class="cs-table-wrap">
+        <table class="cs-table">
+          <caption>Grouped split unless noted. Input is image size in pixels. A 201-image holdout is small: one image is half a percentage point.</caption>
+          <thead><tr><th scope="col">Model</th><th scope="col" class="num">Input</th><th scope="col" class="num">Validation</th><th scope="col" class="num">Holdout top-1</th><th scope="col" class="num">Errors / 201</th></tr></thead>
+          <tbody>
+              <tr><th scope="row">SmallCNN baseline</th><td class="num">48</td><td class="num">99.20%</td><td class="num">97.01%</td><td class="num">6</td></tr>
+              <tr><th scope="row">+ spatial transformer</th><td class="num">48</td><td class="num">99.14%</td><td class="num">98.01%</td><td class="num">4</td></tr>
+              <tr class="is-best"><th scope="row">+ spatial transformer + CLAHE</th><td class="num">48</td><td class="num">&mdash;</td><td class="num">99.00%</td><td class="num">2</td></tr>
+              <tr><th scope="row">ResNet-18 + STN + CLAHE</th><td class="num">100</td><td class="num">&mdash;</td><td class="num">97.01%</td><td class="num">6</td></tr>
+              <tr><th scope="row">MobileNetV3-Small + STN</th><td class="num">64</td><td class="num">91.12%</td><td class="num">89.55%</td><td class="num">21</td></tr>
+              <tr><th scope="row">SmallCNN, random split (leaky)</th><td class="num">100</td><td class="num">99.95%</td><td class="num">99.50%</td><td class="num">1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figure class="cs-figure cs-figure--narrow" style="--plot-dark: #181d2b">
+        <div class="cs-figure__mat">
+          <img class="theme-light-only" src="../img/signs/holdout_progression.webp" width="1200" height="450" loading="lazy" decoding="async" alt="Bar chart of top-1 accuracy on the 201-image holdout: SmallCNN baseline 97.01% (6 wrong), plus spatial transformer 98.01% (4 wrong), plus STN and CLAHE 99.00% (2 wrong).">
+          <img class="theme-dark-only" src="../img/signs/holdout_progression-dark.webp" width="1200" height="450" loading="lazy" decoding="async" alt="Bar chart of top-1 accuracy on the 201-image holdout: SmallCNN baseline 97.01% (6 wrong), plus spatial transformer 98.01% (4 wrong), plus STN and CLAHE 99.00% (2 wrong).">
+        </div>
+        <figcaption><span class="cs-figure__label">Fig. 3</span>Holdout accuracy as each component was added to the small CNN.</figcaption>
+      </figure>
+        <aside class="cs-callout cs-callout--warn">
+          <p class="cs-callout__title">Why 99.50% is not our result</p>
+          <p>One model trained on a leaky random split scored 99.50% on the same holdout, but its validation score was inflated, so we do not count it as our result.</p>
+        </aside>
+      </section>
+
+      <section class="cs-section">
+        <h2>What we learned</h2>
+        <p>A validation split can lie. With random per-image splits, near-duplicate frames of the same sign appeared on both sides, and validation accuracy reached 99.95&ndash;99.97%. Grouping by physical sign brought it down to a more honest 98.5&ndash;99.6% or so for the CNN and ResNet models.</p>
+        <p>Preprocessing aimed at real failure modes, such as tilt and darkness, did more than bigger networks did. A small CNN with the right inputs beat ResNet-18 trained from scratch on this dataset. Some images stayed out of reach: one nearly black 120&nbsp;km/h sign was misread as 80&nbsp;km/h by every model and ensemble we built.</p>
+      </section>
+
+      <section class="cs-section" aria-labelledby="credits-title">
+        <h2 id="credits-title">Team, tools and code</h2>
+        <div class="cs-team">
+          <span class="cs-team__badge" aria-hidden="true">NW</span>
+          <p class="cs-team__name">Team NorthWind</p>
+          <ul><li>Caleb Dilley</li><li>Dallin Wagner</li><li>Jonathan Oliphant</li><li>Nels Buhrley</li></ul>
+          <p class="cs-team__note">A team project for CSE 450 Machine Learning at BYU-Idaho, Spring 2026.</p>
+        </div>
+        <ul class="tags" aria-label="Tools and methods"><li>Python</li><li>PyTorch</li><li>torchvision</li><li>NumPy</li><li>scikit-learn</li><li>CNN</li><li>Spatial Transformer Network</li><li>CLAHE</li><li>Mixed precision</li><li>SLURM</li><li>GPU computing</li></ul>
+        <p>Source: <a href="https://github.com/nelsbuhrley/CSE-450-Machine-learning">Source on GitHub<span class="arrow arrow--ext" aria-hidden="true"> &nearr;</span></a> &middot; <a href="/CSE-450-Machine-learning/">Team project site</a></p>
+      </section>
+    </article>
+
+    <ul class="cs-pager" aria-label="More CSE 450 projects">
+      <li><a href="../bike-demand/"><span class="cs-pager__dir">&larr; Previous</span><span class="cs-pager__title">Bike Demand</span></a></li>
+      <li class="cs-pager__next"><a href="../"><span class="cs-pager__dir">Next &rarr;</span><span class="cs-pager__title">CSE 450 overview</span></a></li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <div class="affiliation-strip">
+      <img src="/img/logos/byu-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University">
+      <img src="/img/logos/byu-idaho-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University&ndash;Idaho">
+    </div>
+    <p>&copy; 2026 Nels Buhrley &middot; <a href="https://nels.buhrley.com/">nels.buhrley.com</a></p>
+  </footer>
+</body>
+</html>

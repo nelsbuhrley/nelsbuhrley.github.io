@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>King County Housing Prices | CSE 450 | Nels Buhrley</title>
+  <meta name="description" content="Predicting King County home prices with XGBoost, log targets and geographic features. R&sup2; 0.8787 and 86.4% within 20% on an 81-home holdout.">
+  <meta name="author" content="Nels Buhrley">
+  <meta name="theme-color" content="#002e5d">
+  <link rel="canonical" href="https://nels.buhrley.com/cse450/housing/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="King County Housing Prices | CSE 450 | Nels Buhrley">
+  <meta property="og:description" content="Predicting King County home prices with XGBoost, log targets and geographic features. R&sup2; 0.8787 and 86.4% within 20% on an 81-home holdout.">
+  <meta property="og:url" content="https://nels.buhrley.com/cse450/housing/">
+  <meta property="og:image" content="https://nels.buhrley.com/cse450/img/og/housing.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/ui/css/project.css">
+  <link rel="stylesheet" href="/ui/css/menu.css">
+  <script src="/ui/js/site-menu.js"></script>
+</head>
+<body>
+  <svg class="sr-only" width="0" height="0" aria-hidden="true" focusable="false">
+    <symbol id="i-github" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="cs-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol><li><a href="/">Home</a></li><li><a href="/cse450/">CSE 450</a></li><li aria-current="page">Housing Prices</li></ol>
+      </nav>
+      <p class="cs-hero__eyebrow">Module 3 &middot; Regression</p>
+      <h1>Pricing a House From Its Location Up</h1>
+      <p class="cs-hero__dek">An XGBoost model with engineered location features priced 86% of unseen King County homes within 20% of their sale price.</p>
+      <dl class="cs-hero__meta">
+        <div><dt>Team</dt><dd>Team NorthWind</dd></div>
+        <div><dt>Course</dt><dd>CSE 450, BYU-Idaho</dd></div>
+        <div><dt>Term</dt><dd>Spring 2026</dd></div>
+        <div><dt>Stack</dt><dd>Python, XGBoost, scikit-learn</dd></div>
+      </dl>
+      <div class="cs-hero__links">
+        <a class="btn-pill btn-pill--primary" href="https://github.com/nelsbuhrley/CSE-450-Machine-learning"><svg aria-hidden="true"><use href="#i-github"/></svg>Source on GitHub<span class="sr-only"> (external)</span></a>
+        <a class="btn-pill" href="../housing-dashboard.html" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-chart"/></svg>Interactive dashboard<span class="sr-only"> (opens in a new tab, about 2 MB)</span></a>
+        <a class="btn-pill" href="/CSE-450-Machine-learning/"><svg aria-hidden="true"><use href="#i-grid"/></svg>Team project site</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="cs-body">
+      <section class="cs-section">
+        <p class="cs-lede">Location drives price. Most of our work went into giving an XGBoost model a sense of place, then checking it honestly on homes it had never seen.</p>
+      <dl class="cs-metrics">
+        <div><dt>R&sup2;</dt><dd>0.8787<span class="cs-metrics__note">on the 81-home mini holdout</span></dd></div>
+        <div><dt>Median abs. error</dt><dd>$36,617<span class="cs-metrics__note">half of predictions were closer than this</span></dd></div>
+        <div><dt>Within 20%</dt><dd>86.4%<span class="cs-metrics__note">of predictions, relative to sale price</span></dd></div>
+        <div><dt>Training sales</dt><dd>20,000<span class="cs-metrics__note">across 70 zip codes</span></dd></div>
+      </dl>
+      </section>
+
+      <section class="cs-section">
+        <h2>The problem</h2>
+        <p>The task: given a home&rsquo;s size, condition, grade, age and location, predict its sale price in King County, Washington, which includes Seattle. Prices are heavily skewed. The median is $450,000, but the top sale is $7.7 million, so a few mansions can dominate a squared-error loss. The course graded submissions on an 81-home mini holdout using RMSE, mean and median absolute error, R&sup2; and the share of predictions within 5%, 10% and 20% of the true price.</p>
+      </section>
+
+      <section class="cs-section">
+        <h2>The data</h2>
+        <p>The training set has 20,000 sales from May 2014 to May 2015, with 21 columns and no missing values. Each sale lists bedrooms, bathrooms, living and lot square footage, floors, waterfront and view ratings, condition and grade, year built and renovated, zip code, latitude and longitude, and the living and lot size of the 15 nearest neighbors.</p>
+        <p>Before modeling, we built an interactive exploration dashboard with a zip-code price map, correlation matrix, feature distributions and outlier flags. It surfaced issues such as a 33-bedroom listing.</p>
+        <a class="cs-linkcard" href="../housing-dashboard.html" target="_blank" rel="noopener">
+          <span class="cs-linkcard__icon" aria-hidden="true"><svg><use href="#i-chart"/></svg></span>
+          <span class="cs-linkcard__body">
+            <span class="cs-linkcard__title">Open the interactive housing dashboard <span class="arrow arrow--ext" aria-hidden="true">&nearr;</span></span>
+            <span class="cs-linkcard__text">Our exploratory dashboard: zip-code price map, correlations, distributions and outlier flags for the 20,000 training sales.</span>
+            <span class="cs-linkcard__meta">Opens in a new tab &middot; about 2&nbsp;MB</span>
+          </span>
+        </a>
+      </section>
+
+      <section class="cs-section">
+        <h2>Our approach</h2>
+        <p>Location drives price, so most of the feature work went there. We clustered latitude and longitude into 20 k-means regions and gave each home its distance to every cluster center. We also added a nearest-neighbor price feature: the typical price of the 10 closest homes, computed out-of-fold with 5-fold splits so a home never sees its own price.</p>
+        <p>Zip codes were one-hot encoded, sale dates became days since the start of the data, and features were standardized. The model is an XGBoost regressor (800 trees, depth 6, learning rate 0.05) trained on log price. We converted predictions back to dollars with Duan&rsquo;s smearing correction for log-transform bias. We trained across five random seeds with 5% validation splits; the scores printed but were not saved, so only the final seed&rsquo;s predictions are reported.</p>
+      </section>
+
+      <section class="cs-section">
+        <h2>Results</h2>
+        <div class="cs-split">
+          <div>
+            <p>On the 81-home mini holdout, the model explained about 88% of the variance in sale price. Half of its predictions were within $36,617 of the true price, and 86.4% were within 20%.</p>
+            <p>RMSE is much higher than the median error because of a few large misses, mostly expensive homes priced too low; the highest sale in the holdout, about $2.2 million, was priced near $1.6 million. With only 81 homes, these figures will shift on a different sample.</p>
+      <div class="cs-table-wrap">
+        <table class="cs-table">
+          <caption>Scored with the team evaluator on saved predictions.</caption>
+          <thead><tr><th scope="col">Metric</th><th scope="col" class="num">Value</th></tr></thead>
+          <tbody>
+              <tr><th scope="row">RMSE</th><td class="num">$99,567.51</td></tr>
+              <tr><th scope="row">Mean absolute error</th><td class="num">$58,233.27</td></tr>
+              <tr><th scope="row">Median absolute error</th><td class="num">$36,617.10</td></tr>
+              <tr><th scope="row">R&sup2;</th><td class="num">0.8787</td></tr>
+              <tr><th scope="row">Within 5% / 10% / 20%</th><td class="num">35.8% / 59.3% / 86.4%</td></tr>
+          </tbody>
+        </table>
+      </div>
+          </div>
+      <figure class="cs-figure" style="--plot-dark: #181d2b">
+        <div class="cs-figure__mat">
+          <img class="theme-light-only" src="../img/housing/actual_vs_predicted.webp" width="1050" height="900" loading="lazy" decoding="async" alt="Scatter plot of predicted vs actual sale price for 81 holdout homes, with a shaded &plusmn;10% band around the diagonal; filled points are within 10%, open points are off by more.">
+          <img class="theme-dark-only" src="../img/housing/actual_vs_predicted-dark.webp" width="1050" height="900" loading="lazy" decoding="async" alt="Scatter plot of predicted vs actual sale price for 81 holdout homes, with a shaded &plusmn;10% band around the diagonal; filled points are within 10%, open points are off by more.">
+        </div>
+        <figcaption><span class="cs-figure__label">Fig. 1</span>Predicted vs actual price on the 81-home holdout. Most homes under $1M sit near the line, and the misses grow at the high end.</figcaption>
+      </figure>
+        </div>
+      </section>
+
+      <section class="cs-section">
+        <h2>What we learned</h2>
+        <p>We put our effort into feature engineering rather than tuning: distance-to-cluster features and an out-of-fold neighborhood price give the model a sense of place beyond raw coordinates and zip codes. (We did not run an ablation to measure their contribution.) Training on log price kept the expensive tail from dominating, but it does not eliminate that tail: the largest misses were mostly high-end homes, plus one $275k home priced at $676k.</p>
+        <p>The out-of-fold construction was the detail that mattered most. A nearest-neighbor price built naively would leak each home&rsquo;s own price into its features and make validation look better than it really is. Next time we would log validation scores for every seed and try a separate model for the luxury segment.</p>
+      </section>
+
+      <section class="cs-section" aria-labelledby="credits-title">
+        <h2 id="credits-title">Team, tools and code</h2>
+        <div class="cs-team">
+          <span class="cs-team__badge" aria-hidden="true">NW</span>
+          <p class="cs-team__name">Team NorthWind</p>
+          <ul><li>Caleb Dilley</li><li>Dallin Wagner</li><li>Jonathan Oliphant</li><li>Nels Buhrley</li></ul>
+          <p class="cs-team__note">A team project for CSE 450 Machine Learning at BYU-Idaho, Spring 2026.</p>
+        </div>
+        <ul class="tags" aria-label="Tools and methods"><li>Python</li><li>XGBoost</li><li>scikit-learn</li><li>k-means</li><li>KNN</li><li>pandas</li><li>NumPy</li><li>matplotlib</li><li>Leaflet</li><li>Chart.js</li><li>Feature engineering</li><li>Regression</li></ul>
+        <p>Source: <a href="https://github.com/nelsbuhrley/CSE-450-Machine-learning">Source on GitHub<span class="arrow arrow--ext" aria-hidden="true"> &nearr;</span></a> &middot; <a href="/CSE-450-Machine-learning/">Team project site</a></p>
+      </section>
+    </article>
+
+    <ul class="cs-pager" aria-label="More CSE 450 projects">
+      <li><a href="../bank-marketing/"><span class="cs-pager__dir">&larr; Previous</span><span class="cs-pager__title">Bank Marketing</span></a></li>
+      <li class="cs-pager__next"><a href="../bike-demand/"><span class="cs-pager__dir">Next &rarr;</span><span class="cs-pager__title">Bike Demand</span></a></li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <div class="affiliation-strip">
+      <img src="/img/logos/byu-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University">
+      <img src="/img/logos/byu-idaho-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University&ndash;Idaho">
+    </div>
+    <p>&copy; 2026 Nels Buhrley &middot; <a href="https://nels.buhrley.com/">nels.buhrley.com</a></p>
+  </footer>
+</body>
+</html>

@@ -7,7 +7,9 @@
         { title: "Computational Physics Portfolio", href: "/CPP-Numerical-Modeling/" },
         { title: "IFE Symposium 2026", href: "/IFE-Symposium-2026/" },
         { title: "Polyglot — Voice Translation", href: "/Voice-Translation/" },
-        { title: "CSE 450 — Machine Learning", href: "/CSE-450-Machine-learning/" },
+        { title: "CSE 450 — Machine Learning", href: "/cse450/" },
+        { title: "Rocket Glider", href: "/rocket-glider/" },
+        { title: "OEIS A278299", href: "/oeis-a278299/" },
         { title: "Visualizations", href: "/Visualizations/" },
         { title: "AI in Higher Education", href: "/AI-Ethics-and-Discussion/" }
     ];

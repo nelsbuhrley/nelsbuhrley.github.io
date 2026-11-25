@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swing-wing rocket glider | Nels Buhrley</title>
+  <meta name="description" content="A fully 3D-printed rocket glider that boosts on an Estes D12-3 with its wings folded, then swings them open on a tilted hinge to glide home. The design story from concept through a failed first test to the v2 redesign.">
+  <meta name="author" content="Nels Buhrley">
+  <meta name="theme-color" content="#002e5d">
+  <link rel="canonical" href="https://nels.buhrley.com/rocket-glider/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Swing-wing rocket glider | Nels Buhrley">
+  <meta property="og:description" content="A fully 3D-printed rocket glider that boosts on an Estes D12-3 with its wings folded, then swings them open on a tilted hinge to glide home. The design story from concept through a failed first test to the v2 redesign.">
+  <meta property="og:url" content="https://nels.buhrley.com/rocket-glider/">
+  <meta property="og:image" content="https://nels.buhrley.com/rocket-glider/img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/ui/css/project.css">
+  <link rel="stylesheet" href="/ui/css/menu.css">
+  <link rel="stylesheet" href="rocket.css">
+  <link rel="preload" as="image" href="img/hero-v2-deployed.webp" type="image/webp">
+  <script src="/ui/js/site-menu.js"></script>
+  <script src="deploy.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="cs-hero rg-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol><li><a href="/">Home</a></li><li><a href="/#projects">Projects</a></li><li aria-current="page">Rocket glider</li></ol>
+      </nav>
+
+      <div class="rg-hero__text">
+        <p class="cs-hero__eyebrow">Personal build &middot; Aerospace design</p>
+        <h1>A 3D-printed rocket glider with swing wings</h1>
+        <p class="cs-hero__dek">It boosts on an Estes D12-3 with its wings folded along the body, then swings them open on a tilted hinge and glides home. Version&nbsp;1 crashed in its first hand test; version&nbsp;2 is the redesign that test made necessary.</p>
+        <dl class="cs-hero__meta">
+          <div><dt>Role</dt><dd>Solo design, analysis and build</dd></div>
+          <div><dt>When</dt><dd>Fall 2026 &ndash; present</dd></div>
+          <div><dt>Status</dt><dd>v2 printed, not yet flown</dd></div>
+        </dl>
+        <div class="cs-hero__links">
+          <a class="btn-pill btn-pill--primary" href="#story">Read the design story</a>
+          <a class="btn-pill" href="#specs">Specs</a>
+          <a class="btn-pill" href="https://makerworld.com/en/models/3475849-functional-swing-wing-rocket-glider#profileId-3967976" rel="noopener">Print files on MakerWorld</a>
+        </div>
+      </div>
+
+      <figure class="rg-viewer">
+        <input class="sr-only" type="radio" name="rg-pose" id="pose-folded">
+        <input class="sr-only" type="radio" name="rg-pose" id="pose-deployed" checked>
+        <div class="rg-viewer__stage">
+          <img class="is-folded" src="img/hero-v2-folded.webp" width="1400" height="868" decoding="async" alt="CAD render of the v2 glider with both wings folded back along the body, the boost configuration.">
+          <img class="is-deployed" src="img/hero-v2-deployed.webp" width="1400" height="868" decoding="async" fetchpriority="high" alt="CAD render of the v2 glider with the wings swung open on the tilted hinge, the glide configuration.">
+        </div>
+        <fieldset class="rg-viewer__controls">
+          <legend>Pose</legend>
+          <span class="rg-seg">
+            <label for="pose-folded">Folded for boost</label>
+            <label for="pose-deployed">Open for glide</label>
+          </span>
+        </fieldset>
+        <figcaption>Version 2 CAD, rendered from the print files. Orange parts are PLA, grey tubes are PETG.</figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="cs-body">
+
+      <section class="cs-section" aria-labelledby="overview-title">
+        <h2 id="overview-title" class="sr-only">Overview</h2>
+        <p class="cs-lede">Rocket gliders are a hard compromise: a rocket wants to be slender and low-drag on the way up, and a glider wants big wings on the way down. This one gets both by folding its wings back for boost and swinging them out near apogee. Everything is printed on my Prusa MK3S+ in PLA and PETG, apart from M3 hardware, filament pins and rubber bands.</p>
+        <dl class="cs-metrics">
+          <div><dt>Motor</dt><dd>D12-3<span class="cs-metrics__note">Estes, one per flight</span></dd></div>
+          <div><dt>Liftoff mass</dt><dd>335&ndash;345&nbsp;g<span class="cs-metrics__note">Measured on the printed v2 with a motor fitted; target &le;&nbsp;350&nbsp;g</span></dd></div>
+          <div><dt>Apogee</dt><dd>~73&ndash;77&nbsp;m<span class="cs-metrics__note">My own simulation, depending on mass</span></dd></div>
+          <div><dt>Glide L/D</dt><dd>7.9<span class="cs-metrics__note">Predicted by my own aero model, not flight-tested</span></dd></div>
+        </dl>
+        <aside class="cs-callout cs-callout--warn" aria-labelledby="status-note-title">
+          <p class="cs-callout__title" id="status-note-title">Where it stands</p>
+          <p>Version&nbsp;2 is printed and weighed, and I am still refining parts. Neither version has made a powered flight yet, so every performance number on this page is a prediction from my own models.</p>
+        </aside>
+      </section>
+
+      <section class="cs-section" id="story" aria-labelledby="concept-title">
+        <p class="eyebrow"><span class="eyebrow__num">01</span> Concept</p>
+        <h2 id="concept-title">Fold for the climb, open for the glide</h2>
+        <p>The glider rides up on a single D12-3 with both wings folded back along the body, so on the rod it is basically a rocket: a 41.6&nbsp;mm PETG tube, a PLA nose cone and a fin can. Near apogee the motor&rsquo;s ejection charge is designed to push a plunger that pulls the wing latches, and rubber bands then swing the wings out on a single hinge pin, and the same airframe turns into a swept-wing glider.</p>
+        <p>The wings are stacked on one pin above the body, so the whole mechanism hangs on one small part, the saddle that carries the hinge. That turned out to matter.</p>
+        <figure class="cs-figure cs-figure--dark cs-figure--wide">
+          <div class="cs-figure__mat">
+            <img src="img/cad-exploded-v1.webp" width="1600" height="570" loading="lazy" decoding="async" alt="Exploded CAD view of the first version: nose cone, forward tube with the hinge saddle, the wing pair on its hinge pin, aft tube, motor and tail fins.">
+          </div>
+          <figcaption><span class="cs-figure__label">Fig. 1</span>Exploded CAD of version&nbsp;1: nose, forward tube and hinge saddle, the stacked wing pair, aft tube and fins.</figcaption>
+        </figure>
+
+        <h3>Requirements I set</h3>
+        <ul class="rg-reqs">
+          <li><strong>Light enough</strong>Liftoff at or under 350&nbsp;g, well inside the 396&nbsp;g limit quoted for the D12.</li>
+          <li><strong>Printable</strong>Every structural part printed on a Prusa MK3S+ in PLA or PETG; only a handful of small parts bought.</li>
+          <li><strong>Folds flat, opens surely</strong>Wings stowed for boost and opened reliably by bands, with no help from the pilot.</li>
+          <li><strong>Glides stably</strong>Trimmed for a steady glide with real pitch, yaw and roll stability.</li>
+          <li><strong>Survives landings</strong>When something breaks, it should be a cheap printed part, not the body tube.</li>
+        </ul>
+      </section>
+
+      <section class="cs-section" aria-labelledby="test-title">
+        <p class="eyebrow"><span class="eyebrow__num">02</span> First test</p>
+        <h2 id="test-title">Version 1 and the hand test that broke it</h2>
+        <div class="cs-split rg-split-fig">
+          <div>
+            <p>Version&nbsp;1 weighed 241&nbsp;g. On 10&nbsp;October&nbsp;2026 I threw it by hand, without a motor, to check the glide before risking a launch. It flipped over, yawed hard to the side and came down on the forward tube, which broke at the wing saddle.</p>
+            <p>A second test opened the wings twice. The first opening was clean; the snap of the second cracked the tube in two at the earlier damage.</p>
+            <p>Looking at the design afterwards, the failure was not bad luck. The wings had zero incidence, so it could not trim into a glide. It had almost no weathercock stability in yaw. And a hand toss is far slower than a real glide, so the test itself could not show whether the shape worked. A separate bench calculation showed that one rubber band gave only about 2.4&nbsp;N&middot;cm of opening torque, too little to count on at altitude.</p>
+          </div>
+          <figure class="cs-figure rg-photo">
+            <div class="cs-figure__mat">
+              <img src="img/photo-saddle-break.webp" width="800" height="1244" loading="lazy" decoding="async" alt="Photo of the black printed forward tube snapped through just behind the hinge saddle, with the blue wing root below the break.">
+            </div>
+            <figcaption><span class="cs-figure__label">Fig. 2</span>The v1 forward tube, broken at the hinge saddle after the hand test.</figcaption>
+          </figure>
+        </div>
+
+        <h3>What the failure taught</h3>
+        <ol class="rg-chain" aria-label="From failure to fix">
+          <li class="rg-chain__head" aria-hidden="true"><span>What happened</span><span>Why</span><span>v2 response</span></li>
+          <li>
+            <p><span class="rg-chain__tag">What happened</span>Flipped instead of gliding</p>
+            <p><span class="rg-chain__tag">Why</span>Zero wing incidence, so no way to trim for a glide</p>
+            <p><span class="rg-chain__tag">v2 response</span>Tilt the hinge so the open wings gain incidence</p>
+          </li>
+          <li>
+            <p><span class="rg-chain__tag">What happened</span>Yawed and rolled away</p>
+            <p><span class="rg-chain__tag">Why</span>Almost no yaw stability and no roll restoring moment</p>
+            <p><span class="rg-chain__tag">v2 response</span>Bigger four-fin tail plus a top fin; dihedral from the tilted hinge</p>
+          </li>
+          <li>
+            <p><span class="rg-chain__tag">What happened</span>Tube broke at the saddle, twice</p>
+            <p><span class="rg-chain__tag">Why</span>All loads ran through one weak spot in the main tube</p>
+            <p><span class="rg-chain__tag">v2 response</span>Stronger saddle and couplers that fail before the tubes</p>
+          </li>
+          <li>
+            <p><span class="rg-chain__tag">What happened</span>Opening force in doubt</p>
+            <p><span class="rg-chain__tag">Why</span>About 2.4&nbsp;N&middot;cm from one band</p>
+            <p><span class="rg-chain__tag">v2 response</span>More bands, a band hook and band notches; count still being tuned</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="cs-section" aria-labelledby="redesign-title">
+        <p class="eyebrow"><span class="eyebrow__num">03</span> Redesign</p>
+        <h2 id="redesign-title">Version 2: six decisions</h2>
+        <p>Version&nbsp;2 is a full redesign; no v1 part carries over. Each change answers something the first test exposed.</p>
+
+        <ol class="rg-decisions">
+          <li>
+            <h3>An 11&deg; tilted hinge</h3>
+            <p>The pin leans 11&deg; with its top end aft. Folded, nothing changes. As the wings swing open about the tilted axis they pick up about +3.4&deg; of incidence and +8&deg; of dihedral (design values), which v1 lacked.</p>
+          </li>
+          <li>
+            <h3>Longer, two-piece keyed wings</h3>
+            <p>Each wing grew to 300&nbsp;mm (from 247&nbsp;mm) and is printed in two pieces joined by a deliberately weak key, so a tip strike breaks a cheap key instead of a wing.</p>
+          </li>
+          <li>
+            <h3>Four fins plus a top fin</h3>
+            <p>Four enlarged lower fins and a centered top fin replace the small v1 tail, designed to restore the yaw stability the hand test showed was missing.</p>
+          </li>
+          <li>
+            <h3>A stronger saddle</h3>
+            <p>The saddle that carries the hinge was rebuilt to take the opening snap and landing loads, with a filed horn as the open stop and printed shims for a zero-play hinge.</p>
+          </li>
+          <li>
+            <h3>Couplers that fail first</h3>
+            <p>The tube joints are snap couplers sized so that, by my calculation, the tube is 1.7&times; stronger than the coupler in its weakest direction. A hard landing should cost a coupler, not a tube. After the first snaps slid out too easily, I scaled the joints up 1.75&times;.</p>
+          </li>
+          <li>
+            <h3>Hollow 6% airfoil fins</h3>
+            <p>Later revisions turned the fins into hollow symmetric 6% airfoils: a single 0.45&nbsp;mm skin over three internal webs, about 6&nbsp;g each by CAD estimate.</p>
+          </li>
+        </ol>
+
+        <div class="rg-pair">
+          <figure class="cs-figure">
+            <div class="cs-figure__mat">
+              <img src="img/cad-straight-vs-tilted-pin.webp" width="1080" height="1544" loading="lazy" decoding="async" alt="Two side views of the hinge. With a straight pin the folded wing stays level with the body; with a tilted pin the opening wing rises away from the body at an angle.">
+            </div>
+            <figcaption><span class="cs-figure__label">Fig. 3</span>Why the pin is tilted: with a straight pin the wing swings flat; with a tilted pin it lifts as it opens. From my explainer CAD, earlier geometry.</figcaption>
+          </figure>
+          <div>
+            <figure class="cs-figure">
+              <div class="cs-figure__mat">
+                <img src="img/cad-dihedral-front.webp" width="1080" height="612" loading="lazy" decoding="async" alt="Front view of the glider with wings open, highlighted in yellow, rising above a dashed horizontal line to show dihedral.">
+              </div>
+              <figcaption><span class="cs-figure__label">Fig. 4</span>Front view with the wings open: the tilted hinge gives the wings dihedral (highlighted) for roll stability. Explainer CAD, earlier geometry.</figcaption>
+            </figure>
+            <p>The appeal of the tilted pin is that one geometric choice fixes two problems at once. Incidence lets the glider trim; dihedral gives it a roll restoring moment. Neither needs an extra moving part.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="cs-section" id="specs" aria-labelledby="analysis-title">
+        <p class="eyebrow"><span class="eyebrow__num">04</span> Analysis</p>
+        <h2 id="analysis-title">What my models predict</h2>
+        <p>I sized v2 with my own tools rather than off-the-shelf rocketry software: a numerical boost integrator using the Estes D12 thrust curve, a three-degree-of-freedom glide model and a lattice-style aerodynamic model of the wing and tail, all fed by a mass and center-of-gravity ledger that I re-ran as the design changed (the latest run predates the final fin revisions). The table marks what each number is.</p>
+        <ul class="rg-legend" aria-label="Legend">
+          <li><span class="rg-kind rg-kind--measured">Measured</span> weighed or observed</li>
+          <li><span class="rg-kind rg-kind--sim">Simulated</span> my own simulation</li>
+          <li><span class="rg-kind rg-kind--est">Estimate</span> CAD or hand calculation</li>
+          <li><span class="rg-kind rg-kind--target">Target</span> a design goal</li>
+        </ul>
+
+        <div class="cs-table-wrap">
+          <table class="cs-table rg-specs">
+            <caption>Version 2 unless noted. Simulated values come from my in-house models and have not been checked against a flight or independent software.</caption>
+            <thead>
+              <tr><th scope="col">Item</th><th scope="col">Value</th><th scope="col">Kind</th></tr>
+            </thead>
+            <tbody>
+              <tr class="rg-group"><th scope="colgroup" colspan="3">Mass</th></tr>
+              <tr><th scope="row">Liftoff mass</th><td>335&ndash;345&nbsp;g<span class="rg-sub">With a loaded D12 fitted; 345&nbsp;g with a heavier nose ballast screw</span></td><td><span class="rg-kind rg-kind--measured">Measured</span></td></tr>
+              <tr><th scope="row">Liftoff mass, ledger</th><td>336.8&nbsp;g<span class="rg-sub">Predicted from CAD and slicer masses before weighing</span></td><td><span class="rg-kind rg-kind--est">Estimate</span></td></tr>
+              <tr><th scope="row">Liftoff mass limit</th><td>&le;&nbsp;350&nbsp;g<span class="rg-sub">396&nbsp;g limit for the motor</span></td><td><span class="rg-kind rg-kind--target">Target</span></td></tr>
+              <tr><th scope="row">Version 1 mass</th><td>241&nbsp;g</td><td><span class="rg-kind rg-kind--measured">Measured</span></td></tr>
+              <tr class="rg-group"><th scope="colgroup" colspan="3">Boost</th></tr>
+              <tr><th scope="row">Motor</th><td>Estes D12-3, 24&times;70&nbsp;mm</td><td><span class="rg-kind rg-kind--target">Target</span></td></tr>
+              <tr><th scope="row">Rod exit speed</th><td>12.2&nbsp;m/s at 337&nbsp;g<span class="rg-sub">12.1&nbsp;m/s at 345&nbsp;g</span></td><td><span class="rg-kind rg-kind--sim">Simulated</span></td></tr>
+              <tr><th scope="row">Apogee</th><td>77&nbsp;m at 337&nbsp;g<span class="rg-sub">73&nbsp;m at 345&nbsp;g, vertical, calm air</span></td><td><span class="rg-kind rg-kind--sim">Simulated</span></td></tr>
+              <tr><th scope="row">Peak thrust-to-weight</th><td>9.0</td><td><span class="rg-kind rg-kind--sim">Simulated</span></td></tr>
+              <tr class="rg-group"><th scope="colgroup" colspan="3">Glide</th></tr>
+              <tr><th scope="row">Glide ratio (L/D)</th><td>7.9<span class="rg-sub">At C<sub>L</sub>&nbsp;0.5: 17.0&nbsp;m/s, sink about 2.1&nbsp;m/s</span></td><td><span class="rg-kind rg-kind--sim">Simulated</span></td></tr>
+              <tr><th scope="row">Stall speed</th><td>13.9&nbsp;m/s</td><td><span class="rg-kind rg-kind--sim">Simulated</span></td></tr>
+              <tr><th scope="row">Static margin</th><td>24&ndash;29% of mean chord</td><td><span class="rg-kind rg-kind--sim">Simulated</span></td></tr>
+              <tr class="rg-group"><th scope="colgroup" colspan="3">Geometry and structure</th></tr>
+              <tr><th scope="row">Wing</th><td>300&nbsp;mm per side, two pieces<span class="rg-sub">Area 4.10&nbsp;dm&sup2;, aspect ratio 9.1, 6&ndash;9% thick with washout to &minus;5&deg;</span></td><td><span class="rg-kind rg-kind--est">Estimate</span></td></tr>
+              <tr><th scope="row">Hinge</th><td>Pin tilted 11&deg;<span class="rg-sub">+3.4&deg; incidence and +8&deg; dihedral when open</span></td><td><span class="rg-kind rg-kind--target">Target</span></td></tr>
+              <tr><th scope="row">Body tube</th><td>PETG, 41.6&nbsp;mm OD, 0.8&nbsp;mm wall</td><td><span class="rg-kind rg-kind--target">Target</span></td></tr>
+              <tr><th scope="row">Coupler fuse</th><td>Tube 1.7&times; stronger than coupler<span class="rg-sub">Analytic; no break test yet</span></td><td><span class="rg-kind rg-kind--est">Estimate</span></td></tr>
+              <tr><th scope="row">Fin mass</th><td>About 6&nbsp;g each</td><td><span class="rg-kind rg-kind--est">Estimate</span></td></tr>
+              <tr><th scope="row">Band torque, v1</th><td>About 2.4&nbsp;N&middot;cm per band</td><td><span class="rg-kind rg-kind--est">Estimate</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <aside class="cs-callout" aria-labelledby="trust-note-title">
+          <p class="cs-callout__title" id="trust-note-title">How much to trust these numbers</p>
+          <p>They are design estimates, not results. Skin-friction drag carries about &plusmn;30% uncertainty and fin interference drag is not modelled. The glide and boost runs predate the latest fin revisions and have not been re-run against them. The first real test will be a flight.</p>
+        </aside>
+      </section>
+
+      <section class="cs-section" aria-labelledby="fab-title">
+        <p class="eyebrow"><span class="eyebrow__num">05</span> Fabrication</p>
+        <h2 id="fab-title">Printing it</h2>
+        <p>All of it prints on a Prusa MK3S+. The body tubes are PETG for toughness; the nose, wings, fins and couplers are PLA for stiffness and crisp detail. The thin-walled PETG tubes print hot with little part cooling, one at a time, inside a cardboard box to keep drafts off.</p>
+
+        <div class="rg-photos">
+          <figure class="cs-figure rg-photo">
+            <div class="cs-figure__mat">
+              <img src="img/photo-wings-open.webp" width="1100" height="825" loading="lazy" decoding="async" alt="Photo from above of the printed glider on carpet: red nose cone, black body tube, blue swept wings swung open with rubber bands stretched from the forward tube to each wing tip, and a blue tail.">
+            </div>
+            <figcaption><span class="cs-figure__label">Fig. 5</span>An earlier print with the wings open and the bands stretched. The renders at the top show the current v2.</figcaption>
+          </figure>
+          <figure class="cs-figure rg-photo">
+            <div class="cs-figure__mat">
+              <img src="img/photo-wings-folded.webp" width="780" height="1040" loading="lazy" decoding="async" alt="Photo of the same printed glider with both wings folded back along the body and held by rubber bands.">
+            </div>
+            <figcaption><span class="cs-figure__label">Fig. 6</span>Folded for boost (an earlier print).</figcaption>
+          </figure>
+          <figure class="cs-figure rg-photo">
+            <div class="cs-figure__mat">
+              <img src="img/photo-parts.webp" width="900" height="1024" loading="lazy" decoding="async" alt="Photo of the printed parts laid out on carpet: two black body tubes, a red nose cone, the blue wing pair, blue tail fins and rubber bands.">
+            </div>
+            <figcaption><span class="cs-figure__label">Fig. 7</span>The printed parts (an earlier print).</figcaption>
+          </figure>
+        </div>
+
+        <div class="cs-table-wrap">
+          <table class="cs-table rg-settings">
+            <caption>Settings I tuned for the current print files. Wings and tubes slice in PrusaSlicer 2.9.6; the fins slice in OrcaSlicer with a single Arachne wall.</caption>
+            <thead>
+              <tr><th scope="col">Setting</th><th scope="col">PETG tubes</th><th scope="col">PLA parts</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Nozzle</th><td data-label="PETG tubes">270&nbsp;&deg;C (250&nbsp;&deg;C first layer)</td><td data-label="PLA parts">210&nbsp;&deg;C (215&nbsp;&deg;C first layer)</td></tr>
+              <tr><th scope="row">Bed</th><td data-label="PETG tubes">75&nbsp;&deg;C</td><td data-label="PLA parts">60&nbsp;&deg;C</td></tr>
+              <tr><th scope="row">Layer height</th><td data-label="PETG tubes">0.20&nbsp;mm</td><td data-label="PLA parts">0.15&nbsp;mm for wings, nose and fins; 0.20&nbsp;mm for couplers</td></tr>
+              <tr><th scope="row">Cooling</th><td data-label="PETG tubes">Part fan at most 40%, none on the walls; 16&nbsp;s minimum layer time</td><td data-label="PLA parts">Fan 100%, uncovered</td></tr>
+              <tr><th scope="row">Walls and infill</th><td data-label="PETG tubes">2 perimeters, 20% gyroid with solid zones</td><td data-label="PLA parts">Fins: one 0.45&nbsp;mm skin over 3 webs</td></tr>
+              <tr><th scope="row">Prep</th><td data-label="PETG tubes">Filament dried 6&nbsp;h at 55&ndash;65&nbsp;&deg;C; one tube per print, in a box</td><td data-label="PLA parts">&mdash;</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cs-split">
+          <div>
+            <h3>Small fixes that add up</h3>
+            <p>The two inner wing panels print trailing-edge-down side by side, joined by break-off ties across the gap. Re-laying them cut 68 thick 3&nbsp;mm slabs to 28 thin ties with a break notch at each skin, so they snap off cleanly. Acceleration is capped at 600&nbsp;mm/s&sup2; and print speed at 80&nbsp;mm/s to keep the thin walls true.</p>
+            <p>Apart from the prints, the bill of materials is M3 screws, nuts and washers for the hinge and nose ballast, 1.75&nbsp;mm filament as pins and rubber bands, plus two metal spacers, a cardboard gas shield, CA glue and tape.</p>
+          </div>
+          <figure class="cs-figure">
+            <div class="cs-figure__mat">
+              <img src="img/plot-wing-print-ties.webp" width="1157" height="699" loading="lazy" decoding="async" alt="Two plots of an inner wing panel outline on the print plate with dots marking the break-off ties to the neighboring panel, colored by the gap they bridge. The before plot has 68 ties; the after plot has 28.">
+            </div>
+            <figcaption><span class="cs-figure__label">Fig. 8</span>Break-off ties between the two inner wing panels on the print plate, before (68) and after (28), colored by the gap they bridge.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="cs-section" aria-labelledby="tools-title">
+        <p class="eyebrow"><span class="eyebrow__num">06</span> Tooling</p>
+        <h2 id="tools-title">CAD as code</h2>
+        <p>I modelled the glider in FreeCAD 1.1, driven headless from Python scripts rather than by hand. Each design change is a parameter edit followed by a scripted rebuild, geometry and G-code checks, and a fresh run of the mass and center-of-gravity ledger, so the CG stays tied to the actual parts. The analysis (the mass ledger, trim, stability and boost simulation) is written in Python with NumPy and SciPy.</p>
+        <p>I developed the scripts and analysis with Claude Code as an assistant. Design decisions, testing, printing and assembly are mine.</p>
+        <ul class="tags" aria-label="Tools">
+          <li>FreeCAD 1.1 (headless Python)</li><li>NumPy</li><li>SciPy</li><li>PrusaSlicer</li><li>OrcaSlicer</li><li>Prusa MK3S+</li><li>Claude Code</li>
+        </ul>
+      </section>
+
+      <section class="cs-section" aria-labelledby="status-title">
+        <p class="eyebrow"><span class="eyebrow__num">07</span> Status</p>
+        <h2 id="status-title">Where it is now</h2>
+        <ol class="rg-status">
+          <li><span class="rg-status__when">October 2026</span><strong>Version 1 hand-tested.</strong> Crashed and broke at the saddle; the analysis of why drove the redesign.</li>
+          <li><span class="rg-status__when">October 2026</span><strong>Version 2 designed, printed and weighed</strong> at 335&ndash;345&nbsp;g with a motor fitted, under the 350&nbsp;g target.</li>
+          <li><span class="rg-status__when">Now</span><strong>Refining.</strong> Reprinting the fin plate and testing the couplers; the number and size of deployment bands are still open.</li>
+          <li class="is-next"><span class="rg-status__when">Next</span><strong>Ground tests, then a first D12 flight.</strong> No powered flight has happened yet.</li>
+        </ol>
+        <p>The print files are published on <a href="https://makerworld.com/en/models/3475849-functional-swing-wing-rocket-glider#profileId-3967976" rel="noopener">MakerWorld</a>, and I post short build videos on my <a href="https://www.youtube.com/@nelsbuhrley" rel="noopener">YouTube channel</a>.</p>
+      </section>
+    </article>
+
+    <ul class="cs-pager" aria-label="More projects">
+      <li><a href="/#projects"><span class="cs-pager__dir">&larr; Back</span><span class="cs-pager__title">All projects</span></a></li>
+      <li class="cs-pager__next"><a href="/IFE-Symposium-2026/"><span class="cs-pager__dir">Next &rarr;</span><span class="cs-pager__title">IFE Symposium 2026</span></a></li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <div class="affiliation-strip">
+      <img src="/img/logos/byu-144.webp" width="64" height="64" loading="lazy" alt="Brigham Young University">
+      <img src="/img/logos/byu-idaho-144.webp" width="64" height="64" loading="lazy" alt="Brigham Young University&ndash;Idaho">
+    </div>
+    <p>&copy; 2026 Nels Buhrley &middot; <a href="/">nels.buhrley.com</a></p>
+  </footer>
+</body>
+</html>

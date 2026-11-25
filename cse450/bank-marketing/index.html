@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Marketing: Who to Call | CSE 450 | Nels Buhrley</title>
+  <meta name="description" content="Team NorthWind turned a money-losing bank call campaign into a profitable one: -$156.92 to $824.50 on a 410-contact holdout, scored in dollars.">
+  <meta name="author" content="Nels Buhrley">
+  <meta name="theme-color" content="#002e5d">
+  <link rel="canonical" href="https://nels.buhrley.com/cse450/bank-marketing/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Bank Marketing: Who to Call | CSE 450 | Nels Buhrley">
+  <meta property="og:description" content="Team NorthWind turned a money-losing bank call campaign into a profitable one: -$156.92 to $824.50 on a 410-contact holdout, scored in dollars.">
+  <meta property="og:url" content="https://nels.buhrley.com/cse450/bank-marketing/">
+  <meta property="og:image" content="https://nels.buhrley.com/cse450/img/og/bank-marketing.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/ui/css/project.css">
+  <link rel="stylesheet" href="/ui/css/menu.css">
+  <script src="/ui/js/site-menu.js"></script>
+</head>
+<body>
+  <svg class="sr-only" width="0" height="0" aria-hidden="true" focusable="false">
+    <symbol id="i-github" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="cs-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol><li><a href="/">Home</a></li><li><a href="/cse450/">CSE 450</a></li><li aria-current="page">Bank Marketing</li></ol>
+      </nav>
+      <p class="cs-hero__eyebrow">Module 2 &middot; Cost-sensitive classification</p>
+      <h1>Who Should the Bank Call?</h1>
+      <p class="cs-hero__dek">We traded accuracy for a dollar-based score and built models that turn a money-losing phone campaign into a profitable one.</p>
+      <dl class="cs-hero__meta">
+        <div><dt>Team</dt><dd>Team NorthWind</dd></div>
+        <div><dt>Course</dt><dd>CSE 450, BYU-Idaho</dd></div>
+        <div><dt>Term</dt><dd>Spring 2026</dd></div>
+        <div><dt>Stack</dt><dd>Python, scikit-learn, imbalanced-learn</dd></div>
+      </dl>
+      <div class="cs-hero__links">
+        <a class="btn-pill btn-pill--primary" href="https://github.com/nelsbuhrley/CSE-450-Machine-learning"><svg aria-hidden="true"><use href="#i-github"/></svg>Source on GitHub<span class="sr-only"> (external)</span></a>
+        <a class="btn-pill" href="/CSE-450-Machine-learning/"><svg aria-hidden="true"><use href="#i-grid"/></svg>Team project site</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="cs-body">
+      <section class="cs-section">
+        <p class="cs-lede">Most bank sales calls fail. Instead of asking which model is most accurate, we asked which customers are worth the call, and scored every model in dollars.</p>
+      <dl class="cs-metrics">
+        <div><dt>Campaign value</dt><dd>$824.50<span class="cs-metrics__note">410-contact holdout (calling everyone: <span class="nowrap">&minus;$156.92</span>)</span></dd></div>
+        <div><dt>Call precision</dt><dd>47.2%<span class="cs-metrics__note">of our calls reached a subscriber, vs 11.5% when calling everyone</span></dd></div>
+        <div><dt>Contacts called</dt><dd>53 of 410<span class="cs-metrics__note">chosen by our best model</span></dd></div>
+        <div><dt>Projected value</dt><dd>$6,628&ndash;$7,775<span class="cs-metrics__note">on the 4,119-contact holdout, across three models</span></dd></div>
+      </dl>
+      </section>
+
+      <section class="cs-section">
+        <h2>The problem</h2>
+        <p>A Portuguese retail bank sells term deposits by phone, and most calls fail: only about 11% of contacts subscribe. A model that always predicts &ldquo;no&rdquo; is about 89% accurate and earns nothing, so accuracy was the wrong target. We scored every model by campaign value instead. Each call costs $5.50 (30 minutes at $11/hour), and each subscriber is worth $44.64 to the bank ($4,960 in average savings, 75% placed in a term deposit, 1.2% net interest margin). The question became: which customers are worth the call?</p>
+      </section>
+
+      <section class="cs-section">
+        <h2>The data</h2>
+        <div class="cs-split">
+          <div>
+            <p>We used the UCI Bank Marketing dataset: 37,069 past calls with 19 input features. They cover demographics (age, job, marital status, education, default, housing and personal loans), contact details (phone type, month, day of week), campaign history (calls this campaign, days since last contact, previous outcome) and five macroeconomic indicators such as the Euribor rate and employment level.</p>
+            <p>Only 11.4% of calls ended in a subscription. Over the whole training campaign, calling everyone lost $16,034.38, about <span class="nowrap">&minus;$0.43</span> per call. Models were graded on a 410-contact mini holdout with known answers. A 4,119-contact holdout without answers was used only for projections.</p>
+          </div>
+      <figure class="cs-figure" style="--plot-dark: #0d1116">
+        <div class="cs-figure__mat">
+          <img class="theme-light-only" src="../img/bank/value_per_call_story.webp" width="1493" height="1374" loading="lazy" decoding="async" alt="Value per call: May mass calls -$2.61, campaign average -$0.43, targeted months $15.58.">
+          <img class="theme-dark-only" src="../img/bank/value_per_call_story-dark.webp" width="1493" height="1374" loading="lazy" decoding="async" alt="Value per call: May mass calls -$2.61, campaign average -$0.43, targeted months $15.58.">
+        </div>
+        <figcaption><span class="cs-figure__label">Fig. 1</span>The historical campaigns already showed the pattern. May&rsquo;s mass calling lost $2.61 per call, while small, targeted months earned $15.58.</figcaption>
+      </figure>
+        </div>
+      </section>
+
+      <section class="cs-section">
+        <h2>Our approach</h2>
+        <p>We built three classifiers in scikit-learn. Two are random forests (max depth 5) trained on SMOTE-oversampled data, one with a mild class weight (1:1.5) and one with a balanced class weight. The third is a stacking ensemble: a balanced random forest and a 3-nearest-neighbor model feed a class-weighted logistic regression, with standardized numeric features and one-hot categoricals.</p>
+        <p>We dropped <code>month</code> from every model to avoid temporal leakage and turned the &ldquo;never contacted&rdquo; placeholder (999 days) into a flag for the random forests. We then raised the stacker&rsquo;s decision threshold to 0.61, so it calls only customers it is fairly confident about. Fewer, better calls was the whole strategy.</p>
+      </section>
+
+      <section class="cs-section">
+        <h2>Results</h2>
+        <p>On the 410-contact holdout, every model beat calling everyone, and the stacking ensemble did best by calling the fewest people. It called 53 contacts, reached 25 subscribers and earned $15.56 per call.</p>
+      <div class="cs-table-wrap">
+        <table class="cs-table">
+          <caption>Graded on the 410-contact mini holdout. Campaign value = $44.64 per subscriber reached &minus; $5.50 per call.</caption>
+          <thead><tr><th scope="col">Model</th><th scope="col" class="num">Calls</th><th scope="col" class="num">Subscribers reached</th><th scope="col" class="num">Precision</th><th scope="col" class="num">Campaign value</th></tr></thead>
+          <tbody>
+              <tr><th scope="row">Call everyone</th><td class="num">410</td><td class="num">47</td><td class="num">11.5%</td><td class="num"><span class="is-bad nowrap">&minus;$156.92</span></td></tr>
+              <tr><th scope="row">RF + SMOTE, mild weight</th><td class="num">129</td><td class="num">31</td><td class="num">24.0%</td><td class="num">$674.34</td></tr>
+              <tr><th scope="row">RF + SMOTE, balanced weight</th><td class="num">82</td><td class="num">28</td><td class="num">34.1%</td><td class="num">$798.92</td></tr>
+              <tr class="is-best"><th scope="row">Stacking ensemble (RF + KNN &rarr; LR)</th><td class="num">53</td><td class="num">25</td><td class="num">47.2%</td><td class="num">$824.50</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figure class="cs-figure cs-figure--narrow" style="--plot-dark: #0d1116">
+        <div class="cs-figure__mat">
+          <img class="theme-light-only" src="../img/bank/campaign_value.webp" width="1600" height="1201" loading="lazy" decoding="async" alt="Two bar charts. Left: the 410-contact test, -$157 without filtering vs $824 with our model. Right: the 4,119-contact projection, -$1,576 vs $7,311 with an error bar.">
+          <img class="theme-dark-only" src="../img/bank/campaign_value-dark.webp" width="1600" height="1201" loading="lazy" decoding="async" alt="Two bar charts. Left: the 410-contact test, -$157 without filtering vs $824 with our model. Right: the 4,119-contact projection, -$1,576 vs $7,311 with an error bar.">
+        </div>
+        <figcaption><span class="cs-figure__label">Fig. 2</span>Left: graded result on the 410-contact holdout. Right: projected value on the 4,119-contact campaign. The bar is the mean of our three models, and the error bar spans their range ($6,628&ndash;$7,775).</figcaption>
+      </figure>
+        <aside class="cs-callout cs-callout--warn">
+          <p class="cs-callout__title">Projected, not graded</p>
+          <p>On the 4,119-contact holdout, where answers were not available, we projected value from each model&rsquo;s holdout precision: $6,628&ndash;$7,775 across the three models, against a projected loss of $1,576.47 for calling everyone. Those projections are estimates, not graded scores.</p>
+        </aside>
+      </section>
+
+      <section class="cs-section">
+        <h2>What we learned</h2>
+        <p>Choosing the metric mattered more than choosing the model. Once a call had a price, the right move was to call fewer people more selectively, and the best model left 87% of the list uncalled. The models also learned what the data already hinted at: previous subscribers convert at 65.8%, students at 31.4% and retirees at 25.2%, while landline contacts convert at only 5.3%.</p>
+      <figure class="cs-figure cs-figure--wide" style="--plot-dark: #0d1116">
+        <div class="cs-figure__mat">
+          <img class="theme-light-only" src="../img/bank/golden_blacklist.webp" width="1600" height="849" loading="lazy" decoding="async" alt="Left: conversion rates by group against an 11.4% baseline. Right: each group&rsquo;s share of the call list without and with the model.">
+          <img class="theme-dark-only" src="../img/bank/golden_blacklist-dark.webp" width="1600" height="849" loading="lazy" decoding="async" alt="Left: conversion rates by group against an 11.4% baseline. Right: each group&rsquo;s share of the call list without and with the model.">
+        </div>
+        <figcaption><span class="cs-figure__label">Fig. 3</span>The model learned who to call. Previously converted customers rise from 3% to 21% of the call list, and landline contacts fall from 37% to 9%.</figcaption>
+      </figure>
+        <p>Afterward, a cross-validated feature-ablation study showed that our single train/test split was noisy. Dropping <code>day_of_week</code> and <code>job</code> lifted the random forest from $796 to $810 per 410 contacts under 3-fold cross-validation, a gain we did not get into the submitted models.</p>
+      </section>
+
+      <section class="cs-section" aria-labelledby="credits-title">
+        <h2 id="credits-title">Team, tools and code</h2>
+        <div class="cs-team">
+          <span class="cs-team__badge" aria-hidden="true">NW</span>
+          <p class="cs-team__name">Team NorthWind</p>
+          <ul><li>Caleb Dilley</li><li>Dallin Wagner</li><li>Jonathan Oliphant</li><li>Nels Buhrley</li></ul>
+          <p class="cs-team__note">A team project for CSE 450 Machine Learning at BYU-Idaho, Spring 2026.</p>
+        </div>
+        <ul class="tags" aria-label="Tools and methods"><li>Python</li><li>scikit-learn</li><li>imbalanced-learn (SMOTE)</li><li>pandas</li><li>Polars</li><li>NumPy</li><li>matplotlib</li><li>Random Forest</li><li>KNN</li><li>Stacking</li><li>Cost-sensitive evaluation</li></ul>
+        <p>Source: <a href="https://github.com/nelsbuhrley/CSE-450-Machine-learning">Source on GitHub<span class="arrow arrow--ext" aria-hidden="true"> &nearr;</span></a> &middot; <a href="/CSE-450-Machine-learning/">Team project site</a></p>
+      </section>
+    </article>
+
+    <ul class="cs-pager" aria-label="More CSE 450 projects">
+      <li><a href="../"><span class="cs-pager__dir">&larr; Previous</span><span class="cs-pager__title">CSE 450 overview</span></a></li>
+      <li class="cs-pager__next"><a href="../housing/"><span class="cs-pager__dir">Next &rarr;</span><span class="cs-pager__title">Housing Prices</span></a></li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <div class="affiliation-strip">
+      <img src="/img/logos/byu-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University">
+      <img src="/img/logos/byu-idaho-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University&ndash;Idaho">
+    </div>
+    <p>&copy; 2026 Nels Buhrley &middot; <a href="https://nels.buhrley.com/">nels.buhrley.com</a></p>
+  </footer>
+</body>
+</html>

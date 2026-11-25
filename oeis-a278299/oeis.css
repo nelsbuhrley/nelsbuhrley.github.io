@@ -1,0 +1,280 @@
+/* OEIS A278299 page: additions on top of /style.css and /ui/css/project.css */
+
+/* ---------- Credit box ---------- */
+
+.oe-credit {
+    margin: 2rem 0 0.5rem;
+    padding: clamp(1.1rem, 3vw, 1.6rem);
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--brand-2);
+    border-radius: var(--r-lg);
+    background: var(--surface-2);
+}
+
+:root[data-theme="dark"] .oe-credit {
+    border-top-color: var(--accent);
+}
+
+.oe-credit__title {
+    margin: 0 0 0.9rem;
+    color: var(--heading-accent);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.oe-credit__list {
+    display: grid;
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.oe-credit__list li {
+    display: grid;
+    grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+    gap: 0.25rem 1.25rem;
+}
+
+.oe-credit__who {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.oe-credit__what {
+    color: var(--text-muted);
+}
+
+.oe-credit__note {
+    margin: 1.1rem 0 0;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+    .oe-credit__list li { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- Maths ---------- */
+
+.oe-formula {
+    margin: 1.2rem 0;
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--r-md);
+    background: var(--surface-2);
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 2.6vw, 1.2rem);
+    text-align: center;
+}
+
+.oe-formula span {
+    white-space: nowrap;
+}
+
+.oe-bounds {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1.2rem 0;
+}
+
+.oe-bounds > div {
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+}
+
+.oe-bounds h3 {
+    margin: 0 0 0.4rem;
+}
+
+.oe-bounds p {
+    margin: 0;
+}
+
+@media (max-width: 760px) {
+    .oe-bounds { grid-template-columns: minmax(0, 1fr); }
+}
+
+.oe-steps,
+.oe-list {
+    display: grid;
+    gap: 0.7rem;
+    padding-left: 1.3rem;
+}
+
+.oe-steps li::marker {
+    color: var(--heading-accent);
+    font-weight: 700;
+}
+
+/* ---------- Grid figures ---------- */
+
+.oe-mat {
+    padding: clamp(0.6rem, 2.5vw, 1.4rem);
+    background: var(--surface-2);
+}
+
+.oe-grid {
+    display: block;
+    width: 100%;
+    max-width: 620px;
+    height: auto;
+    margin: 0 auto;
+}
+
+.oe-figure--small .oe-grid {
+    max-width: 220px;
+}
+
+.oe-grid text {
+    fill: #15181d;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+}
+
+.oe-grid rect {
+    stroke: rgba(0, 0, 0, 0.18);
+    stroke-width: 1;
+}
+
+.oe-cell {
+    transition: opacity 160ms var(--ease-out);
+}
+
+.oe-grid[data-hl] .oe-cell:not(.is-hl) {
+    opacity: 0.16;
+}
+
+.oe-grid[data-hl] .oe-cell.is-hl rect {
+    stroke: #15181d;
+    stroke-width: 2.5;
+}
+
+.oe-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+    margin: 0.9rem 0 0;
+}
+
+.oe-legend button {
+    min-width: 2.1rem;
+    height: 2.1rem;
+    padding: 0 0.3rem;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: var(--r-sm);
+    color: #15181d;
+    font: 700 0.86rem/1 var(--font-body);
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+}
+
+.oe-legend button[aria-pressed="true"] {
+    outline: 3px solid var(--text);
+    outline-offset: 1px;
+}
+
+.oe-legend button:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.cs-section .oe-legend__hint {
+    flex-basis: 100%;
+    max-width: none;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    text-align: center;
+}
+
+.oe-details {
+    margin-top: 0.9rem;
+}
+
+.oe-details summary {
+    color: var(--link);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.oe-table {
+    margin: 0.6rem auto 0;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.oe-table caption {
+    caption-side: top;
+    padding-bottom: 0.4rem;
+    color: var(--text-muted);
+    text-align: left;
+}
+
+.oe-table th,
+.oe-table td {
+    padding: 0.2rem 0.45rem;
+    border: 1px solid var(--line);
+    text-align: center;
+}
+
+.oe-table th {
+    color: var(--text-muted);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ---------- Links ---------- */
+
+.oe-links {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.oe-links li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem 0.8rem;
+    align-items: baseline;
+}
+
+.oe-links a {
+    font-weight: 600;
+}
+
+.oe-links span:not(.arrow) {
+    color: var(--text-muted);
+    font-size: 0.94rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .oe-cell { transition: none; }
+}
+
+html.reduce-motion .oe-cell { transition: none; }
+
+.oe-results td:nth-child(4),
+.oe-results td:nth-child(5) {
+    min-width: 12rem;
+    white-space: normal;
+}
+
+.cs-section .oe-formula {
+    max-width: none;
+}

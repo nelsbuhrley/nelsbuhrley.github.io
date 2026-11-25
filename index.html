@@ -3,66 +3,387 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nels Buhrley</title>
-    <meta name="description" content="Nels Buhrley — computational physicist and software engineer at Brigham Young University. Projects in numerical modeling, coherent diffraction imaging, machine learning, and scientific visualization.">
-    <meta name="keywords" content="Nels Buhrley, computational physics, numerical modeling, C++, coherent diffraction imaging, machine learning, BYU">
+    <title>Nels Buhrley | Physics, scientific computing &amp; machine learning</title>
+    <meta name="description" content="Nels Buhrley: physics student at BYU-Idaho and research assistant at BYU building GPU software for atomic-scale X-ray imaging.">
+    <meta name="keywords" content="Nels Buhrley, computational physics, scientific computing, GPU, CUDA, HPC, C++, Python, Bragg coherent diffraction imaging, PRAMMol, inertial fusion energy, tungsten, machine learning, rocket glider, BYU, BYU-Idaho">
     <meta name="author" content="Nels Buhrley">
-    <link rel="canonical" href="https://nelsbuhrley.github.io/">
+    <meta name="theme-color" content="#002e5d">
+    <link rel="canonical" href="https://nels.buhrley.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nels Buhrley">
+    <meta property="og:description" content="Nels Buhrley: physics student at BYU-Idaho and research assistant at BYU building GPU software for atomic-scale X-ray imaging.">
+    <meta property="og:url" content="https://nels.buhrley.com/">
+    <meta property="og:image" content="https://nels.buhrley.com/img/og-home.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="/ui/css/menu.css">
     <script src="/ui/js/site-menu.js"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Nels Buhrley",
+        "url": "https://nels.buhrley.com/",
+        "jobTitle": "Research Assistant, Computational X-ray Imaging",
+        "affiliation": { "@type": "CollegeOrUniversity", "name": "Brigham Young University" },
+        "sameAs": [
+          "https://github.com/nelsbuhrley",
+          "https://www.linkedin.com/in/nelsbuhrley/",
+          "https://www.youtube.com/@nelsbuhrley"
+        ]
+      }
+    </script>
   </head>
-  <body>
-    <header class="page-header">
-      <h1 class="site-name">Nels Buhrley</h1>
-      <p class="site-tagline">Shortening the simulation-to-reality gap with high-quality scientific software</p>
-      <nav class="page-header__links">
-        <a class="btn-pill" href="documents/CV-Nels-Buhrley.pdf" target="_blank" rel="noopener">CV</a>
-        <a class="btn-pill" href="https://github.com/nelsbuhrley">GitHub</a>
-        <a class="btn-pill" href="mailto:nbuhrley@student.byu.edu">Email</a>
-        <a class="btn-pill" href="https://www.linkedin.com/in/nelsbuhrley/">LinkedIn</a>
-      </nav>
+  <body class="home">
+    <svg class="sr-only" width="0" height="0" aria-hidden="true" focusable="false">
+      <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+      <symbol id="i-github" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+      <symbol id="i-linkedin" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></symbol>
+      <symbol id="i-youtube" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></symbol>
+      <symbol id="i-cap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6"/></symbol>
+      <symbol id="i-atom" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="1.6" fill="currentColor"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></symbol>
+    </svg>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="hero">
+      <div class="wrap hero__grid">
+        <div class="hero__text">
+          <p class="hero__eyebrow">Physics &middot; Scientific computing &middot; Machine learning</p>
+          <h1 class="hero__name">Nels Buhrley</h1>
+          <p class="hero__bio">I&rsquo;ve spent the last few years learning how to make things work, from calibrating germanium detectors and rebuilding shop workflows to writing CUDA kernels that reconstruct individual atoms from X-ray data. Now I build GPU software for atomic-scale imaging with Dr.&nbsp;Richard Sandberg at BYU, and I&rsquo;m turning it into my senior thesis. I&rsquo;m curious about almost everything, so the projects below range from molecular dynamics and machine learning to new terms of an OEIS integer sequence, voice translation and a 3D-printed rocket glider.</p>
+          <ul class="hero__facts">
+            <li><svg aria-hidden="true"><use href="#i-cap"/></svg>B.S. Physics, BYU-Idaho &middot; GPA 3.91 &middot; expected July 2027</li>
+            <li><svg aria-hidden="true"><use href="#i-atom"/></svg>Research Assistant, BYU Physics &middot; since June 2026</li>
+          </ul>
+          <nav class="hero__links" aria-label="CV and profiles">
+            <a class="btn-pill btn-pill--primary" href="documents/CV-Nels-Buhrley.pdf" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-doc"/></svg>View CV<span class="sr-only"> (PDF, opens in a new tab)</span></a>
+            <a class="btn-pill" href="mailto:nbuhrley@student.byu.edu"><svg aria-hidden="true"><use href="#i-mail"/></svg>Email</a>
+            <a class="btn-pill" href="https://github.com/nelsbuhrley"><svg aria-hidden="true"><use href="#i-github"/></svg>GitHub</a>
+            <a class="btn-pill" href="https://www.linkedin.com/in/nelsbuhrley/"><svg aria-hidden="true"><use href="#i-linkedin"/></svg>LinkedIn</a>
+          </nav>
+        </div>
+
+        <figure class="hero__portrait">
+          <div class="portrait">
+            <span class="portrait__monogram" aria-hidden="true">NB</span>
+            <picture><source srcset="img/portrait.webp" type="image/webp"><img src="img/portrait.jpg" width="723" height="1086" alt="Portrait of Nels Buhrley outdoors at sunset" fetchpriority="high" decoding="async" onerror="this.remove()"></picture>
+          </div>
+          <figcaption class="portrait__badge">
+            <span class="portrait__dot" aria-hidden="true"></span>
+            <span><strong>Now</strong>Research Assistant, Computational X-ray Imaging, BYU Physics</span>
+          </figcaption>
+        </figure>
+      </div>
     </header>
 
-    <main class="main-content">
-      <h2>Projects</h2>
-      <div class="card-grid">
-        <a class="project-card" href="CPP-Numerical-Modeling/">
-          <span class="project-card__title">Computational Physics Portfolio <span class="project-card__arrow">&rarr;</span></span>
-          <p class="project-card__desc">C++17 numerical simulations spanning classical mechanics, electrostatics, statistical mechanics, molecular dynamics, and number theory — with OpenMP parallelism on the BYU supercomputer.</p>
-        </a>
-        <a class="project-card" href="IFE-Symposium-2026/">
-          <span class="project-card__title">IFE Symposium 2026 <span class="project-card__arrow">&rarr;</span></span>
-          <p class="project-card__desc">Atomic-resolution strain imaging of IFE first-wall tungsten with Bragg coherent diffraction imaging.</p>
-        </a>
-        <a class="project-card" href="Voice-Translation/">
-          <span class="project-card__title">Polyglot &mdash; Voice Translation <span class="project-card__arrow">&rarr;</span></span>
-          <p class="project-card__desc">Speak once, be heard in many languages: an automated dubbing pipeline that transcribes, translates, checks and re-speaks in my own cloned voice.</p>
-        </a>
-        <a class="project-card" href="CSE-450-Machine-learning/">
-          <span class="project-card__title">CSE 450 &mdash; Machine Learning <span class="project-card__arrow">&rarr;</span></span>
-          <p class="project-card__desc">Classification pipelines, exploratory data analysis, and predictive modeling for real-world datasets.</p>
-        </a>
-        <a class="project-card" href="Visualizations/">
-          <span class="project-card__title">Visualizations <span class="project-card__arrow">&rarr;</span></span>
-          <p class="project-card__desc">Interactive and static visualizations of physical systems and data.</p>
-        </a>
-        <a class="project-card" href="AI-Ethics-and-Discussion/">
-          <span class="project-card__title">AI in Higher Education <span class="project-card__arrow">&rarr;</span></span>
-          <p class="project-card__desc">Perspectives on AI's role, ethics, and future in education.</p>
-        </a>
-      </div>
+    <main id="main">
+      <section class="highlights" aria-labelledby="highlights-title">
+        <div class="wrap">
+          <h2 id="highlights-title" class="sr-only">Highlights</h2>
+          <ul class="stat-row">
+            <li class="stat">
+              <span class="stat__kicker">GPU computing</span>
+              <span class="stat__num">400<span class="stat__unit">&times; faster</span></span>
+              <span class="stat__label">X-ray reconstruction pipeline, rebuilt with GPU libraries and custom CUDA kernels</span>
+            </li>
+            <li class="stat">
+              <span class="stat__kicker">Research at scale</span>
+              <span class="stat__num">513<span class="stat__unit">runs</span></span>
+              <span class="stat__label">tungsten-grain reconstructions (5k&ndash;50k atoms) run and scored by my batch pipeline</span>
+            </li>
+            <li class="stat">
+              <span class="stat__kicker">NSF ACCESS grant</span>
+              <span class="stat__num">200k<span class="stat__unit">credits</span></span>
+              <span class="stat__label">on the PSC Neocortex (Cerebras) supercomputer, from a proposal I wrote</span>
+            </li>
+            <li class="stat">
+              <span class="stat__kicker">Mathematics</span>
+              <span class="stat__num">4<span class="stat__unit">new terms</span></span>
+              <span class="stat__label">a(19)&ndash;a(22) of <a href="https://oeis.org/A278299">OEIS A278299</a>; a(19) and a(20) with Ryan Lee</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" id="research" aria-labelledby="research-title">
+        <div class="wrap">
+          <header class="section__head">
+            <p class="eyebrow"><span class="eyebrow__num">01</span> Research</p>
+            <h2 id="research-title">Imaging materials one atom at a time</h2>
+            <p class="section__intro">The long-term goal: atomic-resolution strain imaging of first-wall tungsten for inertial fusion energy (IFE), using Bragg coherent diffraction imaging.</p>
+          </header>
+
+          <article class="research" aria-labelledby="research-role">
+            <figure class="research__figure">
+              <img src="img/home/grain.webp" width="450" height="510" loading="lazy" decoding="async" alt="3D rendering of a converged reconstruction of a simulated 6,136-atom tungsten grain damaged by a 1,000 eV cascade, with lattice atoms in blue and the 129 defect atoms in orange; every atom was found.">
+              <figcaption>A converged reconstruction of a simulated tungsten grain after a 1,000&nbsp;eV cascade: 6,136 atoms, all of them found. <span class="legend-dot legend-dot--lattice" aria-hidden="true"></span>Lattice and <span class="legend-dot legend-dot--defect" aria-hidden="true"></span>defect atoms. From the IFE Symposium 2026 results gallery.</figcaption>
+            </figure>
+
+            <div class="research__body">
+              <p class="research__role">Research Assistant &middot; BYU Department of Physics</p>
+              <h3 id="research-role">Computational X-ray Imaging</h3>
+              <p class="research__meta">With Dr. Richard Sandberg &middot; June 2026&ndash;present &middot; continuing as my senior thesis (PH 488)</p>
+              <p>I&rsquo;m writing a from-scratch GPU reimplementation of <strong>PRAMMol</strong>, a Bragg coherent diffractive imaging (BCDI) phase-retrieval method that puts molecular dynamics inside the reconstruction loop. Every atom is a free parameter, constrained to physically realistic configurations.</p>
+              <ul class="checklist">
+                <li>Replaced four of its most expensive stages with custom CUDA kernels (Julia with CUDA.jl) and a non-uniform FFT, making 5k&ndash;50k-atom reconstructions tractable.</li>
+                <li>Built the batch pipeline: SLURM GPU jobs, automated per-run scoring and figures, and archive-wide aggregation.</li>
+                <li>Across 513 runs, radiation damage <em>improved</em> reconstruction accuracy rather than degrading it.</li>
+              </ul>
+              <figure class="bar-chart">
+                <figcaption>Convergence vs. grain size <span>(513 simulated reconstructions)</span></figcaption>
+                <div class="bar-chart__row">
+                  <span class="bar-chart__label">5k atoms</span>
+                  <span class="bar-chart__track"><span class="bar-chart__bar" style="--v: 70.5%"></span></span>
+                  <span class="bar-chart__value">70.5%</span>
+                </div>
+                <div class="bar-chart__row">
+                  <span class="bar-chart__label">50k atoms</span>
+                  <span class="bar-chart__track"><span class="bar-chart__bar" style="--v: 0%"></span></span>
+                  <span class="bar-chart__value">0%</span>
+                </div>
+              </figure>
+              <div class="link-row">
+                <a class="btn btn--solid" href="IFE-Symposium-2026/">IFE Symposium poster <span class="arrow" aria-hidden="true">&rarr;</span></a>
+                <a class="btn" href="IFE-Symposium-2026/convergence.html">Convergence study</a>
+                <a class="btn" href="IFE-Symposium-2026/bcdi.html">How BCDI works</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="projects" aria-labelledby="projects-title">
+        <div class="wrap">
+          <header class="section__head">
+            <p class="eyebrow"><span class="eyebrow__num">02</span> Selected projects</p>
+            <h2 id="projects-title">Simulation, machine learning, mathematics and hardware</h2>
+            <p class="section__intro">Each project has its own write-up with code, figures and results.</p>
+          </header>
+
+          <ul class="work-grid">
+            <li class="is-wide">
+              <a class="work-card" href="CPP-Numerical-Modeling/">
+                <div class="work-card__media">
+                  <img src="img/home/cpp.webp" width="960" height="600" loading="lazy" decoding="async" alt="">
+                </div>
+                <div class="work-card__body">
+                  <p class="work-card__kicker">Numerical modeling &middot; HPC</p>
+                  <h3>Computational Physics Portfolio <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+                  <p>Twelve simulation projects spanning ODE/PDE solvers, statistical mechanics and molecular dynamics, with parameter sweeps run on BYU supercomputing clusters.</p>
+                  <p class="work-card__note">Molecular dynamics with neighbor lists, a 3D Ising model with checkerboard Monte Carlo (pictured: its magnetization map), and red-black SOR electrostatics.</p>
+                  <ul class="tags" aria-label="Technologies">
+                    <li>C++17</li><li>OpenMP</li><li>SLURM</li><li>Python</li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+
+            <li>
+              <a class="work-card" href="Voice-Translation/">
+                <div class="work-card__media media-polyglot" aria-hidden="true">
+                  <svg viewBox="0 0 416 100" fill="currentColor" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet"><rect x="2" y="47" width="4" height="6" rx="2"/><rect x="10" y="44" width="4" height="12" rx="2"/><rect x="18" y="39.5" width="4" height="21" rx="2"/><rect x="26" y="40.5" width="4" height="19" rx="2"/><rect x="34" y="46" width="4" height="8" rx="2"/><rect x="42" y="38.5" width="4" height="23" rx="2"/><rect x="50" y="36.5" width="4" height="27" rx="2"/><rect x="58" y="41.5" width="4" height="17" rx="2"/><rect x="66" y="40" width="4" height="20" rx="2"/><rect x="74" y="38.5" width="4" height="23" rx="2"/><rect x="82" y="39.5" width="4" height="21" rx="2"/><rect x="90" y="26" width="4" height="48" rx="2"/><rect x="98" y="18" width="4" height="64" rx="2"/><rect x="106" y="24" width="4" height="52" rx="2"/><rect x="114" y="41" width="4" height="18" rx="2"/><rect x="122" y="23.5" width="4" height="53" rx="2"/><rect x="130" y="15.5" width="4" height="69" rx="2"/><rect x="138" y="22" width="4" height="56" rx="2"/><rect x="146" y="37" width="4" height="26" rx="2"/><rect x="154" y="34" width="4" height="32" rx="2"/><rect x="162" y="36.5" width="4" height="27" rx="2"/><rect x="170" y="30.5" width="4" height="39" rx="2"/><rect x="178" y="19" width="4" height="62" rx="2"/><rect x="186" y="20.5" width="4" height="59" rx="2"/><rect x="194" y="38" width="4" height="24" rx="2"/><rect x="202" y="19" width="4" height="62" rx="2"/><rect x="210" y="5.5" width="4" height="89" rx="2"/><rect x="218" y="9.5" width="4" height="81" rx="2"/><rect x="226" y="28" width="4" height="44" rx="2"/><rect x="234" y="33" width="4" height="34" rx="2"/><rect x="242" y="26.5" width="4" height="47" rx="2"/><rect x="250" y="34" width="4" height="32" rx="2"/><rect x="258" y="34" width="4" height="32" rx="2"/><rect x="266" y="29" width="4" height="42" rx="2"/><rect x="274" y="37.5" width="4" height="25" rx="2"/><rect x="282" y="27" width="4" height="46" rx="2"/><rect x="290" y="14" width="4" height="72" rx="2"/><rect x="298" y="14.5" width="4" height="71" rx="2"/><rect x="306" y="29" width="4" height="42" rx="2"/><rect x="314" y="37" width="4" height="26" rx="2"/><rect x="322" y="26.5" width="4" height="47" rx="2"/><rect x="330" y="28" width="4" height="44" rx="2"/><rect x="338" y="38" width="4" height="24" rx="2"/><rect x="346" y="41" width="4" height="18" rx="2"/><rect x="354" y="41" width="4" height="18" rx="2"/><rect x="362" y="42" width="4" height="16" rx="2"/><rect x="370" y="36" width="4" height="28" rx="2"/><rect x="378" y="36" width="4" height="28" rx="2"/><rect x="386" y="42" width="4" height="16" rx="2"/><rect x="394" y="46" width="4" height="8" rx="2"/><rect x="402" y="44.5" width="4" height="11" rx="2"/><rect x="410" y="47" width="4" height="6" rx="2"/></svg>
+                  <ul class="lang-chips">
+                    <li>EN</li><li>ES</li><li>PT</li><li>HI</li><li>FR</li><li>DE</li><li>JA</li><li>IT</li>
+                  </ul>
+                </div>
+                <div class="work-card__body">
+                  <p class="work-card__kicker">Speech &middot; ML pipelines</p>
+                  <h3>Polyglot: Voice Translation <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+                  <p>Speak once, be heard in many languages: an automated dubbing pipeline that transcribes, translates, checks and re-speaks in my own cloned voice.</p>
+                  <ul class="tags" aria-label="Details">
+                    <li>7 languages</li><li>Python</li><li>Built with Claude Code</li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="is-half">
+              <a class="work-card" href="cse450/">
+                <div class="work-card__media media-signs">
+                  <img src="img/home/signs.webp" width="960" height="600" loading="lazy" decoding="async" alt="">
+                </div>
+                <div class="work-card__body">
+                  <p class="work-card__kicker">Team &middot; Machine learning</p>
+                  <h3>CSE 450: Machine Learning <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+                  <p>Four team projects with Team NorthWind: bank-marketing call targeting, housing prices, bike-share demand forecasting and traffic-sign recognition.</p>
+                  <ul class="tags" aria-label="Technologies">
+                    <li>Python</li><li>scikit-learn</li><li>XGBoost</li><li>PyTorch</li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="is-half">
+              <a class="work-card" href="oeis-a278299/">
+                <div class="work-card__media media-oeis" aria-hidden="true">
+                  <svg viewBox="0 0 480 300" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet"><rect x="97.0" y="19.0" width="22" height="22" rx="2" fill="#74e7c7"/><rect x="121.0" y="19.0" width="22" height="22" rx="2" fill="#f0bfad"/><rect x="145.0" y="19.0" width="22" height="22" rx="2" fill="#adcbf0"/><rect x="169.0" y="19.0" width="22" height="22" rx="2" fill="#e77474"/><rect x="193.0" y="19.0" width="22" height="22" rx="2" fill="#dc74e7"/><rect x="217.0" y="19.0" width="22" height="22" rx="2" fill="#9e74e7"/><rect x="241.0" y="19.0" width="22" height="22" rx="2" fill="#dce774"/><rect x="265.0" y="19.0" width="22" height="22" rx="2" fill="#b3f0ad"/><rect x="289.0" y="19.0" width="22" height="22" rx="2" fill="#f0adbf"/><rect x="313.0" y="19.0" width="22" height="22" rx="2" fill="#adcbf0"/><rect x="337.0" y="19.0" width="22" height="22" rx="2" fill="#9ee774"/><rect x="361.0" y="19.0" width="22" height="22" rx="2" fill="#e7b374"/><rect x="97.0" y="43.0" width="22" height="22" rx="2" fill="#adf0cb"/><rect x="121.0" y="43.0" width="22" height="22" rx="2" fill="#dce774"/><rect x="145.0" y="43.0" width="22" height="22" rx="2" fill="#74e789"/><rect x="169.0" y="43.0" width="22" height="22" rx="2" fill="#f0adbf"/><rect x="193.0" y="43.0" width="22" height="22" rx="2" fill="#e7b374"/><rect x="217.0" y="43.0" width="22" height="22" rx="2" fill="#7489e7"/><rect x="241.0" y="43.0" width="22" height="22" rx="2" fill="#9ee774"/><rect x="265.0" y="43.0" width="22" height="22" rx="2" fill="#f0bfad"/><rect x="289.0" y="43.0" width="22" height="22" rx="2" fill="#f0ade4"/><rect x="313.0" y="43.0" width="22" height="22" rx="2" fill="#adf0cb"/><rect x="337.0" y="43.0" width="22" height="22" rx="2" fill="#d8f0ad"/><rect x="361.0" y="43.0" width="22" height="22" rx="2" fill="#f0ade4"/><rect x="97.0" y="67.0" width="22" height="22" rx="2" fill="#b3f0ad"/><rect x="121.0" y="67.0" width="22" height="22" rx="2" fill="#74e7c7"/><rect x="145.0" y="67.0" width="22" height="22" rx="2" fill="#74c7e7"/><rect x="169.0" y="67.0" width="22" height="22" rx="2" fill="#dce774"/><rect x="193.0" y="67.0" width="22" height="22" rx="2" fill="#adcbf0"/><rect x="217.0" y="67.0" width="22" height="22" rx="2" fill="#b3adf0"/><rect x="241.0" y="67.0" width="22" height="22" rx="2" fill="#9e74e7"/><rect x="265.0" y="67.0" width="22" height="22" rx="2" fill="#e77474"/><rect x="289.0" y="67.0" width="22" height="22" rx="2" fill="#adf0f0"/><rect x="313.0" y="67.0" width="22" height="22" rx="2" fill="#9ee774"/><rect x="337.0" y="67.0" width="22" height="22" rx="2" fill="#d8adf0"/><rect x="361.0" y="67.0" width="22" height="22" rx="2" fill="#f0adbf"/><rect x="97.0" y="91.0" width="22" height="22" rx="2" fill="#7489e7"/><rect x="121.0" y="91.0" width="22" height="22" rx="2" fill="#dc74e7"/><rect x="145.0" y="91.0" width="22" height="22" rx="2" fill="#e774b3"/><rect x="169.0" y="91.0" width="22" height="22" rx="2" fill="#d8f0ad"/><rect x="193.0" y="91.0" width="22" height="22" rx="2" fill="#dc74e7"/><rect x="217.0" y="91.0" width="22" height="22" rx="2" fill="#74c7e7"/><rect x="241.0" y="91.0" width="22" height="22" rx="2" fill="#d8adf0"/><rect x="265.0" y="91.0" width="22" height="22" rx="2" fill="#74e789"/><rect x="289.0" y="91.0" width="22" height="22" rx="2" fill="#7489e7"/><rect x="313.0" y="91.0" width="22" height="22" rx="2" fill="#e774b3"/><rect x="337.0" y="91.0" width="22" height="22" rx="2" fill="#74e7c7"/><rect x="361.0" y="91.0" width="22" height="22" rx="2" fill="#9ee774"/><rect x="97.0" y="115.0" width="22" height="22" rx="2" fill="#adcbf0"/><rect x="121.0" y="115.0" width="22" height="22" rx="2" fill="#f0e4ad"/><rect x="145.0" y="115.0" width="22" height="22" rx="2" fill="#dce774"/><rect x="169.0" y="115.0" width="22" height="22" rx="2" fill="#7489e7"/><rect x="193.0" y="115.0" width="22" height="22" rx="2" fill="#f0adbf"/><rect x="217.0" y="115.0" width="22" height="22" rx="2" fill="#9e74e7"/><rect x="241.0" y="115.0" width="22" height="22" rx="2" fill="#adcbf0"/><rect x="265.0" y="115.0" width="22" height="22" rx="2" fill="#b3f0ad"/><rect x="289.0" y="115.0" width="22" height="22" rx="2" fill="#d8adf0"/><rect x="313.0" y="115.0" width="22" height="22" rx="2" fill="#adf0cb"/><rect x="337.0" y="115.0" width="22" height="22" rx="2" fill="#7489e7"/><rect x="361.0" y="115.0" width="22" height="22" rx="2" fill="#f0e4ad"/><rect x="97.0" y="139.0" width="22" height="22" rx="2" fill="#74c7e7"/><rect x="121.0" y="139.0" width="22" height="22" rx="2" fill="#d8f0ad"/><rect x="145.0" y="139.0" width="22" height="22" rx="2" fill="#b3adf0"/><rect x="169.0" y="139.0" width="22" height="22" rx="2" fill="#f0bfad"/><rect x="193.0" y="139.0" width="22" height="22" rx="2" fill="#d8f0ad"/><rect x="217.0" y="139.0" width="22" height="22" rx="2" fill="#b3f0ad"/><rect x="241.0" y="139.0" width="22" height="22" rx="2" fill="#f0ade4"/><rect x="265.0" y="139.0" width="22" height="22" rx="2" fill="#9e74e7"/><rect x="289.0" y="139.0" width="22" height="22" rx="2" fill="#adf0f0"/><rect x="313.0" y="139.0" width="22" height="22" rx="2" fill="#f0e4ad"/><rect x="337.0" y="139.0" width="22" height="22" rx="2" fill="#f0ade4"/><rect x="361.0" y="139.0" width="22" height="22" rx="2" fill="#74c7e7"/><rect x="97.0" y="163.0" width="22" height="22" rx="2" fill="#f0bfad"/><rect x="121.0" y="163.0" width="22" height="22" rx="2" fill="#e7b374"/><rect x="145.0" y="163.0" width="22" height="22" rx="2" fill="#dce774"/><rect x="169.0" y="163.0" width="22" height="22" rx="2" fill="#d8adf0"/><rect x="193.0" y="163.0" width="22" height="22" rx="2" fill="#f0ade4"/><rect x="217.0" y="163.0" width="22" height="22" rx="2" fill="#9ee774"/><rect x="241.0" y="163.0" width="22" height="22" rx="2" fill="#e77474"/><rect x="265.0" y="163.0" width="22" height="22" rx="2" fill="#d8f0ad"/><rect x="289.0" y="163.0" width="22" height="22" rx="2" fill="#adcbf0"/><rect x="313.0" y="163.0" width="22" height="22" rx="2" fill="#74e7c7"/><rect x="337.0" y="163.0" width="22" height="22" rx="2" fill="#74e789"/><rect x="361.0" y="163.0" width="22" height="22" rx="2" fill="#e7b374"/><rect x="97.0" y="187.0" width="22" height="22" rx="2" fill="#9e74e7"/><rect x="121.0" y="187.0" width="22" height="22" rx="2" fill="#74e7c7"/><rect x="145.0" y="187.0" width="22" height="22" rx="2" fill="#e77474"/><rect x="169.0" y="187.0" width="22" height="22" rx="2" fill="#e7b374"/><rect x="193.0" y="187.0" width="22" height="22" rx="2" fill="#b3adf0"/><rect x="217.0" y="187.0" width="22" height="22" rx="2" fill="#74e789"/><rect x="241.0" y="187.0" width="22" height="22" rx="2" fill="#adf0cb"/><rect x="265.0" y="187.0" width="22" height="22" rx="2" fill="#f0bfad"/><rect x="289.0" y="187.0" width="22" height="22" rx="2" fill="#e774b3"/><rect x="313.0" y="187.0" width="22" height="22" rx="2" fill="#f0ade4"/><rect x="337.0" y="187.0" width="22" height="22" rx="2" fill="#dc74e7"/><rect x="361.0" y="187.0" width="22" height="22" rx="2" fill="#adf0f0"/><rect x="97.0" y="211.0" width="22" height="22" rx="2" fill="#adf0cb"/><rect x="121.0" y="211.0" width="22" height="22" rx="2" fill="#f0adbf"/><rect x="145.0" y="211.0" width="22" height="22" rx="2" fill="#74c7e7"/><rect x="169.0" y="211.0" width="22" height="22" rx="2" fill="#b3f0ad"/><rect x="193.0" y="211.0" width="22" height="22" rx="2" fill="#e774b3"/><rect x="217.0" y="211.0" width="22" height="22" rx="2" fill="#9e74e7"/><rect x="241.0" y="211.0" width="22" height="22" rx="2" fill="#e7b374"/><rect x="265.0" y="211.0" width="22" height="22" rx="2" fill="#f0e4ad"/><rect x="289.0" y="211.0" width="22" height="22" rx="2" fill="#adf0f0"/><rect x="313.0" y="211.0" width="22" height="22" rx="2" fill="#dce774"/><rect x="337.0" y="211.0" width="22" height="22" rx="2" fill="#b3adf0"/><rect x="361.0" y="211.0" width="22" height="22" rx="2" fill="#adf0cb"/><rect x="97.0" y="235.0" width="22" height="22" rx="2" fill="#dc74e7"/><rect x="121.0" y="235.0" width="22" height="22" rx="2" fill="#f0bfad"/><rect x="145.0" y="235.0" width="22" height="22" rx="2" fill="#adf0f0"/><rect x="169.0" y="235.0" width="22" height="22" rx="2" fill="#b3adf0"/><rect x="193.0" y="235.0" width="22" height="22" rx="2" fill="#f0adbf"/><rect x="217.0" y="235.0" width="22" height="22" rx="2" fill="#f0e4ad"/><rect x="241.0" y="235.0" width="22" height="22" rx="2" fill="#e774b3"/><rect x="265.0" y="235.0" width="22" height="22" rx="2" fill="#e77474"/><rect x="289.0" y="235.0" width="22" height="22" rx="2" fill="#b3f0ad"/><rect x="313.0" y="235.0" width="22" height="22" rx="2" fill="#dc74e7"/><rect x="337.0" y="235.0" width="22" height="22" rx="2" fill="#9ee774"/><rect x="361.0" y="235.0" width="22" height="22" rx="2" fill="#74c7e7"/><rect x="97.0" y="259.0" width="22" height="22" rx="2" fill="#e774b3"/><rect x="121.0" y="259.0" width="22" height="22" rx="2" fill="#74e789"/><rect x="145.0" y="259.0" width="22" height="22" rx="2" fill="#d8f0ad"/><rect x="169.0" y="259.0" width="22" height="22" rx="2" fill="#74e7c7"/><rect x="193.0" y="259.0" width="22" height="22" rx="2" fill="#adf0f0"/><rect x="217.0" y="259.0" width="22" height="22" rx="2" fill="#74e789"/><rect x="241.0" y="259.0" width="22" height="22" rx="2" fill="#d8adf0"/><rect x="265.0" y="259.0" width="22" height="22" rx="2" fill="#b3adf0"/><rect x="289.0" y="259.0" width="22" height="22" rx="2" fill="#f0e4ad"/><rect x="313.0" y="259.0" width="22" height="22" rx="2" fill="#d8adf0"/><rect x="337.0" y="259.0" width="22" height="22" rx="2" fill="#e77474"/><rect x="361.0" y="259.0" width="22" height="22" rx="2" fill="#7489e7"/></svg>
+                </div>
+                <div class="work-card__body">
+                  <p class="work-card__kicker">Combinatorics &middot; Search</p>
+                  <h3>OEIS A278299 <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+                  <p>New terms a(19)&ndash;a(22): a(19) and a(20) with Ryan Lee, a(21) and a(22) on my own. I built a parallel simulated-annealing search (C++ with OpenMP, plus a CUDA annealer) and ran the SAT search that proved a(21)&nbsp;=&nbsp;116, which also settled a(22)&nbsp;=&nbsp;132.</p>
+                  <ul class="tags" aria-label="Methods">
+                    <li>Simulated annealing</li><li>SAT</li><li>C++ / CUDA</li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+
+
+            <li class="is-full">
+              <a class="work-card" href="rocket-glider/">
+                <div class="work-card__media media-blueprint">
+                  <img src="img/home/rocket-glider.webp" width="960" height="600" loading="lazy" decoding="async" alt="">
+                </div>
+                <div class="work-card__body">
+                  <p class="work-card__kicker">Personal build &middot; Aerospace</p>
+                  <h3>3D-printed swing-wing rocket glider <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+                  <p>A fully 3D-printed rocket glider designed to boost on an Estes D12-3 with its wings folded, then swing them open on a tilted hinge and glide back. Version 1 crashed in a hand-thrown test without a motor, which drove the version 2 redesign; v2 is printed and weighed, and has not flown yet.</p>
+                  <p class="work-card__note">Measured <strong>335&ndash;345 g</strong> at liftoff (target 350 g). My own simulations predict <strong>~73&ndash;77 m</strong> apogee and a glide L/D of <strong>~7.9</strong>.</p>
+                  <ul class="tags" aria-label="Tools">
+                    <li>Scripted FreeCAD</li><li>Python</li><li>Prusa MK3S+</li><li>PLA / PETG</li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" id="experience" aria-labelledby="experience-title">
+        <div class="wrap">
+          <header class="section__head">
+            <p class="eyebrow"><span class="eyebrow__num">03</span> Experience</p>
+            <h2 id="experience-title">From the lab bench to the GPU cluster</h2>
+          </header>
+
+          <div class="about-grid">
+            <ol class="timeline">
+              <li class="is-current">
+                <span class="timeline__when">June 2026 &ndash; present</span>
+                <h3>Research Assistant</h3>
+                <p class="timeline__org">BYU Department of Physics, Computational X-ray Imaging &middot; Provo, UT</p>
+                <p>GPU-accelerated X-ray image reconstruction with Dr. Richard Sandberg; BYU Physics REU summer cohort.</p>
+              </li>
+              <li>
+                <span class="timeline__when">Apr 2024 &ndash; Jul 2024</span>
+                <h3>Research Lead, Positron Annihilation Spectroscopy</h3>
+                <p class="timeline__org">Research and Business Development Center &middot; Rexburg, ID</p>
+                <p>C++ and Mathematica analysis of PAS data, Doppler-broadening defect characterization, and HPGe detector calibration.</p>
+              </li>
+              <li>
+                <span class="timeline__when">Dec 2023 &ndash; Jun 2025</span>
+                <h3>Fabrication Specialist</h3>
+                <p class="timeline__org">Wright Woods &middot; Mission Viejo, CA</p>
+                <p>Engineered and commissioned a shop dust-collection system and redesigned two production workflows.</p>
+              </li>
+              <li>
+                <span class="timeline__when">Nov 2021 &ndash; Nov 2023</span>
+                <h3>Full-Time Volunteer Representative</h3>
+                <p class="timeline__org">The Church of Jesus Christ of Latter-day Saints &middot; St. Louis, MO</p>
+                <p>Served as a full-time missionary: taught and supported individuals and families, mentored and coordinated a team of 6&ndash;8 missionaries, and took part in community service along the way.</p>
+              </li>
+            </ol>
+
+            <div>
+              <section class="panel" aria-labelledby="edu-title">
+                <h3 class="panel__title" id="edu-title">Education</h3>
+                <div class="edu">
+                  <img src="img/logos/byu-idaho-144.webp" width="56" height="56" loading="lazy" decoding="async" alt="">
+                  <div>
+                    <h3>B.S. Physics</h3>
+                    <p>Brigham Young University&ndash;Idaho &middot; GPA 3.91 &middot; expected July 2027</p>
+                  </div>
+                </div>
+              </section>
+
+              <section class="panel" aria-labelledby="awards-title">
+                <h3 class="panel__title" id="awards-title">Grants &amp; awards</h3>
+                <p class="award"><strong>NSF ACCESS Explore allocation, PHY260374</strong>Aug 2026 &ndash; Aug 2027 &middot; Authored the proposal under Dr. Richard Sandberg (BYU research assistantship), securing 200,000 credits on the PSC Neocortex (Cerebras) supercomputer for BCDI simulation and reconstruction work</p>
+              </section>
+
+              <section class="panel" aria-labelledby="toolkit-title">
+                <h3 class="panel__title" id="toolkit-title">Toolkit</h3>
+                <dl class="skills">
+                  <div>
+                    <dt>Languages &amp; HPC</dt>
+                    <dd><ul class="tags"><li>C++17</li><li>Python</li><li>Julia</li><li>CUDA</li><li>OpenMP</li><li>SLURM</li><li>Linux</li></ul></dd>
+                  </div>
+                  <div>
+                    <dt>Numerical methods</dt>
+                    <dd><ul class="tags"><li>Velocity Verlet</li><li>RK4</li><li>Red-black SOR</li><li>Metropolis MCMC</li><li>FFT</li></ul></dd>
+                  </div>
+                  <div>
+                    <dt>Machine learning &amp; data</dt>
+                    <dd><ul class="tags"><li>PyTorch</li><li>scikit-learn</li><li>NumPy / SciPy</li><li>Pandas</li><li>Matplotlib</li></ul></dd>
+                  </div>
+                  <div>
+                    <dt>Lab &amp; fabrication</dt>
+                    <dd><ul class="tags"><li>HPGe detectors</li><li>SOLIDWORKS (CSWA)</li><li>FreeCAD</li><li>FDM printing</li><li>Arduino</li></ul></dd>
+                  </div>
+                </dl>
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="more" aria-labelledby="more-title">
+        <div class="wrap">
+          <header class="section__head">
+            <p class="eyebrow"><span class="eyebrow__num">04</span> More work</p>
+            <h2 id="more-title">Other things I&rsquo;ve made</h2>
+          </header>
+          <ul class="mini-list">
+            <li>
+              <a href="Visualizations/">
+                <strong>Visualizations <span class="arrow" aria-hidden="true">&rarr;</span></strong>
+                <span>Interactive tools for building intuition, from determinants to coherent diffraction imaging.</span>
+              </a>
+            </li>
+            <li>
+              <a href="AI-Ethics-and-Discussion/">
+                <strong>AI in Higher Education <span class="arrow" aria-hidden="true">&rarr;</span></strong>
+                <span>Perspectives on AI&rsquo;s role, ethics and future in education.</span>
+              </a>
+            </li>
+            <li>
+              <a href="CSE-450-Machine-learning/">
+                <strong>CSE 450 team repository <span class="arrow" aria-hidden="true">&rarr;</span></strong>
+                <span>Team NorthWind&rsquo;s repository site: classification pipelines, exploratory data analysis and predictive modeling.</span>
+              </a>
+            </li>
+          </ul>
+
+          <aside class="contact" aria-labelledby="contact-title">
+            <div>
+              <h2 id="contact-title">Get in touch</h2>
+              <p>Questions about my research or projects? Email is the fastest way to reach me, and my CV has the full picture.</p>
+            </div>
+            <nav class="hero__links" aria-label="Contact">
+              <a class="btn-pill btn-pill--primary" href="mailto:nbuhrley@student.byu.edu"><svg aria-hidden="true"><use href="#i-mail"/></svg>Email me</a>
+              <a class="btn-pill" href="documents/CV-Nels-Buhrley.pdf" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-doc"/></svg>CV<span class="sr-only"> (PDF, opens in a new tab)</span></a>
+              <a class="btn-pill" href="https://www.linkedin.com/in/nelsbuhrley/"><svg aria-hidden="true"><use href="#i-linkedin"/></svg>LinkedIn</a>
+              <a class="btn-pill" href="https://www.youtube.com/@nelsbuhrley"><svg aria-hidden="true"><use href="#i-youtube"/></svg>YouTube</a>
+            </nav>
+          </aside>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
       <div class="affiliation-strip">
-        <img src="img/logos/byu.png" alt="Brigham Young University">
-        <img src="img/logos/byu-idaho.png" alt="Brigham Young University–Idaho">
+        <img src="img/logos/byu-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University">
+        <img src="img/logos/byu-idaho-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University&ndash;Idaho">
       </div>
-      <p>&copy; 2026 Nels Buhrley &middot; <a href="https://nelsbuhrley.github.io">nelsbuhrley.github.io</a></p>
+      <p>&copy; 2026 Nels Buhrley &middot; <a href="https://nels.buhrley.com/">nels.buhrley.com</a></p>
     </footer>
   </body>
 </html>

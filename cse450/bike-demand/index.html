@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hourly Bike-Share Demand | CSE 450 | Nels Buhrley</title>
+  <meta name="description" content="Forecasting hourly bike rentals with a holiday-aware MLP + XGBoost blend: RMSE 108.0, R&sup2; 0.912 over a 384-hour blind window in November 2023.">
+  <meta name="author" content="Nels Buhrley">
+  <meta name="theme-color" content="#002e5d">
+  <link rel="canonical" href="https://nels.buhrley.com/cse450/bike-demand/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Hourly Bike-Share Demand | CSE 450 | Nels Buhrley">
+  <meta property="og:description" content="Forecasting hourly bike rentals with a holiday-aware MLP + XGBoost blend: RMSE 108.0, R&sup2; 0.912 over a 384-hour blind window in November 2023.">
+  <meta property="og:url" content="https://nels.buhrley.com/cse450/bike-demand/">
+  <meta property="og:image" content="https://nels.buhrley.com/cse450/img/og/bike-demand.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/ui/css/project.css">
+  <link rel="stylesheet" href="/ui/css/menu.css">
+  <script src="/ui/js/site-menu.js"></script>
+</head>
+<body>
+  <svg class="sr-only" width="0" height="0" aria-hidden="true" focusable="false">
+    <symbol id="i-github" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="cs-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol><li><a href="/">Home</a></li><li><a href="/cse450/">CSE 450</a></li><li aria-current="page">Bike Demand</li></ol>
+      </nav>
+      <p class="cs-hero__eyebrow">Module 4 &middot; Forecasting</p>
+      <h1>Forecasting Bike Demand, Hour by Hour</h1>
+      <p class="cs-hero__dek">A neural network and gradient-boosted trees, averaged and made holiday-aware, tracked 384 unseen hours of Washington, DC bike-share demand.</p>
+      <dl class="cs-hero__meta">
+        <div><dt>Team</dt><dd>Team NorthWind</dd></div>
+        <div><dt>Course</dt><dd>CSE 450, BYU-Idaho</dd></div>
+        <div><dt>Term</dt><dd>Spring 2026</dd></div>
+        <div><dt>Stack</dt><dd>Python, TensorFlow/Keras, XGBoost</dd></div>
+      </dl>
+      <div class="cs-hero__links">
+        <a class="btn-pill btn-pill--primary" href="https://github.com/nelsbuhrley/CSE-450-Machine-learning"><svg aria-hidden="true"><use href="#i-github"/></svg>Source on GitHub<span class="sr-only"> (external)</span></a>
+        <a class="btn-pill" href="/CSE-450-Machine-learning/"><svg aria-hidden="true"><use href="#i-grid"/></svg>Team project site</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="cs-body">
+      <section class="cs-section">
+        <p class="cs-lede">Two different model families, averaged and taught the holiday calendar, forecast every hour of a blind November window, including Thanksgiving week.</p>
+      <dl class="cs-metrics">
+        <div><dt>RMSE</dt><dd>108.0<span class="cs-metrics__note">rentals per hour on the blind window</span></dd></div>
+        <div><dt>R&sup2;</dt><dd>0.912<span class="cs-metrics__note">over 384 hours, Nov 15&ndash;30, 2023</span></dd></div>
+        <div><dt>Hours within 20%</dt><dd>71%<span class="cs-metrics__note">of actual rentals</span></dd></div>
+        <div><dt>Days within 20%</dt><dd>81%<span class="cs-metrics__note">of daily totals</span></dd></div>
+      </dl>
+      <figure class="cs-figure cs-figure--light cs-figure--wide">
+        <div class="cs-figure__mat">
+          <img src="../img/bikes/actual_vs_predicted.webp" width="1600" height="661" decoding="async" alt="Line chart of actual vs predicted hourly rentals from Nov 15 to 30, 2023, with Thanksgiving week shaded; the prediction closely follows the daily peaks.">
+        </div>
+        <figcaption><span class="cs-figure__label">Fig. 1</span>Hourly predictions vs actual rentals over the blind test window (R&sup2; 0.91, RMSE 108). The largest misses fall in Thanksgiving week.</figcaption>
+      </figure>
+      </section>
+
+      <section class="cs-section">
+        <h2>The problem</h2>
+        <p>A Washington, DC bike-share system needs to know how many bikes will be rented each hour so it can staff, rebalance and plan. The task was to predict total rentals (casual plus registered riders) for every hour of a blind test window. Submissions were scored on RMSE, MAE, R&sup2; and the share of hours within 5%, 10% and 20% of actual demand. Demand swings from near zero overnight to over 1,500 at rush hour, and holidays break the usual weekly rhythm.</p>
+      </section>
+
+      <section class="cs-section">
+        <h2>The data</h2>
+        <p>The training data has 112,475 hourly records from January 2011 through October 2023. Each record includes the hour, date, temperature, feels-like temperature, humidity, wind speed, a weather-severity code, season and holiday and working-day flags. Casual and registered rentals are given separately. The mini holdout covers 384 hours from November 15 to November 30, 2023, which falls after all the training data and includes Thanksgiving week. It is a genuine out-of-time test.</p>
+      </section>
+
+      <section class="cs-section">
+        <h2>Our approach</h2>
+        <div class="cs-split">
+          <div>
+            <p>We built features in three rounds. <strong>V1</strong> encoded time cyclically (sine and cosine of the hour and season), added a long-run time trend and a combined weather-intensity score. <strong>V2</strong> added day-of-week cycles and hour &times; working-day interactions, and trained on log-scaled targets. <strong>V3</strong> added holiday awareness from the US/DC holiday calendar: day before and after a holiday, bridge days, days to the next holiday and hour &times; holiday-week interactions.</p>
+            <p>On each feature set we trained a Keras MLP (Swish activations, batch norm, dropout, Huber loss, two outputs for casual and registered riders) and a pair of XGBoost regressors. We scored 22 variants (single models, weighted ensembles, linear and ridge stacks, an hour-routed meta-learner and a rush-hour specialist). A plain equal-weight average of the MLP and XGBoost matched or beat every learned stacker. All training ran on CPU.</p>
+          </div>
+      <figure class="cs-figure cs-figure--light">
+        <div class="cs-figure__mat">
+          <img src="../img/bikes/summary_rmse.webp" width="1320" height="1080" loading="lazy" decoding="async" alt="Horizontal bar chart of holdout RMSE for 22 model, ensemble and stacker variants, from 127.8 to 155.0.">
+        </div>
+        <figcaption><span class="cs-figure__label">Fig. 2</span>Every pre-holiday (V1/V2) variant we tried, scored on the holdout. The simple V2 + XGBoost average (127.8) matched or beat every learned stacker. The later V3 blend (108.0) is not shown.</figcaption>
+      </figure>
+        </div>
+      </section>
+
+      <section class="cs-section">
+        <h2>Results</h2>
+        <p>The V3 holiday-aware blend reached an RMSE of 108.0 rentals per hour and an R&sup2; of 0.912 on the blind window, down from 127.8 for the same blend without holiday features. Neither half was as good alone.</p>
+      <div class="cs-table-wrap">
+        <table class="cs-table">
+          <caption>Blind mini holdout, Nov 15&ndash;30, 2023 (384 hours). RMSE in rentals per hour.</caption>
+          <thead><tr><th scope="col">Model</th><th scope="col" class="num">RMSE</th><th scope="col" class="num">R&sup2;</th></tr></thead>
+          <tbody>
+              <tr><th scope="row">V2 MLP alone</th><td class="num">136.7</td><td class="num">&mdash;</td></tr>
+              <tr><th scope="row">V2 XGBoost alone</th><td class="num">141.3</td><td class="num">&mdash;</td></tr>
+              <tr><th scope="row">Best linear stacker (3 V2 MLPs, non-negative)</th><td class="num">139.7</td><td class="num">&mdash;</td></tr>
+              <tr><th scope="row">V2 MLP + XGBoost, equal average</th><td class="num">127.8</td><td class="num">0.877</td></tr>
+              <tr><th scope="row">V3 MLP alone (holiday-aware)</th><td class="num">124.7</td><td class="num">&mdash;</td></tr>
+              <tr><th scope="row">V3 XGBoost alone (holiday-aware)</th><td class="num">121.6</td><td class="num">&mdash;</td></tr>
+              <tr class="is-best"><th scope="row">V3 MLP + XGBoost, equal average</th><td class="num">108.0</td><td class="num">0.912</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figure class="cs-figure cs-figure--light cs-figure--wide">
+        <div class="cs-figure__mat">
+          <img src="../img/bikes/v3_components.webp" width="1600" height="480" loading="lazy" decoding="async" alt="V3 MLP (RMSE 124.7), V3 XGBoost (RMSE 121.6) and their blend (RMSE 108.0) against actual rentals.">
+        </div>
+        <figcaption><span class="cs-figure__label">Fig. 3</span>Each model alone scores 121&ndash;125 RMSE, and their equal-weight average scores 108.0.</figcaption>
+      </figure>
+        <p>Daily totals were more reliable than single hours: 81% of days landed within 20%.</p>
+      <figure class="cs-figure cs-figure--light cs-figure--narrow">
+        <div class="cs-figure__mat">
+          <img src="../img/bikes/within_tolerance.webp" width="1600" height="743" loading="lazy" decoding="async" alt="Bar charts of the share of forecasts within plus or minus 10/20/30/50%: hourly 43/71/82/90%, daily totals 50/81/88/94%.">
+        </div>
+        <figcaption><span class="cs-figure__label">Fig. 4</span>Share of forecasts within each tolerance band. Daily totals are steadier than single hours.</figcaption>
+      </figure>
+        <aside class="cs-callout cs-callout--warn">
+          <p class="cs-callout__title">Validation caveat</p>
+          <p>Internally we validated on a random 30% split of hours, not a time-based one, so the November window is the real test, and at 16 days it is short.</p>
+        </aside>
+      </section>
+
+      <section class="cs-section">
+        <h2>What we learned</h2>
+        <p>The biggest gain came from understanding the calendar, not from a more complex model. The V2 models overpredicted Thanksgiving week because they treated it like a normal working week, and holiday-proximity features cut much of that error (overall RMSE 127.8 &rarr; 108.0), though Thanksgiving week is still where the largest misses fall.</p>
+        <p>Simple averaging matched or beat every learned stacker we tried. The stackers were fit on a random internal split, which may not reflect an out-of-time window. Combining two different model families helped more than tuning either one: the V2 MLP and XGBoost errors correlated at only 0.74, which left room for the average to help. Next time we would validate with a time-based split from the start, so internal scores reflect forecasting rather than interpolation.</p>
+      </section>
+
+      <section class="cs-section" aria-labelledby="credits-title">
+        <h2 id="credits-title">Team, tools and code</h2>
+        <div class="cs-team">
+          <span class="cs-team__badge" aria-hidden="true">NW</span>
+          <p class="cs-team__name">Team NorthWind</p>
+          <ul><li>Caleb Dilley</li><li>Dallin Wagner</li><li>Jonathan Oliphant</li><li>Nels Buhrley</li></ul>
+          <p class="cs-team__note">A team project for CSE 450 Machine Learning at BYU-Idaho, Spring 2026.</p>
+        </div>
+        <ul class="tags" aria-label="Tools and methods"><li>Python</li><li>TensorFlow/Keras</li><li>XGBoost</li><li>scikit-learn</li><li>SciPy</li><li>pandas</li><li>NumPy</li><li>matplotlib</li><li>holidays</li><li>Time-series features</li><li>Ensembling</li></ul>
+        <p>Source: <a href="https://github.com/nelsbuhrley/CSE-450-Machine-learning">Source on GitHub<span class="arrow arrow--ext" aria-hidden="true"> &nearr;</span></a> &middot; <a href="/CSE-450-Machine-learning/">Team project site</a></p>
+      </section>
+    </article>
+
+    <ul class="cs-pager" aria-label="More CSE 450 projects">
+      <li><a href="../housing/"><span class="cs-pager__dir">&larr; Previous</span><span class="cs-pager__title">Housing Prices</span></a></li>
+      <li class="cs-pager__next"><a href="../traffic-signs/"><span class="cs-pager__dir">Next &rarr;</span><span class="cs-pager__title">Traffic Signs</span></a></li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <div class="affiliation-strip">
+      <img src="/img/logos/byu-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University">
+      <img src="/img/logos/byu-idaho-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University&ndash;Idaho">
+    </div>
+    <p>&copy; 2026 Nels Buhrley &middot; <a href="https://nels.buhrley.com/">nels.buhrley.com</a></p>
+  </footer>
+</body>
+</html>

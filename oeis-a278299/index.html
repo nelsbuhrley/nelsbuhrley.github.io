@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OEIS A278299: four new terms | Nels Buhrley</title>
+  <meta name="description" content="New terms a(19) to a(22) of OEIS A278299, the smallest polyomino in which every pair of n colors touches. A parallel simulated-annealing search and a SAT search that proved a(21) = 116 and settled a(22) = 132.">
+  <meta name="author" content="Nels Buhrley">
+  <meta name="theme-color" content="#002e5d">
+  <link rel="canonical" href="https://nels.buhrley.com/oeis-a278299/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="OEIS A278299: four new terms | Nels Buhrley">
+  <meta property="og:description" content="New terms a(19) to a(22) of OEIS A278299, found with simulated annealing and SAT search.">
+  <meta property="og:url" content="https://nels.buhrley.com/oeis-a278299/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/ui/css/project.css">
+  <link rel="stylesheet" href="/ui/css/menu.css">
+  <link rel="stylesheet" href="oeis.css">
+  <script src="/ui/js/site-menu.js"></script>
+  <script src="oeis.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="cs-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol><li><a href="/">Home</a></li><li><a href="/#projects">Projects</a></li><li aria-current="page">OEIS A278299</li></ol>
+      </nav>
+      <p class="cs-hero__eyebrow">Combinatorics &middot; Computational search</p>
+      <h1>Four new terms of an integer sequence</h1>
+      <p class="cs-hero__dek">How small can a patch of grid squares be if every pair of n colors has to touch somewhere? I helped push the answer from n&nbsp;=&nbsp;18 to n&nbsp;=&nbsp;22 in the On-Line Encyclopedia of Integer Sequences.</p>
+      <dl class="cs-hero__meta">
+        <div><dt>Problem</dt><dd>Peter Kagey&rsquo;s Square Game</dd></div>
+        <div><dt>Collaborator</dt><dd>Ryan Lee</dd></div>
+        <div><dt>When</dt><dd>March &ndash; October 2026</dd></div>
+        <div><dt>Stack</dt><dd>C++17, OpenMP, CUDA, SLURM, Python, SAT</dd></div>
+      </dl>
+      <div class="cs-hero__links">
+        <a class="btn-pill btn-pill--primary" href="https://oeis.org/A278299">OEIS entry <span class="arrow arrow--ext" aria-hidden="true">&nearr;</span></a>
+        <a class="btn-pill" href="https://github.com/nelsbuhrley/Personal-Projects">Code on GitHub <span class="arrow arrow--ext" aria-hidden="true">&nearr;</span></a>
+        <a class="btn-pill" href="#results">Results</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="cs-body">
+
+      <section class="cs-section" aria-labelledby="overview-title">
+        <h2 id="overview-title" class="sr-only">Overview</h2>
+        <p class="cs-lede">OEIS A278299 asks for the fewest grid squares you need to color with n colors so that every color sits edge-to-edge with every other color at least once. The answers are hard to pin down: until 2026, only a(2) through a(11) were known exactly. This page is about the part I worked on.</p>
+        <dl class="cs-metrics">
+          <div><dt>New terms</dt><dd>4<span class="cs-metrics__note">a(19)&ndash;a(22), March and October 2026</span></dd></div>
+          <div><dt>Proved by my SAT search</dt><dd>a(21)&nbsp;=&nbsp;116<span class="cs-metrics__note">Previously only 116&nbsp;&le;&nbsp;a(21)&nbsp;&le;&nbsp;117</span></dd></div>
+          <div><dt>Also settled</dt><dd>a(22)&nbsp;=&nbsp;132<span class="cs-metrics__note">Example coloring meets the lower bound</span></dd></div>
+          <div><dt>Bounds posted</dt><dd>a(27)&nbsp;&le;&nbsp;195<span class="cs-metrics__note">Plus bounds for a(23)&ndash;a(26)</span></dd></div>
+        </dl>
+
+        <aside class="oe-credit" aria-labelledby="credit-title">
+          <h3 id="credit-title" class="oe-credit__title">Who did what</h3>
+          <ul class="oe-credit__list">
+            <li>
+              <span class="oe-credit__who">Peter Kagey</span>
+              <span class="oe-credit__what">Posed the problem. The sequence comes from his <a href="https://peterkagey.com/apps/square_game/">Square Game</a> puzzle, and the OEIS entry was created by Alec Jones and Peter Kagey in 2016. His blog post <a href="https://peterkagey.com/blog/2021/06/my-favorite-sequences-a278299/">&ldquo;My Favorite Sequences: &lsquo;Not Equal&rsquo; Grid&rdquo;</a> tells where it came from.</span>
+            </li>
+            <li>
+              <span class="oe-credit__who">Nels Buhrley and Ryan Lee</span>
+              <span class="oe-credit__what">Credited together for a(19)&nbsp;=&nbsp;96 and a(20)&nbsp;=&nbsp;106 (March 2026). <strong>Ryan Lee</strong> did the SAT proof of a(20). We contributed the a(19)&nbsp;=&nbsp;96 example together.</span>
+            </li>
+            <li>
+              <span class="oe-credit__who">Nels Buhrley</span>
+              <span class="oe-credit__what">Credited for a(21) and a(22) (October 2026). I ran the SAT proof of a(21)&nbsp;=&nbsp;116, which also settled a(22)&nbsp;=&nbsp;132, and contributed the a(22) example. I also designed and built the parallel simulated-annealing search and posted bounds for a(21)&ndash;a(27).</span>
+            </li>
+          </ul>
+          <p class="oe-credit__note">Other contributors to the entry include Ryan Lee (a(11), 2019), Peter Exley (a(12)&ndash;a(18) and the lower-bound formula, 2026) and Dmitry Kamenetsky (best known colorings and upper bounds up to n&nbsp;=&nbsp;30). I developed my code with AI assistance (Claude Code).</p>
+        </aside>
+      </section>
+
+      <section class="cs-section" aria-labelledby="problem-title">
+        <p class="eyebrow"><span class="eyebrow__num">01</span> The problem</p>
+        <h2 id="problem-title">Make every color touch every other color</h2>
+        <div class="cs-split">
+          <div>
+            <p>Take n colors, numbered 1 to n. Color some connected squares of graph paper (a <em>polyomino</em>) so that, for every pair of different colors, at least one square of the first shares an edge with a square of the second. Corners don&rsquo;t count. a(n) is the smallest number of squares that can do it.</p>
+            <p>For four colors there are six pairs to cover, and six squares are enough: in the shape on the right, the top 1 touches 4 and 3, that 4 touches 2, the left 4 touches 3, 3 touches 2, and 2 touches the bottom 1. Five squares can&rsquo;t do it, so a(4)&nbsp;=&nbsp;6.</p>
+            <p>Kagey&rsquo;s <a href="https://peterkagey.com/apps/square_game/">Square Game</a> turns this into a puzzle: you click numbers onto a grid, it marks pairs that repeat in red, and a valid grid you submit becomes an upper bound for the sequence. Kagey traces the idea to a&nbsp;&ne;&nbsp;b&nbsp;&ne;&nbsp;c&nbsp;&ne;&nbsp;a written on the board in a linear algebra class; the one-dimensional version is a solved problem, and Alec Jones suggested the two-dimensional one.</p>
+          </div>
+          <figure class="cs-figure cs-figure--narrow oe-figure oe-figure--small">
+            <div class="cs-figure__mat oe-mat">
+              <svg class="oe-grid" id="g4" viewBox="0 0 128 128" role="img" aria-labelledby="g4-t g4-d" data-colors="4">
+              <title id="g4-t">Polyomino for a(4) = 6</title>
+              <desc id="g4-d">Six squares in three rows. Top row, columns 2 and 3: 1, 4. Middle row: 4, 3, 2. Bottom row, column 3: 1. Every pair of the colors 1 to 4 shares an edge.</desc>
+              <g class="oe-cell" data-c="1"><rect x="45" y="5" width="38" height="38" rx="5" fill="#e77474"/><text x="64.0" y="24.0">1</text></g>
+              <g class="oe-cell" data-c="4"><rect x="85" y="5" width="38" height="38" rx="5" fill="#cfadf0"/><text x="104.0" y="24.0">4</text></g>
+              <g class="oe-cell" data-c="4"><rect x="5" y="45" width="38" height="38" rx="5" fill="#cfadf0"/><text x="24.0" y="64.0">4</text></g>
+              <g class="oe-cell" data-c="3"><rect x="45" y="45" width="38" height="38" rx="5" fill="#74e7e7"/><text x="64.0" y="64.0">3</text></g>
+              <g class="oe-cell" data-c="2"><rect x="85" y="45" width="38" height="38" rx="5" fill="#cff0ad"/><text x="104.0" y="64.0">2</text></g>
+              <g class="oe-cell" data-c="1"><rect x="85" y="85" width="38" height="38" rx="5" fill="#e77474"/><text x="104.0" y="104.0">1</text></g>
+              </svg>
+            </div>
+          <figcaption><span class="cs-figure__label">Fig. 1</span>The a(4)&nbsp;=&nbsp;6 example from the OEIS entry. All six pairs of colors share an edge.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="cs-section" aria-labelledby="hard-title">
+        <p class="eyebrow"><span class="eyebrow__num">02</span> Why it&rsquo;s hard</p>
+        <h2 id="hard-title">A huge search with a bound to beat</h2>
+        <p>Two things have to be chosen at once: the shape, and the color of every square. For n&nbsp;=&nbsp;22 and a fixed 132-square shape there are 22<sup>132</sup>, about 10<sup>177</sup>, ways to color it, and the number of possible shapes grows exponentially too. Nobody checks those one by one.</p>
+        <p>What makes progress possible is a lower bound. Peter Exley gave the one in the entry:</p>
+        <p class="oe-formula"><span>a(n) &ge; max(</span> <span>&lfloor;(n<sup>2</sup> + n + 5)/4&rfloor;,</span> <span>n&middot;&lceil;(n &minus; 1)/4&rceil; )</span></p>
+        <div class="oe-bounds">
+          <div>
+            <h3>Edge bound</h3>
+            <p>Each of the n(n&minus;1)/2 pairs needs its own shared edge. A polyomino with k squares and perimeter P has (4k&nbsp;&minus;&nbsp;P)/2 internal edges, and compact shapes have the smallest perimeter, so k can&rsquo;t be too small. The difference between internal edges and pairs is the <em>slack</em>: how many edges can be wasted on repeats.</p>
+          </div>
+          <div>
+            <h3>Contact bound</h3>
+            <p>Each color has to touch n&nbsp;&minus;&nbsp;1 others, and a square has at most four neighbors, so every color needs at least &lceil;(n&nbsp;&minus;&nbsp;1)/4&rceil; squares. For n&nbsp;=&nbsp;22 that is 6 squares per color, 132 in all.</p>
+          </div>
+        </div>
+        <p>A lower bound settles the &ldquo;nothing smaller works&rdquo; half of a proof. If you can then show one coloring that hits the bound exactly, the value is proved. The hard part is finding that coloring when the slack is close to zero, or proving none exists.</p>
+      </section>
+
+      <section class="cs-section" aria-labelledby="sa-title">
+        <p class="eyebrow"><span class="eyebrow__num">03</span> Approach 1</p>
+        <h2 id="sa-title">Parallel simulated annealing</h2>
+        <p>My first tool was a heuristic search, written in C++17 with OpenMP. It works on a score: the number of color pairs that don&rsquo;t touch yet. Zero means a valid coloring.</p>
+        <ol class="oe-steps">
+          <li><strong>Start random.</strong> Grow a random connected shape of k squares and fill it with every color at least once plus random extras.</li>
+          <li><strong>Make a small change.</strong> Move one square to another spot on the edge of the shape, swap the colors of two squares, or recolor one square.</li>
+          <li><strong>Accept or undo.</strong> Keep any change that doesn&rsquo;t make the score worse. Keep a worse one with probability e<sup>&minus;&Delta;/T</sup>, where the temperature T cools geometrically from 5 to 0.01, so the search can climb out of dead ends early and settles down later.</li>
+          <li><strong>Run many at once.</strong> Each thread runs its own independent attempts under dynamic scheduling. The first thread to reach zero sets an atomic flag and the rest stop; if none succeeds, k goes up by one.</li>
+        </ol>
+        <p>A second version replaced the hash map with a flat grid array, updated the score incrementally instead of recounting every edge, kept shapes connected when squares move, and added parallel tempering, where threads at different temperatures swap configurations. I then wrote a CUDA annealer that gives each candidate shape its own GPU thread block, with the threads counting edges cooperatively.</p>
+        <p>The runs went to the BYU supercomputer as SLURM batch jobs. The job script rebuilds the binary whenever it lands on a node with a different CPU instruction set, since it is compiled with <code>-march=native</code>.</p>
+        <aside class="cs-callout" aria-labelledby="sa-limit-title">
+          <p class="cs-callout__title" id="sa-limit-title">What annealing could and couldn&rsquo;t do</p>
+          <p>It finds good colorings fast. In logged runs it found a 100-square coloring for n&nbsp;=&nbsp;19 in about 23 minutes on 32 threads, and an 80-square one for n&nbsp;=&nbsp;17 in about half an hour. But the true values are 96 and 77. Near the bound, where the slack is tiny, random moves rarely hit one of the few valid colorings, and a heuristic can never prove that a size is impossible.</p>
+        </aside>
+      </section>
+
+      <section class="cs-section" aria-labelledby="sat-title">
+        <p class="eyebrow"><span class="eyebrow__num">04</span> Approach 2</p>
+        <h2 id="sat-title">Exact search with a SAT solver</h2>
+        <p>A SAT solver takes a long list of true/false constraints and either finds values that satisfy all of them or proves that none exist. To use one here, I fix a candidate shape and translate the question into Boolean variables that say which color each square gets, with clauses saying that each square gets exactly one color and that every pair of colors meets across at least one shared edge. Candidate shapes are enumerated by perimeter, which the edge bound limits.</p>
+        <p>The search for n&nbsp;=&nbsp;21 at 116 squares came back satisfiable: the solver returned a complete coloring. Since 116 is the lower bound for n&nbsp;=&nbsp;21, that one example proves a(21)&nbsp;=&nbsp;116. The same work settled a(22)&nbsp;=&nbsp;132, which is exactly the contact bound, with the coloring in Fig.&nbsp;2. Each returned coloring is checked by a separate verifier that shares no code with the encoder. Ryan Lee&rsquo;s SAT search for a(20)&nbsp;=&nbsp;106 worked the same way: the example it returned meets the bound.</p>
+        <p>I built the SAT tooling in Python with the CaDiCaL solver, with help from Claude Code.</p>
+      </section>
+
+      <section class="cs-section" id="results" aria-labelledby="results-title">
+        <p class="eyebrow"><span class="eyebrow__num">05</span> Results</p>
+        <h2 id="results-title">The new terms and bounds</h2>
+        <div class="cs-table-wrap">
+          <table class="cs-table oe-results">
+            <caption>Values and bounds as listed in OEIS A278299. The lower bound is Exley&rsquo;s formula. Upper bounds for n &ge; 23 come from explicit colorings.</caption>
+            <thead>
+              <tr><th scope="col">n</th><th scope="col" class="num">a(n)</th><th scope="col" class="num">Lower bound</th><th scope="col">Status</th><th scope="col">Credit in the entry</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">19</th><td class="num">96</td><td class="num">96</td><td>Proved; example meets the edge bound</td><td>Nels Buhrley and Ryan Lee</td></tr>
+              <tr><th scope="row">20</th><td class="num">106</td><td class="num">106</td><td>Proved; Ryan Lee&rsquo;s SAT search</td><td>Nels Buhrley and Ryan Lee</td></tr>
+              <tr class="is-best"><th scope="row">21</th><td class="num">116</td><td class="num">116</td><td>Proved; my SAT search</td><td>Nels Buhrley</td></tr>
+              <tr class="is-best"><th scope="row">22</th><td class="num">132</td><td class="num">132</td><td>Proved; example meets the contact bound</td><td>Nels Buhrley</td></tr>
+              <tr><th scope="row">23</th><td class="num">139&ndash;141</td><td class="num">139</td><td>Open</td><td>Bounds: Nels Buhrley</td></tr>
+              <tr><th scope="row">24</th><td class="num">151&ndash;154</td><td class="num">151</td><td>Open</td><td>Bounds: Nels Buhrley</td></tr>
+              <tr><th scope="row">25</th><td class="num">163&ndash;167</td><td class="num">163</td><td>Open</td><td>Bounds: Nels Buhrley; 167 by Dmitry Kamenetsky</td></tr>
+              <tr><th scope="row">26</th><td class="num">182</td><td class="num">182</td><td>In comments; meets the contact bound</td><td>Nels Buhrley</td></tr>
+              <tr><th scope="row">27</th><td class="num">190&ndash;195</td><td class="num">190</td><td>Open</td><td>Bounds: Nels Buhrley</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The data section of the entry stops at a(22) because a(23) is still open; a(26) is recorded in the comments.</p>
+
+        <figure class="cs-figure cs-figure--wide oe-figure">
+          <div class="cs-figure__mat oe-mat">
+              <svg class="oe-grid" id="g22" viewBox="0 0 488 448" role="img" aria-labelledby="g22-t g22-d" data-colors="22">
+              <title id="g22-t">Coloring for a(22) = 132</title>
+              <desc id="g22-d">A 12 by 11 rectangle of 132 squares colored with 22 colors, each used exactly 6 times, so that every pair of colors shares an edge. The full grid is listed in the table below the figure.</desc>
+              <g class="oe-cell" data-c="15"><rect x="5" y="5" width="38" height="38" rx="5" fill="#74e7c7"/><text x="24.0" y="24.0">15</text></g>
+              <g class="oe-cell" data-c="20"><rect x="45" y="5" width="38" height="38" rx="5" fill="#f0bfad"/><text x="64.0" y="24.0">20</text></g>
+              <g class="oe-cell" data-c="6"><rect x="85" y="5" width="38" height="38" rx="5" fill="#adcbf0"/><text x="104.0" y="24.0">6</text></g>
+              <g class="oe-cell" data-c="1"><rect x="125" y="5" width="38" height="38" rx="5" fill="#e77474"/><text x="144.0" y="24.0">1</text></g>
+              <g class="oe-cell" data-c="13"><rect x="165" y="5" width="38" height="38" rx="5" fill="#dc74e7"/><text x="184.0" y="24.0">13</text></g>
+              <g class="oe-cell" data-c="19"><rect x="205" y="5" width="38" height="38" rx="5" fill="#9e74e7"/><text x="224.0" y="24.0">19</text></g>
+              <g class="oe-cell" data-c="11"><rect x="245" y="5" width="38" height="38" rx="5" fill="#dce774"/><text x="264.0" y="24.0">11</text></g>
+              <g class="oe-cell" data-c="2"><rect x="285" y="5" width="38" height="38" rx="5" fill="#b3f0ad"/><text x="304.0" y="24.0">2</text></g>
+              <g class="oe-cell" data-c="4"><rect x="325" y="5" width="38" height="38" rx="5" fill="#f0adbf"/><text x="344.0" y="24.0">4</text></g>
+              <g class="oe-cell" data-c="6"><rect x="365" y="5" width="38" height="38" rx="5" fill="#adcbf0"/><text x="384.0" y="24.0">6</text></g>
+              <g class="oe-cell" data-c="5"><rect x="405" y="5" width="38" height="38" rx="5" fill="#9ee774"/><text x="424.0" y="24.0">5</text></g>
+              <g class="oe-cell" data-c="17"><rect x="445" y="5" width="38" height="38" rx="5" fill="#e7b374"/><text x="464.0" y="24.0">17</text></g>
+              <g class="oe-cell" data-c="18"><rect x="5" y="45" width="38" height="38" rx="5" fill="#adf0cb"/><text x="24.0" y="64.0">18</text></g>
+              <g class="oe-cell" data-c="11"><rect x="45" y="45" width="38" height="38" rx="5" fill="#dce774"/><text x="64.0" y="64.0">11</text></g>
+              <g class="oe-cell" data-c="21"><rect x="85" y="45" width="38" height="38" rx="5" fill="#74e789"/><text x="104.0" y="64.0">21</text></g>
+              <g class="oe-cell" data-c="4"><rect x="125" y="45" width="38" height="38" rx="5" fill="#f0adbf"/><text x="144.0" y="64.0">4</text></g>
+              <g class="oe-cell" data-c="17"><rect x="165" y="45" width="38" height="38" rx="5" fill="#e7b374"/><text x="184.0" y="64.0">17</text></g>
+              <g class="oe-cell" data-c="3"><rect x="205" y="45" width="38" height="38" rx="5" fill="#7489e7"/><text x="224.0" y="64.0">3</text></g>
+              <g class="oe-cell" data-c="5"><rect x="245" y="45" width="38" height="38" rx="5" fill="#9ee774"/><text x="264.0" y="64.0">5</text></g>
+              <g class="oe-cell" data-c="20"><rect x="285" y="45" width="38" height="38" rx="5" fill="#f0bfad"/><text x="304.0" y="64.0">20</text></g>
+              <g class="oe-cell" data-c="10"><rect x="325" y="45" width="38" height="38" rx="5" fill="#f0ade4"/><text x="344.0" y="64.0">10</text></g>
+              <g class="oe-cell" data-c="18"><rect x="365" y="45" width="38" height="38" rx="5" fill="#adf0cb"/><text x="384.0" y="64.0">18</text></g>
+              <g class="oe-cell" data-c="8"><rect x="405" y="45" width="38" height="38" rx="5" fill="#d8f0ad"/><text x="424.0" y="64.0">8</text></g>
+              <g class="oe-cell" data-c="10"><rect x="445" y="45" width="38" height="38" rx="5" fill="#f0ade4"/><text x="464.0" y="64.0">10</text></g>
+              <g class="oe-cell" data-c="2"><rect x="5" y="85" width="38" height="38" rx="5" fill="#b3f0ad"/><text x="24.0" y="104.0">2</text></g>
+              <g class="oe-cell" data-c="15"><rect x="45" y="85" width="38" height="38" rx="5" fill="#74e7c7"/><text x="64.0" y="104.0">15</text></g>
+              <g class="oe-cell" data-c="9"><rect x="85" y="85" width="38" height="38" rx="5" fill="#74c7e7"/><text x="104.0" y="104.0">9</text></g>
+              <g class="oe-cell" data-c="11"><rect x="125" y="85" width="38" height="38" rx="5" fill="#dce774"/><text x="144.0" y="104.0">11</text></g>
+              <g class="oe-cell" data-c="6"><rect x="165" y="85" width="38" height="38" rx="5" fill="#adcbf0"/><text x="184.0" y="104.0">6</text></g>
+              <g class="oe-cell" data-c="22"><rect x="205" y="85" width="38" height="38" rx="5" fill="#b3adf0"/><text x="224.0" y="104.0">22</text></g>
+              <g class="oe-cell" data-c="19"><rect x="245" y="85" width="38" height="38" rx="5" fill="#9e74e7"/><text x="264.0" y="104.0">19</text></g>
+              <g class="oe-cell" data-c="1"><rect x="285" y="85" width="38" height="38" rx="5" fill="#e77474"/><text x="304.0" y="104.0">1</text></g>
+              <g class="oe-cell" data-c="12"><rect x="325" y="85" width="38" height="38" rx="5" fill="#adf0f0"/><text x="344.0" y="104.0">12</text></g>
+              <g class="oe-cell" data-c="5"><rect x="365" y="85" width="38" height="38" rx="5" fill="#9ee774"/><text x="384.0" y="104.0">5</text></g>
+              <g class="oe-cell" data-c="16"><rect x="405" y="85" width="38" height="38" rx="5" fill="#d8adf0"/><text x="424.0" y="104.0">16</text></g>
+              <g class="oe-cell" data-c="4"><rect x="445" y="85" width="38" height="38" rx="5" fill="#f0adbf"/><text x="464.0" y="104.0">4</text></g>
+              <g class="oe-cell" data-c="3"><rect x="5" y="125" width="38" height="38" rx="5" fill="#7489e7"/><text x="24.0" y="144.0">3</text></g>
+              <g class="oe-cell" data-c="13"><rect x="45" y="125" width="38" height="38" rx="5" fill="#dc74e7"/><text x="64.0" y="144.0">13</text></g>
+              <g class="oe-cell" data-c="7"><rect x="85" y="125" width="38" height="38" rx="5" fill="#e774b3"/><text x="104.0" y="144.0">7</text></g>
+              <g class="oe-cell" data-c="8"><rect x="125" y="125" width="38" height="38" rx="5" fill="#d8f0ad"/><text x="144.0" y="144.0">8</text></g>
+              <g class="oe-cell" data-c="13"><rect x="165" y="125" width="38" height="38" rx="5" fill="#dc74e7"/><text x="184.0" y="144.0">13</text></g>
+              <g class="oe-cell" data-c="9"><rect x="205" y="125" width="38" height="38" rx="5" fill="#74c7e7"/><text x="224.0" y="144.0">9</text></g>
+              <g class="oe-cell" data-c="16"><rect x="245" y="125" width="38" height="38" rx="5" fill="#d8adf0"/><text x="264.0" y="144.0">16</text></g>
+              <g class="oe-cell" data-c="21"><rect x="285" y="125" width="38" height="38" rx="5" fill="#74e789"/><text x="304.0" y="144.0">21</text></g>
+              <g class="oe-cell" data-c="3"><rect x="325" y="125" width="38" height="38" rx="5" fill="#7489e7"/><text x="344.0" y="144.0">3</text></g>
+              <g class="oe-cell" data-c="7"><rect x="365" y="125" width="38" height="38" rx="5" fill="#e774b3"/><text x="384.0" y="144.0">7</text></g>
+              <g class="oe-cell" data-c="15"><rect x="405" y="125" width="38" height="38" rx="5" fill="#74e7c7"/><text x="424.0" y="144.0">15</text></g>
+              <g class="oe-cell" data-c="5"><rect x="445" y="125" width="38" height="38" rx="5" fill="#9ee774"/><text x="464.0" y="144.0">5</text></g>
+              <g class="oe-cell" data-c="6"><rect x="5" y="165" width="38" height="38" rx="5" fill="#adcbf0"/><text x="24.0" y="184.0">6</text></g>
+              <g class="oe-cell" data-c="14"><rect x="45" y="165" width="38" height="38" rx="5" fill="#f0e4ad"/><text x="64.0" y="184.0">14</text></g>
+              <g class="oe-cell" data-c="11"><rect x="85" y="165" width="38" height="38" rx="5" fill="#dce774"/><text x="104.0" y="184.0">11</text></g>
+              <g class="oe-cell" data-c="3"><rect x="125" y="165" width="38" height="38" rx="5" fill="#7489e7"/><text x="144.0" y="184.0">3</text></g>
+              <g class="oe-cell" data-c="4"><rect x="165" y="165" width="38" height="38" rx="5" fill="#f0adbf"/><text x="184.0" y="184.0">4</text></g>
+              <g class="oe-cell" data-c="19"><rect x="205" y="165" width="38" height="38" rx="5" fill="#9e74e7"/><text x="224.0" y="184.0">19</text></g>
+              <g class="oe-cell" data-c="6"><rect x="245" y="165" width="38" height="38" rx="5" fill="#adcbf0"/><text x="264.0" y="184.0">6</text></g>
+              <g class="oe-cell" data-c="2"><rect x="285" y="165" width="38" height="38" rx="5" fill="#b3f0ad"/><text x="304.0" y="184.0">2</text></g>
+              <g class="oe-cell" data-c="16"><rect x="325" y="165" width="38" height="38" rx="5" fill="#d8adf0"/><text x="344.0" y="184.0">16</text></g>
+              <g class="oe-cell" data-c="18"><rect x="365" y="165" width="38" height="38" rx="5" fill="#adf0cb"/><text x="384.0" y="184.0">18</text></g>
+              <g class="oe-cell" data-c="3"><rect x="405" y="165" width="38" height="38" rx="5" fill="#7489e7"/><text x="424.0" y="184.0">3</text></g>
+              <g class="oe-cell" data-c="14"><rect x="445" y="165" width="38" height="38" rx="5" fill="#f0e4ad"/><text x="464.0" y="184.0">14</text></g>
+              <g class="oe-cell" data-c="9"><rect x="5" y="205" width="38" height="38" rx="5" fill="#74c7e7"/><text x="24.0" y="224.0">9</text></g>
+              <g class="oe-cell" data-c="8"><rect x="45" y="205" width="38" height="38" rx="5" fill="#d8f0ad"/><text x="64.0" y="224.0">8</text></g>
+              <g class="oe-cell" data-c="22"><rect x="85" y="205" width="38" height="38" rx="5" fill="#b3adf0"/><text x="104.0" y="224.0">22</text></g>
+              <g class="oe-cell" data-c="20"><rect x="125" y="205" width="38" height="38" rx="5" fill="#f0bfad"/><text x="144.0" y="224.0">20</text></g>
+              <g class="oe-cell" data-c="8"><rect x="165" y="205" width="38" height="38" rx="5" fill="#d8f0ad"/><text x="184.0" y="224.0">8</text></g>
+              <g class="oe-cell" data-c="2"><rect x="205" y="205" width="38" height="38" rx="5" fill="#b3f0ad"/><text x="224.0" y="224.0">2</text></g>
+              <g class="oe-cell" data-c="10"><rect x="245" y="205" width="38" height="38" rx="5" fill="#f0ade4"/><text x="264.0" y="224.0">10</text></g>
+              <g class="oe-cell" data-c="19"><rect x="285" y="205" width="38" height="38" rx="5" fill="#9e74e7"/><text x="304.0" y="224.0">19</text></g>
+              <g class="oe-cell" data-c="12"><rect x="325" y="205" width="38" height="38" rx="5" fill="#adf0f0"/><text x="344.0" y="224.0">12</text></g>
+              <g class="oe-cell" data-c="14"><rect x="365" y="205" width="38" height="38" rx="5" fill="#f0e4ad"/><text x="384.0" y="224.0">14</text></g>
+              <g class="oe-cell" data-c="10"><rect x="405" y="205" width="38" height="38" rx="5" fill="#f0ade4"/><text x="424.0" y="224.0">10</text></g>
+              <g class="oe-cell" data-c="9"><rect x="445" y="205" width="38" height="38" rx="5" fill="#74c7e7"/><text x="464.0" y="224.0">9</text></g>
+              <g class="oe-cell" data-c="20"><rect x="5" y="245" width="38" height="38" rx="5" fill="#f0bfad"/><text x="24.0" y="264.0">20</text></g>
+              <g class="oe-cell" data-c="17"><rect x="45" y="245" width="38" height="38" rx="5" fill="#e7b374"/><text x="64.0" y="264.0">17</text></g>
+              <g class="oe-cell" data-c="11"><rect x="85" y="245" width="38" height="38" rx="5" fill="#dce774"/><text x="104.0" y="264.0">11</text></g>
+              <g class="oe-cell" data-c="16"><rect x="125" y="245" width="38" height="38" rx="5" fill="#d8adf0"/><text x="144.0" y="264.0">16</text></g>
+              <g class="oe-cell" data-c="10"><rect x="165" y="245" width="38" height="38" rx="5" fill="#f0ade4"/><text x="184.0" y="264.0">10</text></g>
+              <g class="oe-cell" data-c="5"><rect x="205" y="245" width="38" height="38" rx="5" fill="#9ee774"/><text x="224.0" y="264.0">5</text></g>
+              <g class="oe-cell" data-c="1"><rect x="245" y="245" width="38" height="38" rx="5" fill="#e77474"/><text x="264.0" y="264.0">1</text></g>
+              <g class="oe-cell" data-c="8"><rect x="285" y="245" width="38" height="38" rx="5" fill="#d8f0ad"/><text x="304.0" y="264.0">8</text></g>
+              <g class="oe-cell" data-c="6"><rect x="325" y="245" width="38" height="38" rx="5" fill="#adcbf0"/><text x="344.0" y="264.0">6</text></g>
+              <g class="oe-cell" data-c="15"><rect x="365" y="245" width="38" height="38" rx="5" fill="#74e7c7"/><text x="384.0" y="264.0">15</text></g>
+              <g class="oe-cell" data-c="21"><rect x="405" y="245" width="38" height="38" rx="5" fill="#74e789"/><text x="424.0" y="264.0">21</text></g>
+              <g class="oe-cell" data-c="17"><rect x="445" y="245" width="38" height="38" rx="5" fill="#e7b374"/><text x="464.0" y="264.0">17</text></g>
+              <g class="oe-cell" data-c="19"><rect x="5" y="285" width="38" height="38" rx="5" fill="#9e74e7"/><text x="24.0" y="304.0">19</text></g>
+              <g class="oe-cell" data-c="15"><rect x="45" y="285" width="38" height="38" rx="5" fill="#74e7c7"/><text x="64.0" y="304.0">15</text></g>
+              <g class="oe-cell" data-c="1"><rect x="85" y="285" width="38" height="38" rx="5" fill="#e77474"/><text x="104.0" y="304.0">1</text></g>
+              <g class="oe-cell" data-c="17"><rect x="125" y="285" width="38" height="38" rx="5" fill="#e7b374"/><text x="144.0" y="304.0">17</text></g>
+              <g class="oe-cell" data-c="22"><rect x="165" y="285" width="38" height="38" rx="5" fill="#b3adf0"/><text x="184.0" y="304.0">22</text></g>
+              <g class="oe-cell" data-c="21"><rect x="205" y="285" width="38" height="38" rx="5" fill="#74e789"/><text x="224.0" y="304.0">21</text></g>
+              <g class="oe-cell" data-c="18"><rect x="245" y="285" width="38" height="38" rx="5" fill="#adf0cb"/><text x="264.0" y="304.0">18</text></g>
+              <g class="oe-cell" data-c="20"><rect x="285" y="285" width="38" height="38" rx="5" fill="#f0bfad"/><text x="304.0" y="304.0">20</text></g>
+              <g class="oe-cell" data-c="7"><rect x="325" y="285" width="38" height="38" rx="5" fill="#e774b3"/><text x="344.0" y="304.0">7</text></g>
+              <g class="oe-cell" data-c="10"><rect x="365" y="285" width="38" height="38" rx="5" fill="#f0ade4"/><text x="384.0" y="304.0">10</text></g>
+              <g class="oe-cell" data-c="13"><rect x="405" y="285" width="38" height="38" rx="5" fill="#dc74e7"/><text x="424.0" y="304.0">13</text></g>
+              <g class="oe-cell" data-c="12"><rect x="445" y="285" width="38" height="38" rx="5" fill="#adf0f0"/><text x="464.0" y="304.0">12</text></g>
+              <g class="oe-cell" data-c="18"><rect x="5" y="325" width="38" height="38" rx="5" fill="#adf0cb"/><text x="24.0" y="344.0">18</text></g>
+              <g class="oe-cell" data-c="4"><rect x="45" y="325" width="38" height="38" rx="5" fill="#f0adbf"/><text x="64.0" y="344.0">4</text></g>
+              <g class="oe-cell" data-c="9"><rect x="85" y="325" width="38" height="38" rx="5" fill="#74c7e7"/><text x="104.0" y="344.0">9</text></g>
+              <g class="oe-cell" data-c="2"><rect x="125" y="325" width="38" height="38" rx="5" fill="#b3f0ad"/><text x="144.0" y="344.0">2</text></g>
+              <g class="oe-cell" data-c="7"><rect x="165" y="325" width="38" height="38" rx="5" fill="#e774b3"/><text x="184.0" y="344.0">7</text></g>
+              <g class="oe-cell" data-c="19"><rect x="205" y="325" width="38" height="38" rx="5" fill="#9e74e7"/><text x="224.0" y="344.0">19</text></g>
+              <g class="oe-cell" data-c="17"><rect x="245" y="325" width="38" height="38" rx="5" fill="#e7b374"/><text x="264.0" y="344.0">17</text></g>
+              <g class="oe-cell" data-c="14"><rect x="285" y="325" width="38" height="38" rx="5" fill="#f0e4ad"/><text x="304.0" y="344.0">14</text></g>
+              <g class="oe-cell" data-c="12"><rect x="325" y="325" width="38" height="38" rx="5" fill="#adf0f0"/><text x="344.0" y="344.0">12</text></g>
+              <g class="oe-cell" data-c="11"><rect x="365" y="325" width="38" height="38" rx="5" fill="#dce774"/><text x="384.0" y="344.0">11</text></g>
+              <g class="oe-cell" data-c="22"><rect x="405" y="325" width="38" height="38" rx="5" fill="#b3adf0"/><text x="424.0" y="344.0">22</text></g>
+              <g class="oe-cell" data-c="18"><rect x="445" y="325" width="38" height="38" rx="5" fill="#adf0cb"/><text x="464.0" y="344.0">18</text></g>
+              <g class="oe-cell" data-c="13"><rect x="5" y="365" width="38" height="38" rx="5" fill="#dc74e7"/><text x="24.0" y="384.0">13</text></g>
+              <g class="oe-cell" data-c="20"><rect x="45" y="365" width="38" height="38" rx="5" fill="#f0bfad"/><text x="64.0" y="384.0">20</text></g>
+              <g class="oe-cell" data-c="12"><rect x="85" y="365" width="38" height="38" rx="5" fill="#adf0f0"/><text x="104.0" y="384.0">12</text></g>
+              <g class="oe-cell" data-c="22"><rect x="125" y="365" width="38" height="38" rx="5" fill="#b3adf0"/><text x="144.0" y="384.0">22</text></g>
+              <g class="oe-cell" data-c="4"><rect x="165" y="365" width="38" height="38" rx="5" fill="#f0adbf"/><text x="184.0" y="384.0">4</text></g>
+              <g class="oe-cell" data-c="14"><rect x="205" y="365" width="38" height="38" rx="5" fill="#f0e4ad"/><text x="224.0" y="384.0">14</text></g>
+              <g class="oe-cell" data-c="7"><rect x="245" y="365" width="38" height="38" rx="5" fill="#e774b3"/><text x="264.0" y="384.0">7</text></g>
+              <g class="oe-cell" data-c="1"><rect x="285" y="365" width="38" height="38" rx="5" fill="#e77474"/><text x="304.0" y="384.0">1</text></g>
+              <g class="oe-cell" data-c="2"><rect x="325" y="365" width="38" height="38" rx="5" fill="#b3f0ad"/><text x="344.0" y="384.0">2</text></g>
+              <g class="oe-cell" data-c="13"><rect x="365" y="365" width="38" height="38" rx="5" fill="#dc74e7"/><text x="384.0" y="384.0">13</text></g>
+              <g class="oe-cell" data-c="5"><rect x="405" y="365" width="38" height="38" rx="5" fill="#9ee774"/><text x="424.0" y="384.0">5</text></g>
+              <g class="oe-cell" data-c="9"><rect x="445" y="365" width="38" height="38" rx="5" fill="#74c7e7"/><text x="464.0" y="384.0">9</text></g>
+              <g class="oe-cell" data-c="7"><rect x="5" y="405" width="38" height="38" rx="5" fill="#e774b3"/><text x="24.0" y="424.0">7</text></g>
+              <g class="oe-cell" data-c="21"><rect x="45" y="405" width="38" height="38" rx="5" fill="#74e789"/><text x="64.0" y="424.0">21</text></g>
+              <g class="oe-cell" data-c="8"><rect x="85" y="405" width="38" height="38" rx="5" fill="#d8f0ad"/><text x="104.0" y="424.0">8</text></g>
+              <g class="oe-cell" data-c="15"><rect x="125" y="405" width="38" height="38" rx="5" fill="#74e7c7"/><text x="144.0" y="424.0">15</text></g>
+              <g class="oe-cell" data-c="12"><rect x="165" y="405" width="38" height="38" rx="5" fill="#adf0f0"/><text x="184.0" y="424.0">12</text></g>
+              <g class="oe-cell" data-c="21"><rect x="205" y="405" width="38" height="38" rx="5" fill="#74e789"/><text x="224.0" y="424.0">21</text></g>
+              <g class="oe-cell" data-c="16"><rect x="245" y="405" width="38" height="38" rx="5" fill="#d8adf0"/><text x="264.0" y="424.0">16</text></g>
+              <g class="oe-cell" data-c="22"><rect x="285" y="405" width="38" height="38" rx="5" fill="#b3adf0"/><text x="304.0" y="424.0">22</text></g>
+              <g class="oe-cell" data-c="14"><rect x="325" y="405" width="38" height="38" rx="5" fill="#f0e4ad"/><text x="344.0" y="424.0">14</text></g>
+              <g class="oe-cell" data-c="16"><rect x="365" y="405" width="38" height="38" rx="5" fill="#d8adf0"/><text x="384.0" y="424.0">16</text></g>
+              <g class="oe-cell" data-c="1"><rect x="405" y="405" width="38" height="38" rx="5" fill="#e77474"/><text x="424.0" y="424.0">1</text></g>
+              <g class="oe-cell" data-c="3"><rect x="445" y="405" width="38" height="38" rx="5" fill="#7489e7"/><text x="464.0" y="424.0">3</text></g>
+              </svg>
+          </div>
+          <div class="oe-legend" data-for="g22" aria-label="Highlight a color in Fig. 2" role="group"></div>
+          <details class="oe-details">
+            <summary>Fig. 2 as a table</summary>
+            <div class="cs-table-wrap">
+              <table class="oe-table"><caption>The a(22) = 132 coloring, row by row (12 columns).</caption><tbody>
+              <tr><th scope="row">Row 1</th><td>15</td><td>20</td><td>6</td><td>1</td><td>13</td><td>19</td><td>11</td><td>2</td><td>4</td><td>6</td><td>5</td><td>17</td></tr>
+              <tr><th scope="row">Row 2</th><td>18</td><td>11</td><td>21</td><td>4</td><td>17</td><td>3</td><td>5</td><td>20</td><td>10</td><td>18</td><td>8</td><td>10</td></tr>
+              <tr><th scope="row">Row 3</th><td>2</td><td>15</td><td>9</td><td>11</td><td>6</td><td>22</td><td>19</td><td>1</td><td>12</td><td>5</td><td>16</td><td>4</td></tr>
+              <tr><th scope="row">Row 4</th><td>3</td><td>13</td><td>7</td><td>8</td><td>13</td><td>9</td><td>16</td><td>21</td><td>3</td><td>7</td><td>15</td><td>5</td></tr>
+              <tr><th scope="row">Row 5</th><td>6</td><td>14</td><td>11</td><td>3</td><td>4</td><td>19</td><td>6</td><td>2</td><td>16</td><td>18</td><td>3</td><td>14</td></tr>
+              <tr><th scope="row">Row 6</th><td>9</td><td>8</td><td>22</td><td>20</td><td>8</td><td>2</td><td>10</td><td>19</td><td>12</td><td>14</td><td>10</td><td>9</td></tr>
+              <tr><th scope="row">Row 7</th><td>20</td><td>17</td><td>11</td><td>16</td><td>10</td><td>5</td><td>1</td><td>8</td><td>6</td><td>15</td><td>21</td><td>17</td></tr>
+              <tr><th scope="row">Row 8</th><td>19</td><td>15</td><td>1</td><td>17</td><td>22</td><td>21</td><td>18</td><td>20</td><td>7</td><td>10</td><td>13</td><td>12</td></tr>
+              <tr><th scope="row">Row 9</th><td>18</td><td>4</td><td>9</td><td>2</td><td>7</td><td>19</td><td>17</td><td>14</td><td>12</td><td>11</td><td>22</td><td>18</td></tr>
+              <tr><th scope="row">Row 10</th><td>13</td><td>20</td><td>12</td><td>22</td><td>4</td><td>14</td><td>7</td><td>1</td><td>2</td><td>13</td><td>5</td><td>9</td></tr>
+              <tr><th scope="row">Row 11</th><td>7</td><td>21</td><td>8</td><td>15</td><td>12</td><td>21</td><td>16</td><td>22</td><td>14</td><td>16</td><td>1</td><td>3</td></tr>
+              </tbody></table>
+            </div>
+          </details>
+          <figcaption><span class="cs-figure__label">Fig. 2</span>The a(22)&nbsp;=&nbsp;132 coloring from the OEIS entry, drawn from its text diagram: a 12&nbsp;&times;&nbsp;11 rectangle in which each of the 22 colors appears exactly 6 times. It has 241 internal edges for 231 pairs, so only 10 edges are spent on repeated pairs.</figcaption>
+        </figure>
+
+        <figure class="cs-figure cs-figure--wide oe-figure">
+          <div class="cs-figure__mat oe-mat">
+              <svg class="oe-grid" id="g19" viewBox="0 0 488 328" role="img" aria-labelledby="g19-t g19-d" data-colors="19">
+              <title id="g19-t">Coloring for a(19) = 96</title>
+              <desc id="g19-d">A 12 by 8 rectangle of 96 squares colored with 19 colors so that every pair of colors shares an edge. The full grid is listed in the table below the figure.</desc>
+              <g class="oe-cell" data-c="12"><rect x="5" y="5" width="38" height="38" rx="5" fill="#f0c2ad"/><text x="24.0" y="24.0">12</text></g>
+              <g class="oe-cell" data-c="1"><rect x="45" y="5" width="38" height="38" rx="5" fill="#e77474"/><text x="64.0" y="24.0">1</text></g>
+              <g class="oe-cell" data-c="6"><rect x="85" y="5" width="38" height="38" rx="5" fill="#f0aded"/><text x="104.0" y="24.0">6</text></g>
+              <g class="oe-cell" data-c="2"><rect x="125" y="5" width="38" height="38" rx="5" fill="#adf0bb"/><text x="144.0" y="24.0">2</text></g>
+              <g class="oe-cell" data-c="18"><rect x="165" y="5" width="38" height="38" rx="5" fill="#c9f0ad"/><text x="184.0" y="24.0">18</text></g>
+              <g class="oe-cell" data-c="11"><rect x="205" y="5" width="38" height="38" rx="5" fill="#8074e7"/><text x="224.0" y="24.0">11</text></g>
+              <g class="oe-cell" data-c="17"><rect x="245" y="5" width="38" height="38" rx="5" fill="#e774bc"/><text x="264.0" y="24.0">17</text></g>
+              <g class="oe-cell" data-c="18"><rect x="285" y="5" width="38" height="38" rx="5" fill="#c9f0ad"/><text x="304.0" y="24.0">18</text></g>
+              <g class="oe-cell" data-c="9"><rect x="325" y="5" width="38" height="38" rx="5" fill="#e77498"/><text x="344.0" y="24.0">9</text></g>
+              <g class="oe-cell" data-c="13"><rect x="365" y="5" width="38" height="38" rx="5" fill="#74e7b0"/><text x="384.0" y="24.0">13</text></g>
+              <g class="oe-cell" data-c="16"><rect x="405" y="5" width="38" height="38" rx="5" fill="#ade6f0"/><text x="424.0" y="24.0">16</text></g>
+              <g class="oe-cell" data-c="18"><rect x="445" y="5" width="38" height="38" rx="5" fill="#c9f0ad"/><text x="464.0" y="24.0">18</text></g>
+              <g class="oe-cell" data-c="19"><rect x="5" y="45" width="38" height="38" rx="5" fill="#748ce7"/><text x="24.0" y="64.0">19</text></g>
+              <g class="oe-cell" data-c="11"><rect x="45" y="45" width="38" height="38" rx="5" fill="#8074e7"/><text x="64.0" y="64.0">11</text></g>
+              <g class="oe-cell" data-c="3"><rect x="85" y="45" width="38" height="38" rx="5" fill="#a474e7"/><text x="104.0" y="64.0">3</text></g>
+              <g class="oe-cell" data-c="17"><rect x="125" y="45" width="38" height="38" rx="5" fill="#e774bc"/><text x="144.0" y="64.0">17</text></g>
+              <g class="oe-cell" data-c="6"><rect x="165" y="45" width="38" height="38" rx="5" fill="#f0aded"/><text x="184.0" y="64.0">6</text></g>
+              <g class="oe-cell" data-c="10"><rect x="205" y="45" width="38" height="38" rx="5" fill="#b4f0ad"/><text x="224.0" y="64.0">10</text></g>
+              <g class="oe-cell" data-c="12"><rect x="245" y="45" width="38" height="38" rx="5" fill="#f0c2ad"/><text x="264.0" y="64.0">12</text></g>
+              <g class="oe-cell" data-c="13"><rect x="285" y="45" width="38" height="38" rx="5" fill="#74e7b0"/><text x="304.0" y="64.0">13</text></g>
+              <g class="oe-cell" data-c="6"><rect x="325" y="45" width="38" height="38" rx="5" fill="#f0aded"/><text x="344.0" y="64.0">6</text></g>
+              <g class="oe-cell" data-c="19"><rect x="365" y="45" width="38" height="38" rx="5" fill="#748ce7"/><text x="384.0" y="64.0">19</text></g>
+              <g class="oe-cell" data-c="9"><rect x="405" y="45" width="38" height="38" rx="5" fill="#e77498"/><text x="424.0" y="64.0">9</text></g>
+              <g class="oe-cell" data-c="10"><rect x="445" y="45" width="38" height="38" rx="5" fill="#b4f0ad"/><text x="464.0" y="64.0">10</text></g>
+              <g class="oe-cell" data-c="7"><rect x="5" y="85" width="38" height="38" rx="5" fill="#c8e774"/><text x="24.0" y="104.0">7</text></g>
+              <g class="oe-cell" data-c="9"><rect x="45" y="85" width="38" height="38" rx="5" fill="#e77498"/><text x="64.0" y="104.0">9</text></g>
+              <g class="oe-cell" data-c="2"><rect x="85" y="85" width="38" height="38" rx="5" fill="#adf0bb"/><text x="104.0" y="104.0">2</text></g>
+              <g class="oe-cell" data-c="7"><rect x="125" y="85" width="38" height="38" rx="5" fill="#c8e774"/><text x="144.0" y="104.0">7</text></g>
+              <g class="oe-cell" data-c="4"><rect x="165" y="85" width="38" height="38" rx="5" fill="#f0d7ad"/><text x="184.0" y="104.0">4</text></g>
+              <g class="oe-cell" data-c="14"><rect x="205" y="85" width="38" height="38" rx="5" fill="#dfadf0"/><text x="224.0" y="104.0">14</text></g>
+              <g class="oe-cell" data-c="18"><rect x="245" y="85" width="38" height="38" rx="5" fill="#c9f0ad"/><text x="264.0" y="104.0">18</text></g>
+              <g class="oe-cell" data-c="7"><rect x="285" y="85" width="38" height="38" rx="5" fill="#c8e774"/><text x="304.0" y="104.0">7</text></g>
+              <g class="oe-cell" data-c="12"><rect x="325" y="85" width="38" height="38" rx="5" fill="#f0c2ad"/><text x="344.0" y="104.0">12</text></g>
+              <g class="oe-cell" data-c="14"><rect x="365" y="85" width="38" height="38" rx="5" fill="#dfadf0"/><text x="384.0" y="104.0">14</text></g>
+              <g class="oe-cell" data-c="3"><rect x="405" y="85" width="38" height="38" rx="5" fill="#a474e7"/><text x="424.0" y="104.0">3</text></g>
+              <g class="oe-cell" data-c="19"><rect x="445" y="85" width="38" height="38" rx="5" fill="#748ce7"/><text x="464.0" y="104.0">19</text></g>
+              <g class="oe-cell" data-c="10"><rect x="5" y="125" width="38" height="38" rx="5" fill="#b4f0ad"/><text x="24.0" y="144.0">10</text></g>
+              <g class="oe-cell" data-c="17"><rect x="45" y="125" width="38" height="38" rx="5" fill="#e774bc"/><text x="64.0" y="144.0">17</text></g>
+              <g class="oe-cell" data-c="16"><rect x="85" y="125" width="38" height="38" rx="5" fill="#ade6f0"/><text x="104.0" y="144.0">16</text></g>
+              <g class="oe-cell" data-c="8"><rect x="125" y="125" width="38" height="38" rx="5" fill="#add0f0"/><text x="144.0" y="144.0">8</text></g>
+              <g class="oe-cell" data-c="3"><rect x="165" y="125" width="38" height="38" rx="5" fill="#a474e7"/><text x="184.0" y="144.0">3</text></g>
+              <g class="oe-cell" data-c="5"><rect x="205" y="125" width="38" height="38" rx="5" fill="#74e7d4"/><text x="224.0" y="144.0">5</text></g>
+              <g class="oe-cell" data-c="19"><rect x="245" y="125" width="38" height="38" rx="5" fill="#748ce7"/><text x="264.0" y="144.0">19</text></g>
+              <g class="oe-cell" data-c="1"><rect x="285" y="125" width="38" height="38" rx="5" fill="#e77474"/><text x="304.0" y="144.0">1</text></g>
+              <g class="oe-cell" data-c="9"><rect x="325" y="125" width="38" height="38" rx="5" fill="#e77498"/><text x="344.0" y="144.0">9</text></g>
+              <g class="oe-cell" data-c="15"><rect x="365" y="125" width="38" height="38" rx="5" fill="#e7e174"/><text x="384.0" y="144.0">15</text></g>
+              <g class="oe-cell" data-c="10"><rect x="405" y="125" width="38" height="38" rx="5" fill="#b4f0ad"/><text x="424.0" y="144.0">10</text></g>
+              <g class="oe-cell" data-c="8"><rect x="445" y="125" width="38" height="38" rx="5" fill="#add0f0"/><text x="464.0" y="144.0">8</text></g>
+              <g class="oe-cell" data-c="2"><rect x="5" y="165" width="38" height="38" rx="5" fill="#adf0bb"/><text x="24.0" y="184.0">2</text></g>
+              <g class="oe-cell" data-c="14"><rect x="45" y="165" width="38" height="38" rx="5" fill="#dfadf0"/><text x="64.0" y="184.0">14</text></g>
+              <g class="oe-cell" data-c="7"><rect x="85" y="165" width="38" height="38" rx="5" fill="#c8e774"/><text x="104.0" y="184.0">7</text></g>
+              <g class="oe-cell" data-c="6"><rect x="125" y="165" width="38" height="38" rx="5" fill="#f0aded"/><text x="144.0" y="184.0">6</text></g>
+              <g class="oe-cell" data-c="15"><rect x="165" y="165" width="38" height="38" rx="5" fill="#e7e174"/><text x="184.0" y="184.0">15</text></g>
+              <g class="oe-cell" data-c="1"><rect x="205" y="165" width="38" height="38" rx="5" fill="#e77474"/><text x="224.0" y="184.0">1</text></g>
+              <g class="oe-cell" data-c="17"><rect x="245" y="165" width="38" height="38" rx="5" fill="#e774bc"/><text x="264.0" y="184.0">17</text></g>
+              <g class="oe-cell" data-c="13"><rect x="285" y="165" width="38" height="38" rx="5" fill="#74e7b0"/><text x="304.0" y="184.0">13</text></g>
+              <g class="oe-cell" data-c="14"><rect x="325" y="165" width="38" height="38" rx="5" fill="#dfadf0"/><text x="344.0" y="184.0">14</text></g>
+              <g class="oe-cell" data-c="8"><rect x="365" y="165" width="38" height="38" rx="5" fill="#add0f0"/><text x="384.0" y="184.0">8</text></g>
+              <g class="oe-cell" data-c="4"><rect x="405" y="165" width="38" height="38" rx="5" fill="#f0d7ad"/><text x="424.0" y="184.0">4</text></g>
+              <g class="oe-cell" data-c="9"><rect x="445" y="165" width="38" height="38" rx="5" fill="#e77498"/><text x="464.0" y="184.0">9</text></g>
+              <g class="oe-cell" data-c="4"><rect x="5" y="205" width="38" height="38" rx="5" fill="#f0d7ad"/><text x="24.0" y="224.0">4</text></g>
+              <g class="oe-cell" data-c="11"><rect x="45" y="205" width="38" height="38" rx="5" fill="#8074e7"/><text x="64.0" y="224.0">11</text></g>
+              <g class="oe-cell" data-c="15"><rect x="85" y="205" width="38" height="38" rx="5" fill="#e7e174"/><text x="104.0" y="224.0">15</text></g>
+              <g class="oe-cell" data-c="16"><rect x="125" y="205" width="38" height="38" rx="5" fill="#ade6f0"/><text x="144.0" y="224.0">16</text></g>
+              <g class="oe-cell" data-c="19"><rect x="165" y="205" width="38" height="38" rx="5" fill="#748ce7"/><text x="184.0" y="224.0">19</text></g>
+              <g class="oe-cell" data-c="4"><rect x="205" y="205" width="38" height="38" rx="5" fill="#f0d7ad"/><text x="224.0" y="224.0">4</text></g>
+              <g class="oe-cell" data-c="5"><rect x="245" y="205" width="38" height="38" rx="5" fill="#74e7d4"/><text x="264.0" y="224.0">5</text></g>
+              <g class="oe-cell" data-c="10"><rect x="285" y="205" width="38" height="38" rx="5" fill="#b4f0ad"/><text x="304.0" y="224.0">10</text></g>
+              <g class="oe-cell" data-c="1"><rect x="325" y="205" width="38" height="38" rx="5" fill="#e77474"/><text x="344.0" y="224.0">1</text></g>
+              <g class="oe-cell" data-c="2"><rect x="365" y="205" width="38" height="38" rx="5" fill="#adf0bb"/><text x="384.0" y="224.0">2</text></g>
+              <g class="oe-cell" data-c="13"><rect x="405" y="205" width="38" height="38" rx="5" fill="#74e7b0"/><text x="424.0" y="224.0">13</text></g>
+              <g class="oe-cell" data-c="5"><rect x="445" y="205" width="38" height="38" rx="5" fill="#74e7d4"/><text x="464.0" y="224.0">5</text></g>
+              <g class="oe-cell" data-c="17"><rect x="5" y="245" width="38" height="38" rx="5" fill="#e774bc"/><text x="24.0" y="264.0">17</text></g>
+              <g class="oe-cell" data-c="8"><rect x="45" y="245" width="38" height="38" rx="5" fill="#add0f0"/><text x="64.0" y="264.0">8</text></g>
+              <g class="oe-cell" data-c="18"><rect x="85" y="245" width="38" height="38" rx="5" fill="#c9f0ad"/><text x="104.0" y="264.0">18</text></g>
+              <g class="oe-cell" data-c="5"><rect x="125" y="245" width="38" height="38" rx="5" fill="#74e7d4"/><text x="144.0" y="264.0">5</text></g>
+              <g class="oe-cell" data-c="2"><rect x="165" y="245" width="38" height="38" rx="5" fill="#adf0bb"/><text x="184.0" y="264.0">2</text></g>
+              <g class="oe-cell" data-c="15"><rect x="205" y="245" width="38" height="38" rx="5" fill="#e7e174"/><text x="224.0" y="264.0">15</text></g>
+              <g class="oe-cell" data-c="12"><rect x="245" y="245" width="38" height="38" rx="5" fill="#f0c2ad"/><text x="264.0" y="264.0">12</text></g>
+              <g class="oe-cell" data-c="16"><rect x="285" y="245" width="38" height="38" rx="5" fill="#ade6f0"/><text x="304.0" y="264.0">16</text></g>
+              <g class="oe-cell" data-c="3"><rect x="325" y="245" width="38" height="38" rx="5" fill="#a474e7"/><text x="344.0" y="264.0">3</text></g>
+              <g class="oe-cell" data-c="12"><rect x="365" y="245" width="38" height="38" rx="5" fill="#f0c2ad"/><text x="384.0" y="264.0">12</text></g>
+              <g class="oe-cell" data-c="11"><rect x="405" y="245" width="38" height="38" rx="5" fill="#8074e7"/><text x="424.0" y="264.0">11</text></g>
+              <g class="oe-cell" data-c="6"><rect x="445" y="245" width="38" height="38" rx="5" fill="#f0aded"/><text x="464.0" y="264.0">6</text></g>
+              <g class="oe-cell" data-c="15"><rect x="5" y="285" width="38" height="38" rx="5" fill="#e7e174"/><text x="24.0" y="304.0">15</text></g>
+              <g class="oe-cell" data-c="13"><rect x="45" y="285" width="38" height="38" rx="5" fill="#74e7b0"/><text x="64.0" y="304.0">13</text></g>
+              <g class="oe-cell" data-c="3"><rect x="85" y="285" width="38" height="38" rx="5" fill="#a474e7"/><text x="104.0" y="304.0">3</text></g>
+              <g class="oe-cell" data-c="7"><rect x="125" y="285" width="38" height="38" rx="5" fill="#c8e774"/><text x="144.0" y="304.0">7</text></g>
+              <g class="oe-cell" data-c="11"><rect x="165" y="285" width="38" height="38" rx="5" fill="#8074e7"/><text x="184.0" y="304.0">11</text></g>
+              <g class="oe-cell" data-c="5"><rect x="205" y="285" width="38" height="38" rx="5" fill="#74e7d4"/><text x="224.0" y="304.0">5</text></g>
+              <g class="oe-cell" data-c="8"><rect x="245" y="285" width="38" height="38" rx="5" fill="#add0f0"/><text x="264.0" y="304.0">8</text></g>
+              <g class="oe-cell" data-c="1"><rect x="285" y="285" width="38" height="38" rx="5" fill="#e77474"/><text x="304.0" y="304.0">1</text></g>
+              <g class="oe-cell" data-c="18"><rect x="325" y="285" width="38" height="38" rx="5" fill="#c9f0ad"/><text x="344.0" y="304.0">18</text></g>
+              <g class="oe-cell" data-c="4"><rect x="365" y="285" width="38" height="38" rx="5" fill="#f0d7ad"/><text x="384.0" y="304.0">4</text></g>
+              <g class="oe-cell" data-c="16"><rect x="405" y="285" width="38" height="38" rx="5" fill="#ade6f0"/><text x="424.0" y="304.0">16</text></g>
+              <g class="oe-cell" data-c="14"><rect x="445" y="285" width="38" height="38" rx="5" fill="#dfadf0"/><text x="464.0" y="304.0">14</text></g>
+              </svg>
+          </div>
+          <div class="oe-legend" data-for="g19" aria-label="Highlight a color in Fig. 3" role="group"></div>
+          <details class="oe-details">
+            <summary>Fig. 3 as a table</summary>
+            <div class="cs-table-wrap">
+              <table class="oe-table"><caption>The a(19) = 96 coloring, row by row (12 columns).</caption><tbody>
+              <tr><th scope="row">Row 1</th><td>12</td><td>1</td><td>6</td><td>2</td><td>18</td><td>11</td><td>17</td><td>18</td><td>9</td><td>13</td><td>16</td><td>18</td></tr>
+              <tr><th scope="row">Row 2</th><td>19</td><td>11</td><td>3</td><td>17</td><td>6</td><td>10</td><td>12</td><td>13</td><td>6</td><td>19</td><td>9</td><td>10</td></tr>
+              <tr><th scope="row">Row 3</th><td>7</td><td>9</td><td>2</td><td>7</td><td>4</td><td>14</td><td>18</td><td>7</td><td>12</td><td>14</td><td>3</td><td>19</td></tr>
+              <tr><th scope="row">Row 4</th><td>10</td><td>17</td><td>16</td><td>8</td><td>3</td><td>5</td><td>19</td><td>1</td><td>9</td><td>15</td><td>10</td><td>8</td></tr>
+              <tr><th scope="row">Row 5</th><td>2</td><td>14</td><td>7</td><td>6</td><td>15</td><td>1</td><td>17</td><td>13</td><td>14</td><td>8</td><td>4</td><td>9</td></tr>
+              <tr><th scope="row">Row 6</th><td>4</td><td>11</td><td>15</td><td>16</td><td>19</td><td>4</td><td>5</td><td>10</td><td>1</td><td>2</td><td>13</td><td>5</td></tr>
+              <tr><th scope="row">Row 7</th><td>17</td><td>8</td><td>18</td><td>5</td><td>2</td><td>15</td><td>12</td><td>16</td><td>3</td><td>12</td><td>11</td><td>6</td></tr>
+              <tr><th scope="row">Row 8</th><td>15</td><td>13</td><td>3</td><td>7</td><td>11</td><td>5</td><td>8</td><td>1</td><td>18</td><td>4</td><td>16</td><td>14</td></tr>
+              </tbody></table>
+            </div>
+          </details>
+          <figcaption><span class="cs-figure__label">Fig. 3</span>The a(19)&nbsp;=&nbsp;96 coloring by Ryan Lee and me: a 12&nbsp;&times;&nbsp;8 rectangle with 172 internal edges for 171 pairs. Exactly one pair, 3 and 18, touches twice; every other edge covers a new pair.</figcaption>
+        </figure>
+      </section>
+
+      <section class="cs-section" aria-labelledby="learned-title">
+        <p class="eyebrow"><span class="eyebrow__num">06</span> Takeaways</p>
+        <h2 id="learned-title">What I learned, and the limits</h2>
+        <ul class="oe-list">
+          <li><strong>Pick the tool by the slack.</strong> When a size leaves plenty of room for repeated pairs, annealing finds colorings quickly. When the slack is near zero (the a(19) coloring has exactly one spare edge), an exact search is the better bet.</li>
+          <li><strong>A bound turns an example into a proof.</strong> All four new values sit exactly on Exley&rsquo;s lower bound, so each one is proved by a single verified coloring. That is also the limit of what I have shown: none of these proofs needed the solver to rule a size out.</li>
+          <li><strong>The open cases are harder.</strong> For a(23), a(24), a(25) and a(27) the gap between bounds is 2 to 5 squares. Closing it means either a coloring on the bound or proving that every shape of that size fails, which is far more expensive.</li>
+          <li><strong>Check results independently.</strong> A verifier that shares no code with the search is cheap insurance before submitting anything to the OEIS.</li>
+        </ul>
+        <ul class="tags" aria-label="Tools and methods">
+          <li>C++17</li><li>OpenMP</li><li>CUDA</li><li>SLURM</li><li>Python</li><li>SAT (CaDiCaL)</li><li>Simulated annealing</li><li>Claude Code</li>
+        </ul>
+      </section>
+
+      <section class="cs-section" aria-labelledby="links-title">
+        <h2 id="links-title">Links</h2>
+        <ul class="oe-links">
+          <li><a href="https://oeis.org/A278299">OEIS A278299 <span class="arrow arrow--ext" aria-hidden="true">&nearr;</span></a><span>The entry, with data, comments, bounds and diagrams</span></li>
+          <li><a href="https://peterkagey.com/apps/square_game/">Square Game <span class="arrow arrow--ext" aria-hidden="true">&nearr;</span></a><span>Peter Kagey&rsquo;s puzzle behind the sequence</span></li>
+          <li><a href="https://peterkagey.com/blog/2021/06/my-favorite-sequences-a278299/">My Favorite Sequences: &ldquo;Not Equal&rdquo; Grid <span class="arrow arrow--ext" aria-hidden="true">&nearr;</span></a><span>Kagey&rsquo;s blog post on the problem&rsquo;s history and open questions</span></li>
+          <li><a href="https://github.com/nelsbuhrley/Personal-Projects">Personal-Projects on GitHub <span class="arrow arrow--ext" aria-hidden="true">&nearr;</span></a><span>My simulated-annealing search (&ldquo;Grid Srtructure Finder&rdquo;)</span></li>
+        </ul>
+      </section>
+    </article>
+
+    <ul class="cs-pager" aria-label="More projects">
+      <li><a href="/rocket-glider/"><span class="cs-pager__dir">&larr; Previous</span><span class="cs-pager__title">Rocket glider</span></a></li>
+      <li class="cs-pager__next"><a href="/IFE-Symposium-2026/"><span class="cs-pager__dir">Next &rarr;</span><span class="cs-pager__title">IFE Symposium 2026</span></a></li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <div class="affiliation-strip">
+      <img src="/img/logos/byu-144.webp" width="64" height="64" loading="lazy" alt="Brigham Young University">
+      <img src="/img/logos/byu-idaho-144.webp" width="64" height="64" loading="lazy" alt="Brigham Young University&ndash;Idaho">
+    </div>
+    <p>&copy; 2026 Nels Buhrley &middot; <a href="/">nels.buhrley.com</a></p>
+  </footer>
+</body>
+</html>

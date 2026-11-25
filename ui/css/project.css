@@ -1,0 +1,707 @@
+/* ==========================================================================
+   Case-study kit for project pages. Load after /style.css:
+     <link rel="stylesheet" href="/style.css">
+     <link rel="stylesheet" href="/ui/css/project.css">
+   Usage examples: DESIGN.md (coordinator notes) / see class list below.
+   ========================================================================== */
+
+/* ---------- Page hero ---------- */
+
+.cs-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: clamp(3.5rem, 8vw, 5rem) 0 clamp(5rem, 9vw, 6.5rem);
+    color: var(--on-hero);
+    background: linear-gradient(120deg, var(--hero-1), var(--hero-2) 55%, var(--hero-3));
+}
+
+.cs-hero::before,
+.cs-hero::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.cs-hero::before {
+    width: 380px;
+    height: 380px;
+    right: -130px;
+    top: -160px;
+    background: radial-gradient(circle, rgba(189, 214, 230, 0.22), transparent 70%);
+}
+
+.cs-hero::after {
+    width: 280px;
+    height: 280px;
+    left: -130px;
+    bottom: -150px;
+    background: radial-gradient(circle, rgba(189, 214, 230, 0.12), transparent 68%);
+}
+
+.crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    margin: 0 0 1.4rem;
+    padding: 0;
+    list-style: none;
+    font-size: 0.86rem;
+}
+
+.crumbs li + li::before {
+    content: "/";
+    margin-right: 0.5rem;
+    color: var(--on-hero-accent);
+    opacity: 0.7;
+}
+
+.crumbs a {
+    color: var(--on-hero-muted);
+    text-decoration: none;
+}
+
+.crumbs a:hover,
+.crumbs a:focus-visible {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.crumbs [aria-current="page"] {
+    color: var(--on-hero-accent);
+}
+
+.cs-hero__eyebrow {
+    margin: 0 0 0.8rem;
+    color: var(--on-hero-accent);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.cs-hero h1 {
+    margin: 0;
+    max-width: 22ch;
+    color: #ffffff;
+    font-size: clamp(2.1rem, 5.5vw, 3.4rem);
+    line-height: 1.08;
+}
+
+.cs-hero__dek {
+    margin: 1rem 0 0;
+    max-width: 62ch;
+    color: var(--on-hero-muted);
+    font-size: clamp(1.05rem, 2vw, 1.2rem);
+}
+
+.cs-hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem 2.2rem;
+    margin: 1.8rem 0 0;
+}
+
+.cs-hero__meta div {
+    min-width: 0;
+}
+
+.cs-hero__meta dt {
+    color: var(--on-hero-accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.cs-hero__meta dd {
+    margin: 0.15rem 0 0;
+    color: var(--on-hero);
+    font-weight: 600;
+}
+
+.cs-hero__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 1.8rem;
+}
+
+.cs-hero > .wrap {
+    max-width: calc(1040px + 2 * var(--gutter));
+}
+
+/* ---------- Body sheet (overlaps the hero) ---------- */
+
+.cs-body {
+    position: relative;
+    z-index: 1;
+    max-width: 1040px;
+    margin: clamp(-3.5rem, -6vw, -2.5rem) auto 0;
+    padding: clamp(1.5rem, 4vw, 2.8rem);
+    border: 1px solid var(--line);
+    border-radius: var(--r-xl);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 1088px) {
+    .cs-body {
+        margin-left: var(--gutter);
+        margin-right: var(--gutter);
+    }
+}
+
+.cs-section + .cs-section {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding-top: clamp(2rem, 4vw, 2.8rem);
+    border-top: 1px solid var(--line);
+}
+
+.cs-section h2 {
+    margin: 0 0 0.9rem;
+    font-size: clamp(1.45rem, 3vw, 1.9rem);
+}
+
+.cs-section h3 {
+    margin: 1.8rem 0 0.6rem;
+    font-size: 1.2rem;
+}
+
+.cs-section p,
+.cs-section li {
+    max-width: 72ch;
+}
+
+.cs-section a {
+    color: var(--link);
+    text-decoration-color: color-mix(in srgb, var(--link) 45%, transparent);
+}
+
+.cs-section code {
+    padding: 0.08em 0.35em;
+    border-radius: 5px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+}
+
+.cs-lede {
+    margin: 0 0 1.4rem;
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2.2vw, 1.35rem);
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* ---------- Key metrics ---------- */
+
+.cs-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+    gap: 0;
+    margin: 1.6rem 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: var(--surface-2);
+    overflow: hidden;
+}
+
+.cs-metrics > div {
+    padding: 1.1rem 1.2rem 1.2rem;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin: 0 -1px -1px 0;
+}
+
+.cs-metrics dt {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.cs-metrics dd {
+    margin: 0.3rem 0 0;
+    color: var(--heading-accent);
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.1;
+    font-variant-numeric: lining-nums tabular-nums;
+}
+
+.cs-metrics .cs-metrics__note {
+    display: block;
+    margin-top: 0.3rem;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+/* ---------- Text + figure ---------- */
+
+.cs-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.4rem, 4vw, 2.6rem);
+    align-items: center;
+    margin: 1.8rem 0;
+}
+
+.cs-split--reverse > :first-child {
+    order: 2;
+}
+
+.cs-split > div > :first-child {
+    margin-top: 0;
+}
+
+/* ---------- Figure ---------- */
+
+.cs-figure {
+    margin: 1.8rem 0;
+}
+
+.cs-split .cs-figure {
+    margin: 0;
+}
+
+.cs-figure__mat {
+    display: block;
+    padding: clamp(0.6rem, 2vw, 1rem);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: #ffffff;
+}
+
+:root[data-theme="dark"] .cs-figure__mat {
+    background: var(--surface-2);
+}
+
+.cs-figure img,
+.cs-figure video {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+.cs-figure figcaption {
+    margin-top: 0.7rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.cs-figure__label {
+    margin-right: 0.35rem;
+    color: var(--heading-accent);
+    font-weight: 700;
+}
+
+.cs-figure--wide {
+    margin-left: calc(-1 * clamp(0rem, 2vw, 1.2rem));
+    margin-right: calc(-1 * clamp(0rem, 2vw, 1.2rem));
+}
+
+.cs-figure--dark .cs-figure__mat {
+    background: var(--figure-dark);
+    border-color: transparent;
+}
+
+/* ---------- Results table ---------- */
+
+.cs-table-wrap {
+    margin: 1.6rem 0;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    -webkit-overflow-scrolling: touch;
+}
+
+.cs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.94rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.cs-table caption {
+    padding: 0.8rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    text-align: left;
+    caption-side: bottom;
+    border-top: 1px solid var(--line);
+}
+
+.cs-table th,
+.cs-table td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.cs-table thead th {
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.cs-table tbody tr:last-child > * {
+    border-bottom: 0;
+}
+
+.cs-table .num {
+    text-align: right;
+}
+
+.cs-table tr.is-best > * {
+    background: color-mix(in srgb, var(--brand-2) 8%, transparent);
+    font-weight: 700;
+}
+
+.cs-table tr.is-best > :first-child {
+    box-shadow: inset 3px 0 0 var(--brand-2);
+}
+
+:root[data-theme="dark"] .cs-table tr.is-best > * {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+:root[data-theme="dark"] .cs-table tr.is-best > :first-child {
+    box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.cs-table .is-good { color: var(--good); }
+.cs-table .is-bad { color: var(--bad); }
+
+/* ---------- Callout ---------- */
+
+.cs-callout {
+    margin: 1.6rem 0;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--brand-2);
+    border-radius: 0 var(--r-md) var(--r-md) 0;
+    background: var(--brand-ink);
+}
+
+:root[data-theme="dark"] .cs-callout {
+    border-left-color: var(--accent);
+    background: #1a2636;
+}
+
+.cs-callout > :first-child { margin-top: 0; }
+.cs-callout > :last-child { margin-bottom: 0; }
+
+.cs-callout__title {
+    margin: 0 0 0.35rem;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.cs-callout--warn { border-left-color: var(--warn) !important; background: var(--warn-soft) !important; }
+.cs-callout--good { border-left-color: var(--good) !important; background: var(--good-soft) !important; }
+.cs-callout--warn .cs-callout__title { color: var(--warn); }
+.cs-callout--good .cs-callout__title { color: var(--good); }
+
+/* ---------- Team credit ---------- */
+
+.cs-team {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.4rem 1rem;
+    align-items: center;
+    margin: 1.6rem 0;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: var(--surface-2);
+}
+
+.cs-team__badge {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--hero-1), var(--brand-2));
+    color: #ffffff;
+    font-family: var(--font-display);
+    font-weight: 700;
+}
+
+.cs-team__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.cs-team ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--text-muted);
+    font-size: 0.94rem;
+}
+
+.cs-team li:not(:last-child)::after {
+    content: "\00b7";
+    margin-left: 0.4rem;
+}
+
+.cs-team__note {
+    grid-column: 1 / -1;
+    margin: 0.4rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+}
+
+/* ---------- Prev / next ---------- */
+
+.cs-pager {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    max-width: 1040px;
+    margin: 2rem auto 0;
+    padding: 0;
+    list-style: none;
+}
+
+@media (max-width: 1088px) {
+    .cs-pager {
+        margin-left: var(--gutter);
+        margin-right: var(--gutter);
+    }
+}
+
+.cs-pager a {
+    display: block;
+    height: 100%;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    transition: transform 180ms var(--ease-out), border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.cs-pager a:hover,
+.cs-pager a:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--accent-soft);
+    box-shadow: var(--shadow-soft);
+}
+
+.cs-pager__dir {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.cs-pager__title {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--heading-accent);
+    font-family: var(--font-display);
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+
+.cs-pager__next {
+    grid-column: 2;
+    text-align: right;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 760px) {
+    .cs-split {
+        grid-template-columns: 1fr;
+    }
+
+    .cs-split--reverse > :first-child {
+        order: 0;
+    }
+
+    .cs-pager {
+        grid-template-columns: 1fr;
+    }
+
+    .cs-pager__next {
+        grid-column: auto;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .cs-hero > .wrap > *,
+    .cs-body {
+        animation: riseIn 600ms var(--ease-out) both;
+    }
+
+    .cs-body {
+        animation-delay: 120ms;
+    }
+}
+
+/* ---------- Additions (first used by /cse450/) ---------- */
+
+/* Light-only plot with a white background: keep a light panel in dark mode too. */
+.cs-figure--light .cs-figure__mat,
+:root[data-theme="dark"] .cs-figure--light .cs-figure__mat {
+    background: #ffffff;
+}
+
+:root[data-theme="dark"] .cs-figure--light .cs-figure__mat {
+    border-color: transparent;
+}
+
+/* Paired plot in dark mode: match the mat to the dark variant's own background
+   (set --plot-dark inline on the figure); falls back to the kit default. */
+:root[data-theme="dark"] .cs-figure__mat {
+    background: var(--plot-dark, var(--surface-2));
+}
+
+/* Project cards two per row (bento rows of 3+3) on wide screens. */
+@media (min-width: 981px) {
+    .work-grid--pairs > li {
+        grid-column: span 3;
+    }
+}
+
+/* Card thumbnail showing a whole plot (contain, not cover). In dark mode the panel
+   matches the dark plot variant; set --plot-dark inline if its background differs. */
+.work-card__media--plot {
+    padding: 0.75rem;
+    background: #ffffff;
+}
+
+.work-card__media--plot > img {
+    object-fit: contain;
+}
+
+:root[data-theme="dark"] .work-card__media--plot:not(.is-light) {
+    background: var(--plot-dark, #0d1116);
+}
+
+/* Figure capped at a readable width (small source images, tall plots). */
+.cs-figure--narrow {
+    max-width: 780px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Link card for a companion resource (e.g. an interactive dashboard). */
+.cs-linkcard {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    max-width: 72ch;
+    margin: 1.4rem 0;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: var(--surface-2);
+    color: var(--text);
+    text-decoration: none;
+    transition: transform 180ms var(--ease-out), border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.cs-linkcard:hover,
+.cs-linkcard:focus-visible {
+    color: var(--text);
+    transform: translateY(-2px);
+    border-color: var(--accent-soft);
+    box-shadow: var(--shadow-soft);
+}
+
+.cs-linkcard__icon {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: var(--r-sm);
+    background: linear-gradient(135deg, var(--hero-1), var(--brand-2));
+    color: #ffffff;
+}
+
+.cs-linkcard__icon svg {
+    width: 1.3rem;
+    height: 1.3rem;
+}
+
+.cs-linkcard__body {
+    display: block;
+    min-width: 0;
+}
+
+.cs-linkcard__title {
+    display: block;
+    color: var(--heading-accent);
+    font-family: var(--font-display);
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+
+.cs-linkcard__text,
+.cs-linkcard__meta {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+}
+
+.cs-linkcard__meta {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Phones: let long row labels wrap so number columns stay in view. */
+@media (max-width: 560px) {
+    .cs-table th[scope="row"] {
+        min-width: 9.5rem;
+        white-space: normal;
+    }
+
+    .cs-table th,
+    .cs-table td {
+        padding: 0.6rem 0.75rem;
+    }
+
+    /* Keep the caption in view while a wide table scrolls (width = sheet content box). */
+    .cs-table caption {
+        position: sticky;
+        left: 0;
+        box-sizing: border-box;
+        max-width: calc(100vw - 2 * var(--gutter) - 2 * clamp(1.5rem, 4vw, 2.8rem) - 4px);
+    }
+}

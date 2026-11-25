@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE 450 Machine Learning | Nels Buhrley</title>
+  <meta name="description" content="Four applied machine-learning projects from BYU-Idaho CSE 450 by Team NorthWind: bank marketing, housing prices, bike demand, traffic signs.">
+  <meta name="author" content="Nels Buhrley">
+  <meta name="theme-color" content="#002e5d">
+  <link rel="canonical" href="https://nels.buhrley.com/cse450/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="CSE 450 Machine Learning | Nels Buhrley">
+  <meta property="og:description" content="Four applied machine-learning projects from BYU-Idaho CSE 450 by Team NorthWind: bank marketing, housing prices, bike demand, traffic signs.">
+  <meta property="og:url" content="https://nels.buhrley.com/cse450/">
+  <meta property="og:image" content="https://nels.buhrley.com/cse450/img/og/cse450.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/ui/css/project.css">
+  <link rel="stylesheet" href="/ui/css/menu.css">
+  <script src="/ui/js/site-menu.js"></script>
+</head>
+<body>
+  <svg class="sr-only" width="0" height="0" aria-hidden="true" focusable="false">
+    <symbol id="i-github" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="cs-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol><li><a href="/">Home</a></li><li aria-current="page">CSE 450</li></ol>
+      </nav>
+      <p class="cs-hero__eyebrow">CSE 450 &middot; BYU-Idaho &middot; Spring 2026</p>
+      <h1>Machine Learning, Applied</h1>
+      <p class="cs-hero__dek">Four projects from BYU-Idaho&rsquo;s CSE 450, each scored on data the models had never seen.</p>
+      <dl class="cs-hero__meta">
+        <div><dt>Team</dt><dd>Team NorthWind</dd></div>
+        <div><dt>Course</dt><dd>CSE 450, BYU-Idaho</dd></div>
+        <div><dt>Term</dt><dd>Spring 2026</dd></div>
+        <div><dt>Stack</dt><dd>Python, scikit-learn, XGBoost, Keras, PyTorch</dd></div>
+      </dl>
+      <div class="cs-hero__links">
+        <a class="btn-pill btn-pill--primary" href="/CSE-450-Machine-learning/"><svg aria-hidden="true"><use href="#i-grid"/></svg>Team project site</a>
+        <a class="btn-pill" href="https://github.com/nelsbuhrley/CSE-450-Machine-learning"><svg aria-hidden="true"><use href="#i-github"/></svg>Team repository<span class="sr-only"> (GitHub, external)</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="cs-body">
+      <section class="cs-section">
+        <p class="cs-lede">CSE 450 is BYU-Idaho&rsquo;s applied machine-learning course. Every module hands the team a real dataset and a business question, then grades the answer on a held-out test set the models never trained on.</p>
+        <p>Team NorthWind (Caleb Dilley, Dallin Wagner, Jonathan Oliphant and Nels Buhrley) worked through four of them in Spring 2026: deciding which bank customers to call, pricing houses, forecasting hourly bike rentals and reading traffic signs. The projects move from scikit-learn classifiers to gradient boosting, neural-network ensembles and convolutional networks trained from scratch on GPUs. Each page below covers the problem, the data, what we tried, the held-out results and what we would do differently.</p>
+        <div class="cs-team">
+          <span class="cs-team__badge" aria-hidden="true">NW</span>
+          <p class="cs-team__name">Team NorthWind</p>
+          <ul><li>Caleb Dilley</li><li>Dallin Wagner</li><li>Jonathan Oliphant</li><li>Nels Buhrley</li></ul>
+          <p class="cs-team__note">All four projects are team work for CSE 450 Machine Learning at BYU-Idaho, Spring 2026.</p>
+        </div>
+      </section>
+
+      <section class="cs-section" aria-labelledby="projects-title">
+        <h2 id="projects-title">The projects</h2>
+        <ul class="work-grid work-grid--pairs">
+          <li>
+            <a class="work-card" href="bank-marketing/">
+              <div class="work-card__media work-card__media--plot"><img class="theme-light-only" src="img/bank/campaign_value.webp" width="1600" height="1201" loading="lazy" decoding="async" alt=""><img class="theme-dark-only" src="img/bank/campaign_value-dark.webp" width="1600" height="1201" loading="lazy" decoding="async" alt=""></div>
+              <div class="work-card__body">
+                <p class="work-card__kicker">Module 2 &middot; Classification</p>
+                <h3>Bank Marketing <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+                <p>Choosing which customers to call, scored in dollars instead of accuracy.</p>
+                <p class="work-card__note"><strong><span class="nowrap">&minus;$156.92</span> &rarr; $824.50</strong> campaign value (410-contact holdout)</p>
+                <ul class="tags" aria-label="Technologies"><li>scikit-learn</li><li>SMOTE</li><li>Stacking</li></ul>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="work-card" href="housing/">
+              <div class="work-card__media work-card__media--plot" style="--plot-dark: #181d2b"><img class="theme-light-only" src="img/housing/actual_vs_predicted.webp" width="1050" height="900" loading="lazy" decoding="async" alt=""><img class="theme-dark-only" src="img/housing/actual_vs_predicted-dark.webp" width="1050" height="900" loading="lazy" decoding="async" alt=""></div>
+              <div class="work-card__body">
+                <p class="work-card__kicker">Module 3 &middot; Regression</p>
+                <h3>Housing Prices <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+                <p>Pricing King County homes with XGBoost and location features.</p>
+                <p class="work-card__note"><strong>R&sup2; 0.8787</strong> on the 81-home holdout</p>
+                <ul class="tags" aria-label="Technologies"><li>XGBoost</li><li>k-means</li><li>Feature engineering</li></ul>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="work-card" href="bike-demand/">
+              <div class="work-card__media work-card__media--plot is-light"><img src="img/bikes/actual_vs_predicted.webp" width="1600" height="661" loading="lazy" decoding="async" alt=""></div>
+              <div class="work-card__body">
+                <p class="work-card__kicker">Module 4 &middot; Forecasting</p>
+                <h3>Bike Demand <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+                <p>Forecasting hourly bike-share rentals with a holiday-aware MLP + XGBoost blend.</p>
+                <p class="work-card__note"><strong>RMSE 108.0</strong> rentals/hr, <strong>R&sup2; 0.912</strong> (384-hour blind window)</p>
+                <ul class="tags" aria-label="Technologies"><li>Keras</li><li>XGBoost</li><li>Ensembling</li></ul>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="work-card" href="traffic-signs/">
+              <div class="work-card__media media-signs"><img src="img/signs/class_grid.webp" width="744" height="268" loading="lazy" decoding="async" alt=""></div>
+              <div class="work-card__body">
+                <p class="work-card__kicker">Module 5 &middot; Computer vision</p>
+                <h3>Traffic Signs <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+                <p>Classifying 43 kinds of German traffic sign with CNNs trained from scratch.</p>
+                <p class="work-card__note"><strong>99.0%</strong> top-1 on a 201-image holdout (2 errors)</p>
+                <ul class="tags" aria-label="Technologies"><li>PyTorch</li><li>CNN</li><li>Spatial transformer</li></ul>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <a class="cs-linkcard" href="housing-dashboard.html" target="_blank" rel="noopener">
+          <span class="cs-linkcard__icon" aria-hidden="true"><svg><use href="#i-chart"/></svg></span>
+          <span class="cs-linkcard__body">
+            <span class="cs-linkcard__title">Explore the housing data <span class="arrow arrow--ext" aria-hidden="true">&nearr;</span></span>
+            <span class="cs-linkcard__text">Our interactive EDA dashboard for the King County sales: zip-code price map, correlations, distributions and outlier flags.</span>
+            <span class="cs-linkcard__meta">Opens in a new tab &middot; about 2&nbsp;MB</span>
+          </span>
+        </a>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="affiliation-strip">
+      <img src="/img/logos/byu-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University">
+      <img src="/img/logos/byu-idaho-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University&ndash;Idaho">
+    </div>
+    <p>&copy; 2026 Nels Buhrley &middot; <a href="https://nels.buhrley.com/">nels.buhrley.com</a></p>
+  </footer>
+</body>
+</html>
