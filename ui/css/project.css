@@ -705,3 +705,73 @@
         max-width: calc(100vw - 2 * var(--gutter) - 2 * clamp(1.5rem, 4vw, 2.8rem) - 4px);
     }
 }
+
+/* Team member cards with GitHub avatars (cse450 overview) */
+.cs-team ul.cs-members {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 0.9rem 0 0.4rem;
+    padding: 0;
+    list-style: none;
+}
+
+.cs-team ul.cs-members li::after {
+    content: none;
+}
+
+.cs-members a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.9rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text);
+    text-align: center;
+    text-decoration: none;
+    transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.cs-members a:hover,
+.cs-members a:focus-visible {
+    border-color: var(--accent-soft);
+    transform: translateY(-2px);
+}
+
+.cs-members img {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 0.3rem;
+    border-radius: 50%;
+    background: var(--surface-2);
+    object-fit: cover;
+}
+
+.cs-members__name {
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.cs-members__handle {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+    .cs-team ul.cs-members {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.cs-team ul.cs-members,
+.cs-team:has(.cs-members) .cs-team__note {
+    grid-column: 1 / -1;
+}
+
+.cs-team:has(.cs-members) .cs-team__badge {
+    grid-row: auto;
+}
