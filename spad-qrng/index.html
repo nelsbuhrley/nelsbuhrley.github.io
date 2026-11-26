@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LED Single-Photon Detector | Nels Buhrley</title>
+  <meta name="description" content="A PH 250 team project: an ordinary red LED, reverse-biased into Geiger mode, detects single photons, and an Arduino turns the timing between them into random bytes.">
+  <meta name="author" content="Nels Buhrley">
+  <meta name="theme-color" content="#002e5d">
+  <link rel="canonical" href="https://nels.buhrley.com/spad-qrng/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="LED Single-Photon Detector &amp; Random Number Generator | Nels Buhrley">
+  <meta property="og:description" content="An ordinary red LED, reverse-biased into Geiger mode, detects single photons, and an Arduino turns the timing between them into random bytes.">
+  <meta property="og:url" content="https://nels.buhrley.com/spad-qrng/">
+  <meta property="og:image" content="https://nels.buhrley.com/spad-qrng/img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/ui/css/project.css?v=3">
+  <link rel="stylesheet" href="/ui/css/menu.css">
+  <script src="/ui/js/site-menu.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="cs-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol><li><a href="/">Home</a></li><li><a href="/#projects">Projects</a></li><li aria-current="page">LED Photon Detector</li></ol>
+      </nav>
+      <p class="cs-hero__eyebrow">PH 250 &middot; Team project</p>
+      <h1>A Random Number Generator Built From a Red LED</h1>
+      <p class="cs-hero__dek">A reverse-biased LED, a 1&nbsp;M&Omega; resistor and an Arduino Uno detect single photons and turn the time between them into random bytes.</p>
+      <dl class="cs-hero__meta">
+        <div><dt>Team</dt><dd>Nels Buhrley, Rex Wight, Andrew Simmons</dd></div>
+        <div><dt>Course</dt><dd>PH 250</dd></div>
+        <div><dt>Presented</dt><dd>November 11, 2025</dd></div>
+        <div><dt>Stack</dt><dd>Arduino (C++), Python</dd></div>
+      </dl>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="cs-body">
+      <section class="cs-section">
+        <p class="cs-lede">Most random numbers on a computer come from an algorithm: give it the same seed and you get the same output. We wanted randomness from physics instead, using light detection at the single-photon level, built from parts that cost a few dollars.</p>
+      </section>
+
+      <section class="cs-section">
+        <h2>The detector</h2>
+        <p>A single-photon avalanche detector (SPAD) is a diode biased past its breakdown voltage, known as Geiger mode. One photon creates an electron&ndash;hole pair, which sets off an avalanche of current. A quenching circuit then stops the avalanche, the diode recovers during a short dead time, and it is ready for the next photon.</p>
+        <p>An ordinary red LED can do this when it is reverse-biased. We used passive quenching: a 1&nbsp;M&Omega; resistor in series with the LED, with the voltage across it read on the Arduino Uno&rsquo;s analog pin A0. The circuit sat inside a black box to limit how much light reached it.</p>
+        <figure class="cs-figure">
+          <div class="cs-figure__mat">
+            <svg class="spad-circuit" viewBox="-70 0 860 345" role="img" aria-labelledby="circuit-title">
+              <title id="circuit-title">Schematic: a DC voltage supply reverse-biases a red LED inside a light-limiting box. The LED's other side meets a node that goes to ground through a 1 megaohm quench resistor and to pin A0 of an Arduino Uno; the Arduino ground shares the same ground rail.</title>
+              <rect class="sc-box" x="196" y="22" width="232" height="148" rx="16"/>
+              <text class="sc-caps" x="214" y="44">Light-limiting box</text>
+              <path class="sc-wire" d="M100 162 V92 H268 M352 92 H500 V128 M500 220 V300 M100 210 V300 H628 M500 92 H628"/>
+              <circle class="sc-part" cx="100" cy="186" r="24"/>
+              <path class="sc-wire" d="M93 176 H107 M100 169 V183 M93 197 H107"/>
+              <text class="sc-label sc-strong" x="72" y="176" text-anchor="end">DC supply</text>
+              <text class="sc-note" x="72" y="194" text-anchor="end">reverse-biases</text>
+              <text class="sc-note" x="72" y="210" text-anchor="end">the LED</text>
+              <circle class="sc-pkg" cx="310" cy="92" r="40"/>
+              <polygon class="sc-led" points="288,92 330,68 330,116"/>
+              <path class="sc-wire sc-thick" d="M288 68 V116"/>
+              <path class="sc-wire" d="M268 92 H288 M330 92 H352"/>
+              <g class="sc-photon"><path d="M400.0 40.0 L397.3 38.0 L395.9 38.7 L396.0 42.1 L396.1 45.5 L394.8 46.2 L392.1 44.2 L389.3 42.3 L388.0 43.0 L388.1 46.4 L388.2 49.7 L386.9 50.4 L384.1 48.5 L381.4 46.5 L380.0 47.2 L380.1 50.6 L380.2 54.0 L378.9 54.7 L376.2 52.7 L373.4 50.7 L372.1 51.4 L372.2 54.8 L372.3 58.2 L371.0 58.9 L368.2 56.9 L365.5 55.0 L364.2 55.7 L364.3 59.1 L364.4 62.4 L363.0 63.1 L360.3 61.2 L357.5 59.2 L356.2 59.9 L356.3 63.3 L356.4 66.7 L355.0 67.2 L352.4 65.4 L350.4 65.0 L349.5 66.4 L340.0 72.0"/><path d="M349.0 72.0 L340 72 L345.0 64.5"/><path d="M410.0 74.0 L407.5 71.7 L406.1 72.2 L405.8 75.5 L405.4 78.9 L404.0 79.4 L401.6 77.1 L399.1 74.8 L397.7 75.3 L397.3 78.6 L397.0 82.0 L395.6 82.5 L393.1 80.2 L390.6 77.9 L389.2 78.4 L388.9 81.7 L388.5 85.1 L387.1 85.6 L384.7 83.3 L382.2 81.0 L380.8 81.5 L380.4 84.8 L380.1 88.2 L378.7 88.7 L376.2 86.4 L373.7 84.1 L372.3 84.6 L372.0 87.9 L371.6 91.3 L370.2 91.8 L367.8 89.5 L365.3 87.2 L363.9 87.7 L363.5 91.0 L362.6 92.9 L361.0 92.7 L350.0 96.0"/><path d="M358.9 97.2 L350 96 L356.0 89.3"/></g>
+              <text class="sc-note sc-accent" x="414" y="118" text-anchor="end">photons</text>
+              <text class="sc-label sc-strong" x="312" y="196" text-anchor="middle">Detector: red LED</text>
+              <text class="sc-note" x="312" y="214" text-anchor="middle">single-photon avalanches (Geiger mode)</text>
+              <circle class="sc-dot" cx="500" cy="92" r="5"/>
+              <circle class="sc-dot" cx="500" cy="300" r="5"/>
+              <path class="sc-part" d="M500 128 l-13 7 l26 13 l-26 13 l26 13 l-26 13 l26 13 l-13 7 V220"/>
+              <text class="sc-label sc-strong" x="526" y="168">1 M&#937;</text>
+              <text class="sc-note" x="526" y="186">passive quench</text>
+              <rect class="sc-inset" x="522" y="18" width="88" height="56" rx="8"/>
+              <path class="sc-axis" d="M530 66 H604"/>
+              <path class="sc-pulse" d="M530.0 66.0 L544.0 66.0 L544.0 32.0 L545.4 35.2 L546.8 38.2 L548.2 40.8 L549.6 43.2 L551.0 45.4 L552.4 47.3 L553.8 49.1 L555.2 50.7 L556.6 52.2 L558.0 53.5 L559.4 54.7 L560.8 55.8 L562.2 56.7 L563.6 57.6 L565.0 58.4 L566.4 59.1 L567.8 59.8 L569.2 60.4 L570.6 60.9 L572.0 61.4 L573.4 61.8 L574.8 62.2 L576.2 62.6 L577.6 62.9 L579.0 63.2 L580.4 63.5 L581.8 63.7 L583.2 63.9 L584.6 64.1 L586.0 64.3 L587.4 64.5 L588.8 64.6 L590.2 64.7 L591.6 64.9 L593.0 65.0 L594.4 65.1 L595.8 65.2 L597.2 65.2 L598.6 65.3 L600.0 65.4"/>
+              <text class="sc-tiny" x="566" y="30" text-anchor="middle">~150 &#956;s pulse</text>
+              <path class="sc-wire" d="M300 300 V312 M284 312 H316 M290 320 H310 M296 328 H304"/>
+              <rect class="sc-board" x="620" y="36" width="160" height="290" rx="12"/>
+              <rect class="sc-usb" x="736" y="24" width="34" height="40" rx="3"/>
+              <rect class="sc-header" x="624" y="80" width="16" height="224" rx="3"/>
+              <rect class="sc-hole" x="628" y="126" width="8" height="8" rx="1.5"/><rect class="sc-hole" x="628" y="140" width="8" height="8" rx="1.5"/><rect class="sc-hole" x="628" y="154" width="8" height="8" rx="1.5"/><rect class="sc-hole" x="628" y="168" width="8" height="8" rx="1.5"/><rect class="sc-hole" x="628" y="182" width="8" height="8" rx="1.5"/><rect class="sc-hole" x="628" y="196" width="8" height="8" rx="1.5"/><rect class="sc-hole" x="628" y="210" width="8" height="8" rx="1.5"/><rect class="sc-hole" x="628" y="224" width="8" height="8" rx="1.5"/><rect class="sc-hole" x="628" y="238" width="8" height="8" rx="1.5"/><rect class="sc-hole" x="628" y="252" width="8" height="8" rx="1.5"/>
+              <rect class="sc-pinhi" x="626" y="86" width="12" height="12" rx="2"/>
+              <rect class="sc-pinhi" x="626" y="294" width="12" height="12" rx="2"/>
+              <text class="sc-pin-label" x="650" y="97">A0</text>
+              <text class="sc-pin-label" x="650" y="305">GND</text>
+              <rect class="sc-chip" x="672" y="142" width="70" height="104" rx="4"/>
+              <path class="sc-chip-pins" d="M666 152 H672 M742 152 H748 M666 164 H672 M742 164 H748 M666 176 H672 M742 176 H748 M666 188 H672 M742 188 H748 M666 200 H672 M742 200 H748 M666 212 H672 M742 212 H748 M666 224 H672 M742 224 H748 M666 236 H672 M742 236 H748"/>
+              <text class="sc-board-title" x="707" y="120" text-anchor="middle">Arduino Uno</text>
+              <text class="sc-board-note" x="707" y="270" text-anchor="middle">times pulse gaps,</text>
+              <text class="sc-board-note" x="707" y="285" text-anchor="middle">outputs random bytes</text>
+            </svg>
+          </div>
+          <figcaption><span class="cs-figure__label">Fig. 1</span>The circuit. The reverse-biased LED sits in the light-limiting box; each avalanche drives a voltage pulse across the 1&nbsp;M&Omega; resistor, which the Arduino reads on pin A0.</figcaption>
+        </figure>
+        <figure class="cs-figure cs-figure--portrait">
+          <div class="cs-figure__mat">
+            <img src="img/build.webp" width="900" height="1200" loading="lazy" decoding="async" alt="Close-up of a red LED and a resistor on a small breadboard mounted on an Arduino shield, with oscilloscope probe clips attached, inside a dark enclosure.">
+          </div>
+          <figcaption><span class="cs-figure__label">Fig. 2</span>The build: LED and quenching resistor on a breadboard shield, with oscilloscope probes attached, inside the light-limiting box.</figcaption>
+        </figure>
+      </section>
+
+      <section class="cs-section">
+        <h2>Seeing single photons</h2>
+        <p>On the oscilloscope, each detected photon appears as a sharp pulse well above the noise floor that decays over roughly 150&nbsp;&micro;s. When a second photon arrives before the first pulse has fully decayed, its pulse rides on the first one&rsquo;s tail. That is the detector&rsquo;s dead time and pile-up made visible.</p>
+        <figure class="cs-figure cs-figure--dark">
+          <div class="cs-figure__mat">
+            <img src="img/scope.webp" width="1400" height="1057" loading="lazy" decoding="async" alt="Oscilloscope screen at 50 microseconds per division showing a noisy baseline, then two sharp pulses that each decay over about three divisions; the second starts on the tail of the first.">
+          </div>
+          <figcaption><span class="cs-figure__label">Fig. 3</span>Two avalanche pulses at 50&nbsp;&micro;s per division. The second pulse begins before the first has returned to baseline.</figcaption>
+        </figure>
+      </section>
+
+      <section class="cs-section">
+        <h2>From pulses to bits</h2>
+        <p>Photon arrivals are random, so the time between them is too. The Arduino firmware watches pin A0 and times the gap from the end of one pulse to the start of the next. It compares two gaps in a row to make one raw bit: 1 if the first gap is shorter, 0 if not.</p>
+        <p>Raw bits can still carry a bias, so the firmware applies Von Neumann debiasing. It takes raw bits in pairs and keeps a pair only when the two bits differ, discarding 00 and 11. Eight kept bits are packed into a byte and sent over serial. A second sketch logs each pulse&rsquo;s duration and average height as CSV, which we used to look at the detector itself.</p>
+        <figure class="cs-figure cs-figure--light">
+          <div class="cs-figure__mat">
+            <img src="img/timeseries.webp" width="1600" height="686" loading="lazy" decoding="async" alt="Scatter plot of 10,000 output values from 0 to 255 against time over about 500 seconds, spread evenly across the whole range.">
+          </div>
+          <figcaption><span class="cs-figure__label">Fig. 4</span>10,000 output bytes plotted against time. The values fill the full 0&ndash;255 range with no visible pattern.</figcaption>
+        </figure>
+      </section>
+
+      <section class="cs-section">
+        <h2>What we learned</h2>
+        <p>An LED does work as a SPAD, though it is less effective than purpose-built detectors. It is still a cheap, hands-on route to a true random number generator driven by a quantum process rather than a seeded algorithm. The next step we proposed is active quenching, which would reset the detector faster and raise the count rate.</p>
+        <p>Using an LED as a single-photon detector is an established technique; we built on these sources:</p>
+        <ul>
+          <li>PhysicsOpenLab (2020). <a href="https://physicsopenlab.org/2020/02/27/using-led-as-a-single-photon-detector/" rel="noopener">Using LED as a single photon detector<span class="arrow arrow--ext" aria-hidden="true"> &nearr;</span></a>.</li>
+          <li>Newport, J. (2018). <a href="https://advlabs.aapt.org/bfyiii/files/2018_SPAD_Lab.pdf" rel="noopener">LEDs as single-photon avalanche photodiodes<span class="arrow arrow--ext" aria-hidden="true"> &nearr;</span></a> [Lab manual]. American University; AAPT BFY III Conference.</li>
+        </ul>
+      </section>
+
+      <section class="cs-section" aria-labelledby="credits-title">
+        <h2 id="credits-title">Team and tools</h2>
+        <div class="cs-team">
+          <span class="cs-team__badge" aria-hidden="true">PH</span>
+          <p class="cs-team__name">PH 250 project team</p>
+          <ul><li>Nels Buhrley</li><li>Rex Wight</li><li>Andrew Simmons</li></ul>
+          <p class="cs-team__note">Presented November 11, 2025.</p>
+        </div>
+        <ul class="tags"><li>Arduino Uno</li><li>C++</li><li>Python</li><li>Oscilloscope</li><li>SPAD</li><li>Von Neumann debiasing</li></ul>
+      </section>
+    </article>
+
+    <ul class="cs-pager" aria-label="More projects">
+      <li><a href="/#projects"><span class="cs-pager__dir">&larr; Back</span><span class="cs-pager__title">All projects</span></a></li>
+      <li class="cs-pager__next"><a href="/rocket-glider/"><span class="cs-pager__dir">Next &rarr;</span><span class="cs-pager__title">Rocket Glider</span></a></li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <div class="affiliation-strip">
+      <img src="/img/logos/byu-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University">
+      <img src="/img/logos/byu-idaho-144.webp" width="64" height="64" loading="lazy" decoding="async" alt="Brigham Young University&ndash;Idaho">
+    </div>
+    <p>&copy; 2026 Nels Buhrley &middot; <a href="https://nels.buhrley.com/">nels.buhrley.com</a></p>
+  </footer>
+</body>
+</html>

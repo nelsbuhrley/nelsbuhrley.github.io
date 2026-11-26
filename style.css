@@ -1494,7 +1494,8 @@ a:focus-visible .arrow--ext {
     }
 
     .work-grid > .is-wide,
-    .work-grid > .is-full {
+    .work-grid > .is-full,
+    .work-grid > .is-tail {
         grid-column: 1 / -1;
     }
 

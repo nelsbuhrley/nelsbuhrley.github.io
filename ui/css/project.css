@@ -775,3 +775,55 @@
 .cs-team:has(.cs-members) .cs-team__badge {
     grid-row: auto;
 }
+
+/* Hand-drawn schematic (SPAD page). Colors follow the theme tokens. */
+.cs-figure--portrait {
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.spad-circuit {
+    display: block;
+    width: 100%;
+    height: auto;
+    font-family: inherit;
+    color: var(--text);
+}
+
+.spad-circuit .sc-wire,
+.spad-circuit .sc-part {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.spad-circuit text { fill: currentColor; }
+.spad-circuit .sc-thick { stroke-width: 3.5; }
+.spad-circuit .sc-dot { fill: currentColor; }
+.spad-circuit .sc-box { fill: var(--surface-2, #f3f5f8); stroke: var(--text-muted); stroke-width: 1.5; stroke-dasharray: 7 6; }
+.spad-circuit .sc-caps { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; fill: var(--text-muted); }
+.spad-circuit .sc-pkg { fill: rgba(224, 57, 62, 0.08); stroke: #e0393e; stroke-width: 1.5; }
+.spad-circuit .sc-led { fill: #e0393e; stroke: #b3262b; stroke-width: 2; stroke-linejoin: round; }
+.spad-circuit .sc-photon path { fill: none; stroke: var(--heading-accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.spad-circuit .sc-sign { font-size: 18px; font-weight: 700; }
+.spad-circuit .sc-inset { fill: var(--surface, #ffffff); stroke: var(--line); stroke-width: 1.5; }
+.spad-circuit .sc-axis { stroke: var(--text-muted); stroke-width: 1; }
+.spad-circuit .sc-pulse { fill: none; stroke: #e0393e; stroke-width: 2.2; stroke-linejoin: round; }
+.spad-circuit .sc-tiny { font-size: 11px; fill: var(--text-muted); }
+.spad-circuit .sc-board { fill: #00878f; stroke: #006a70; stroke-width: 2; }
+.spad-circuit .sc-usb { fill: #c9d1d9; stroke: #8a949e; stroke-width: 1.5; }
+.spad-circuit .sc-header { fill: #1d2228; }
+.spad-circuit .sc-hole { fill: #3a424c; }
+.spad-circuit .sc-pinhi { fill: #f2c14e; stroke: #ffffff; stroke-width: 1.5; }
+.spad-circuit .sc-chip { fill: #1d2228; }
+.spad-circuit .sc-chip-pins { stroke: #c9d1d9; stroke-width: 2.5; }
+.spad-circuit .sc-board-title { fill: #ffffff; font-size: 18px; font-weight: 700; }
+.spad-circuit .sc-board-note { fill: #e6f6f7; font-size: 12.5px; }
+.spad-circuit .sc-pin-label { fill: #ffffff; font-size: 14px; font-weight: 700; }
+.spad-circuit .sc-label { font-size: 16px; }
+.spad-circuit .sc-strong { font-weight: 700; }
+.spad-circuit .sc-note { font-size: 13.5px; fill: var(--text-muted); }
+.spad-circuit .sc-accent { fill: var(--heading-accent); font-weight: 600; }
